@@ -1,0 +1,40 @@
+<div class="slide" id="slide-12" data-section="3">
+    <div class="slide-content">
+        <h1>Security Groups vs Network ACLs</h1>
+        <div class="comparison-table">
+            <div class="comparison-header">
+                <div class="feature-col">Tính năng</div>
+                <div class="sg-col">Security Groups</div>
+                <div class="nacl-col">Network ACLs</div>
+            </div>
+            <div class="comparison-row">
+                <div class="feature-col">Phạm vi</div>
+                <div class="sg-col">Instance level</div>
+                <div class="nacl-col">Subnet level</div>
+            </div>
+            <div class="comparison-row">
+                <div class="feature-col">Stateful/Stateless</div>
+                <div class="sg-col">Stateful</div>
+                <div class="nacl-col">Stateless</div>
+            </div>
+            <div class="comparison-row">
+                <div class="feature-col">Rules</div>
+                <div class="sg-col">Chỉ Allow rules</div>
+                <div class="nacl-col">Allow và Deny rules</div>
+            </div>
+            <div class="comparison-row">
+                <div class="feature-col">Rule evaluation</div>
+                <div class="sg-col">Tất cả rules trước khi quyết định</div>
+                <div class="nacl-col">Theo thứ tự rule number</div>
+            </div>
+            <div class="comparison-row">
+                <div class="feature-col">Default behavior</div>
+                <div class="sg-col">Deny all inbound, allow outbound</div>
+                <div class="nacl-col">Allow all traffic</div>
+            </div>
+        </div>
+        <div class="best-practice-tip">
+            <p><strong>💡 Best Practice:</strong> Sử dụng Security Groups làm primary defense, Network ACLs làm additional layer</p>
+        </div>
+    </div>
+</div>

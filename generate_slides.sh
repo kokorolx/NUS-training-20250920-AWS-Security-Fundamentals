@@ -1,0 +1,1563 @@
+#!/usr/bin/env bash
+# Generate slide fragment files into slides/ directory.
+set -e
+mkdir -p slides
+
+cat > slides/slide-2.html <<'HTML'
+<div class="slide" id="slide-2" data-section="1">
+    <div class="slide-content">
+        <h1>Tại sao AWS Security quan trọng?</h1>
+        <div class="importance-grid">
+            <div class="stat-card">
+                <div class="stat-number">43%</div>
+                <p>Các vụ vi phạm dữ liệu liên quan đến cloud</p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">$4.45M</div>
+                <p>Chi phí trung bình một vụ vi phạm dữ liệu</p>
+            </div>
+            <div class="importance-list">
+                <div class="importance-item">
+                    <span class="icon">🎯</span>
+                    <div>
+                        <h3>Compliance Requirements</h3>
+                        <p>GDPR, HIPAA, SOC 2, PCI DSS</p>
+                    </div>
+                </div>
+                <div class="importance-item">
+                    <span class="icon">💼</span>
+                    <div>
+                        <h3>Business Continuity</h3>
+                        <p>Bảo vệ hoạt động kinh doanh</p>
+                    </div>
+                </div>
+                <div class="importance-item">
+                    <span class="icon">🔒</span>
+                    <div>
+                        <h3>Data Protection</h3>
+                        <p>Bảo vệ dữ liệu khách hàng</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+HTML
+
+cat > slides/slide-3.html <<'HTML'
+<div class="slide" id="slide-3" data-section="1">
+    <div class="slide-content">
+        <h1>Shared Responsibility Model - Tổng quan</h1>
+        <div class="responsibility-overview">
+            <div class="responsibility-diagram">
+                <div class="responsibility-section aws-responsibility">
+                    <h3>AWS</h3>
+                    <p class="subtitle">"Security OF the Cloud"</p>
+                    <div class="responsibility-icon">☁️</div>
+                    <p>Bảo mật hạ tầng, phần cứng, mạng, cơ sở vật chất</p>
+                </div>
+                <div class="shared-divider">↕️</div>
+                <div class="responsibility-section customer-responsibility">
+                    <h3>Customer</h3>
+                    <p class="subtitle">"Security IN the Cloud"</p>
+                    <div class="responsibility-icon">👤</div>
+                    <p>Bảo mật dữ liệu, ứng dụng, cấu hình, IAM</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+HTML
+
+cat > slides/slide-4.html <<'HTML'
+<div class="slide" id="slide-4" data-section="1">
+    <div class="slide-content">
+        <h1>Shared Responsibility Model - Chi tiết</h1>
+        <div class="detailed-responsibility">
+            <div class="responsibility-column aws-details">
+                <h3>🏢 Trách nhiệm của AWS</h3>
+                <ul class="responsibility-list">
+                    <li>Hardware/AWS Global Infrastructure</li>
+                    <li>Regions, Availability Zones, Edge Locations</li>
+                    <li>Physical security of data centers</li>
+                    <li>Network infrastructure</li>
+                    <li>Virtualization infrastructure</li>
+                    <li>CloudFront edge locations security</li>
+                    <li>Managed services (RDS, Lambda, etc.)</li>
+                </ul>
+            </div>
+            <div class="responsibility-column customer-details">
+                <h3>👥 Trách nhiệm của Khách hàng</h3>
+                <ul class="responsibility-list">
+                    <li>Customer data encryption</li>
+                    <li>Platform, applications, IAM</li>
+                    <li>Operating system, network, firewall</li>
+                    <li>Client-side data encryption</li>
+                    <li>Server-side encryption</li>
+                    <li>CloudFront distribution configuration</li>
+                    <li>Security group configuration</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+HTML
+
+cat > slides/slide-5.html <<'HTML'
+<div class="slide" id="slide-5" data-section="1">
+    <div class="slide-content">
+        <h1>Real-world Security Incidents</h1>
+        <div class="incidents-grid">
+            <div class="incident-card">
+                <h3>🚨 Capital One (2019)</h3>
+                <div class="incident-details">
+                    <p><strong>Nguyên nhân:</strong> Misconfigured web application firewall</p>
+                    <p><strong>Tác động:</strong> 100 triệu hồ sơ khách hàng bị lộ</p>
+                    <p><strong>Chi phí:</strong> $300 triệu USD</p>
+                    <p><strong>Bài học:</strong> Cấu hình bảo mật đúng cách</p>
+                </div>
+            </div>
+            <div class="incident-card">
+                <h3>🔓 Uber (2016)</h3>
+                <div class="incident-details">
+                    <p><strong>Nguyên nhân:</strong> API keys leaked in GitHub</p>
+                    <p><strong>Tác động:</strong> 57 triệu tài khoản bị xâm phạm</p>
+                    <p><strong>Chi phí:</strong> $148 triệu USD</p>
+                    <p><strong>Bài học:</strong> Quản lý credentials an toàn</p>
+                </div>
+            </div>
+            <div class="prevention-tips">
+                <h3>🛡️ Nguyên tắc Phòng ngừa</h3>
+                <ul>
+                    <li>Defense in Depth</li>
+                    <li>Principle of Least Privilege</li>
+                    <li>Regular Security Audits</li>
+                    <li>Incident Response Planning</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+HTML
+
+cat > slides/slide-6.html <<'HTML'
+<div class="slide" id="slide-6" data-section="2">
+    <div class="slide-content">
+        <h1>AWS IAM Overview</h1>
+        <div class="iam-overview">
+            <div class="iam-definition">
+                <h3>Identity and Access Management</h3>
+                <p>Dịch vụ quản lý danh tính và quyền truy cập vào các tài nguyên AWS</p>
+            </div>
+            <div class="iam-features">
+                <div class="feature-card">
+                    <span class="feature-icon">🔑</span>
+                    <h4>Fine-grained Access Control</h4>
+                    <p>Kiểm soát chi tiết quyền truy cập</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🛡️</span>
+                    <h4>Multi-factor Authentication</h4>
+                    <p>Xác thực đa yếu tố</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🔄</span>
+                    <h4>Identity Federation</h4>
+                    <p>Tích hợp với hệ thống hiện có</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">📊</span>
+                    <h4>Access Analysis</h4>
+                    <p>Phân tích và kiểm tra quyền</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+HTML
+
+cat > slides/slide-7.html <<'HTML'
+<div class="slide" id="slide-7" data-section="2">
+    <div class="slide-content">
+        <h1>IAM Users, Groups, Roles</h1>
+        <div class="iam-components">
+            <div class="component-card">
+                <div class="component-header">
+                    <span class="component-icon">👤</span>
+                    <h3>IAM Users</h3>
+                </div>
+                <ul class="component-details">
+                    <li>Đại diện cho một người hoặc ứng dụng</li>
+                    <li>Có credentials riêng (password, access keys)</li>
+                    <li>Gán quyền trực tiếp hoặc qua groups</li>
+                    <li>Best practice: Tạo user riêng cho mỗi người</li>
+                </ul>
+            </div>
+            <div class="component-card">
+                <div class="component-header">
+                    <span class="component-icon">👥</span>
+                    <h3>IAM Groups</h3>
+                </div>
+                <ul class="component-details">
+                    <li>Tập hợp các users có quyền tương tự</li>
+                    <li>Đơn giản hóa việc quản lý quyền</li>
+                    <li>Ví dụ: Developers, Admins, ReadOnly</li>
+                    <li>Users có thể thuộc nhiều groups</li>
+                </ul>
+            </div>
+            <div class="component-card">
+                <div class="component-header">
+                    <span class="component-icon">🎭</span>
+                    <h3>IAM Roles</h3>
+                </div>
+                <ul class="component-details">
+                    <li>Temporary credentials cho services/applications</li>
+                    <li>Cross-account access</li>
+                    <li>Federation với external identity providers</li>
+                    <li>EC2 instances, Lambda functions</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+HTML
+
+cat > slides/slide-8.html <<'HTML'
+<div class="slide" id="slide-8" data-section="2">
+    <div class="slide-content">
+        <h1>IAM Policies</h1>
+        <div class="policies-content">
+            <div class="policy-types">
+                <div class="policy-type">
+                    <h3>📋 Identity-based Policies</h3>
+                    <p>Gán cho users, groups, roles</p>
+                    <ul>
+                        <li>AWS Managed Policies</li>
+                        <li>Customer Managed Policies</li>
+                        <li>Inline Policies</li>
+                    </ul>
+                </div>
+                <div class="policy-type">
+                    <h3>🏢 Resource-based Policies</h3>
+                    <p>Gán trực tiếp cho resources</p>
+                    <ul>
+                        <li>S3 Bucket Policies</li>
+                        <li>KMS Key Policies</li>
+                        <li>Lambda Resource Policies</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="policy-structure">
+                <h3>🔧 Policy Structure</h3>
+                <div class="json-example">
+                    <pre>{
+  "Version": "2012-10-17",
+  "Statement": [{
+    "Effect": "Allow",
+    "Action": "s3:GetObject",
+    "Resource": "arn:aws:s3:::bucket/*",
+    "Condition": {
+      "StringEquals": {
+        "s3:x-amz-server-side-encryption": "AES256"
+      }
+    }
+  }]
+}</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+HTML
+
+cat > slides/slide-9.html <<'HTML'
+<div class="slide" id="slide-9" data-section="2">
+    <div class="slide-content">
+        <h1>Principle of Least Privilege</h1>
+        <div class="privilege-content">
+            <div class="principle-definition">
+                <h3>🎯 Định nghĩa</h3>
+                <p>Chỉ cấp quyền tối thiểu cần thiết để hoàn thành công việc</p>
+            </div>
+            <div class="implementation-steps">
+                <h3>🚀 Cách triển khai</h3>
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h4>Start with Minimum</h4>
+                        <p>Bắt đầu với quyền tối thiểu</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h4>Grant as Needed</h4>
+                        <p>Cấp thêm quyền khi cần thiết</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h4>Regular Review</h4>
+                        <p>Xem xét định kỳ</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <h4>Remove Unused</h4>
+                        <p>Loại bỏ quyền không dùng</p>
+                    </div>
+                </div>
+            </div>
+            <div class="tools-section">
+                <h3>🛠️ Tools hỗ trợ</h3>
+                <ul class="tools-list">
+                    <li><strong>Access Analyzer:</strong> Phát hiện quyền không sử dụng</li>
+                    <li><strong>CloudTrail:</strong> Theo dõi việc sử dụng quyền</li>
+                    <li><strong>IAM Policy Simulator:</strong> Kiểm tra policies</li>
+                    <li><strong>Access Advisor:</strong> Xem lịch sử truy cập services</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+HTML
+
+cat > slides/slide-10.html <<'HTML'
+<div class="slide" id="slide-10" data-section="2">
+    <div class="slide-content">
+        <h1>Root Account Best Practices + Demo Setup</h1>
+        <div class="root-practices">
+            <div class="warning-section">
+                <h3>⚠️ Root Account Warnings</h3>
+                <ul class="warning-list">
+                    <li>Có quyền không giới hạn trên account</li>
+                    <li>Không thể hạn chế quyền bằng IAM policies</li>
+                    <li>Chỉ dùng cho tasks đặc biệt</li>
+                </ul>
+            </div>
+            <div class="best-practices-section">
+                <h3>✅ Best Practices</h3>
+                <ul class="practices-list">
+                    <li><strong>Enable MFA:</strong> Luôn bật xác thực đa yếu tố</li>
+                    <li><strong>Strong Password:</strong> Mật khẩu mạnh, duy nhất</li>
+                    <li><strong>Secure Storage:</strong> Lưu trữ credentials an toàn</li>
+                    <li><strong>Delete Access Keys:</strong> Xóa root access keys</li>
+                    <li><strong>Use IAM Users:</strong> Tạo IAM user cho daily tasks</li>
+                    <li><strong>CloudTrail Monitoring:</strong> Giám sát root usage</li>
+                </ul>
+            </div>
+            <div class="demo-setup">
+                <h3>🧪 Demo Setup Tasks</h3>
+                <ul class="demo-list">
+                    <li>Tạo IAM admin user với MFA</li>
+                    <li>Thiết lập billing alerts</li>
+                    <li>Enable CloudTrail</li>
+                    <li>Cấu hình account recovery</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+HTML
+
+cat > slides/slide-11.html <<'HTML'
+<div class="slide" id="slide-11" data-section="3">
+    <div class="slide-content">
+        <h1>VPC Security Overview</h1>
+        <div class="vpc-security">
+            <div class="vpc-definition">
+                <h3>🌐 Virtual Private Cloud (VPC)</h3>
+                <p>Mạng ảo riêng biệt trong AWS Cloud của bạn</p>
+            </div>
+            <div class="security-layers">
+                <div class="layer-card">
+                    <span class="layer-icon">🛡️</span>
+                    <h4>Security Groups</h4>
+                    <p>Virtual firewall cho EC2 instances</p>
+                    <ul>
+                        <li>Stateful - tự động allow return traffic</li>
+                        <li>Instance level protection</li>
+                        <li>Default: deny all inbound, allow all outbound</li>
+                    </ul>
+                </div>
+                <div class="layer-card">
+                    <span class="layer-icon">🚧</span>
+                    <h4>Network ACLs</h4>
+                    <p>Subnet level firewall</p>
+                    <ul>
+                        <li>Stateless - phải cấu hình cả chiều</li>
+                        <li>Subnet level protection</li>
+                        <li>Default: allow all traffic</li>
+                    </ul>
+                </div>
+                <div class="layer-card">
+                    <span class="layer-icon">📊</span>
+                    <h4>VPC Flow Logs</h4>
+                    <p>Ghi lại network traffic</p>
+                    <ul>
+                        <li>Monitor network traffic patterns</li>
+                        <li>Security analysis</li>
+                        <li>Troubleshooting connectivity</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+HTML
+
+cat > slides/slide-12.html <<'HTML'
+<div class="slide" id="slide-12" data-section="3">
+    <div class="slide-content">
+        <h1>Security Groups vs Network ACLs</h1>
+        <div class="comparison-table">
+            <div class="comparison-header">
+                <div class="feature-col">Tính năng</div>
+                <div class="sg-col">Security Groups</div>
+                <div class="nacl-col">Network ACLs</div>
+            </div>
+            <div class="comparison-row">
+                <div class="feature-col">Phạm vi</div>
+                <div class="sg-col">Instance level</div>
+                <div class="nacl-col">Subnet level</div>
+            </div>
+            <div class="comparison-row">
+                <div class="feature-col">Stateful/Stateless</div>
+                <div class="sg-col">Stateful</div>
+                <div class="nacl-col">Stateless</div>
+            </div>
+            <div class="comparison-row">
+                <div class="feature-col">Rules</div>
+                <div class="sg-col">Chỉ Allow rules</div>
+                <div class="nacl-col">Allow và Deny rules</div>
+            </div>
+            <div class="comparison-row">
+                <div class="feature-col">Rule evaluation</div>
+                <div class="sg-col">Tất cả rules trước khi quyết định</div>
+                <div class="nacl-col">Theo thứ tự rule number</div>
+            </div>
+            <div class="comparison-row">
+                <div class="feature-col">Default behavior</div>
+                <div class="sg-col">Deny all inbound, allow outbound</div>
+                <div class="nacl-col">Allow all traffic</div>
+            </div>
+        </div>
+        <div class="best-practice-tip">
+            <p><strong>💡 Best Practice:</strong> Sử dụng Security Groups làm primary defense, Network ACLs làm additional layer</p>
+        </div>
+    </div>
+</div>
+HTML
+
+cat > slides/slide-13.html <<'HTML'
+<div class="slide" id="slide-13" data-section="3">
+    <div class="slide-content">
+        <h1>Public vs Private Subnets</h1>
+        <div class="subnet-comparison">
+            <div class="subnet-type">
+                <div class="subnet-header public-header">
+                    <span class="subnet-icon">🌐</span>
+                    <h3>Public Subnet</h3>
+                </div>
+                <div class="subnet-features">
+                    <h4>Đặc điểm:</h4>
+                    <ul>
+                        <li>Route table có route đến Internet Gateway</li>
+                        <li>Instances có thể có Public IP</li>
+                        <li>Truy cập trực tiếp từ Internet</li>
+                    </ul>
+                    <h4>Sử dụng cho:</h4>
+                    <ul>
+                        <li>Web servers</li>
+                        <li>Load balancers</li>
+                        <li>Bastion hosts</li>
+                        <li>NAT Gateways</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="subnet-type">
+                <div class="subnet-header private-header">
+                    <span class="subnet-icon">🔒</span>
+                    <h3>Private Subnet</h3>
+                </div>
+                <div class="subnet-features">
+                    <h4>Đặc điểm:</h4>
+                    <ul>
+                        <li>Không có route trực tiếp đến IGW</li>
+                        <li>Chỉ có Private IP</li>
+                        <li>Internet access qua NAT Gateway/Instance</li>
+                    </ul>
+                    <h4>Sử dụng cho:</h4>
+                    <ul>
+                        <li>Database servers</li>
+                        <li>Application servers</li>
+                        <li>Backend services</li>
+                        <li>Sensitive workloads</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="architecture-tip">
+            <h3>🏗️ Architecture Best Practice</h3>
+            <p>Multi-tier architecture: Web tier (public) → App tier (private) → Database tier (private)</p>
+        </div>
+    </div>
+</div>
+HTML
+
+cat > slides/slide-14.html <<'HTML'
+<div class="slide" id="slide-14" data-section="3">
+    <div class="slide-content">
+        <h1>EC2 Security Best Practices</h1>
+        <div class="ec2-security">
+            <div class="security-category">
+                <h3>🔐 Access Control</h3>
+                <ul class="security-list">
+                    <li><strong>IAM Roles:</strong> Sử dụng roles thay vì hardcode credentials</li>
+                    <li><strong>Key Pairs:</strong> Secure key management, rotate keys</li>
+                    <li><strong>Bastion Hosts:</strong> Centralized SSH access</li>
+                    <li><strong>Session Manager:</strong> Browser-based shell access</li>
+                </ul>
+            </div>
+            <div class="security-category">
+                <h3>🛡️ Network Security</h3>
+                <ul class="security-list">
+                    <li><strong>Security Groups:</strong> Least privilege principle</li>
+                    <li><strong>Private Subnets:</strong> Sensitive workloads</li>
+                    <li><strong>VPC Endpoints:</strong> Private connectivity to AWS services</li>
+                    <li><strong>Disable Source/Destination Check:</strong> Only when needed</li>
+                </ul>
+            </div>
+            <div class="security-category">
+                <h3>💾 Data Protection</h3>
+                <ul class="security-list">
+                    <li><strong>EBS Encryption:</strong> Encrypt volumes at rest</li>
+                    <li><strong>Snapshots:</strong> Encrypted backup strategy</li>
+                    <li><strong>Instance Store:</strong> Temporary data only</li>
+                    <li><strong>Data in Transit:</strong> TLS/SSL encryption</li>
+                </ul>
+            </div>
+            <div class="security-category">
+                <h3>🔄 Monitoring & Maintenance</h3>
+                <ul class="security-list">
+                    <li><strong>CloudWatch:</strong> Performance and security metrics</li>
+                    <li><strong>CloudTrail:</strong> API call logging</li>
+                    <li><strong>Patch Management:</strong> Systems Manager Patch Manager</li>
+                    <li><strong>Antivirus:</strong> Third-party solutions</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+HTML
+
+cat > slides/slide-15.html <<'HTML'
+<div class="slide" id="slide-15" data-section="3">
+    <div class="slide-content">
+        <h1>AWS WAF & Shield Introduction</h1>
+        <div class="waf-shield-content">
+            <div class="service-section">
+                <div class="service-header">
+                    <span class="service-icon">🛡️</span>
+                    <h3>AWS WAF (Web Application Firewall)</h3>
+                </div>
+                <div class="service-details">
+                    <p><strong>Chức năng:</strong> Bảo vệ web applications khỏi các cuộc tấn công web</p>
+                    <h4>Features:</h4>
+                    <ul>
+                        <li>SQL injection protection</li>
+                        <li>Cross-site scripting (XSS) prevention</li>
+                        <li>Rate limiting</li>
+                        <li>Geo-blocking</li>
+                        <li>Custom rules và managed rules</li>
+                    </ul>
+                    <h4>Integration:</h4>
+                    <p>CloudFront, Application Load Balancer, API Gateway, AppSync</p>
+                </div>
+            </div>
+            <div class="service-section">
+                <div class="service-header">
+                    <span class="service-icon">🛡️</span>
+                    <h3>AWS Shield</h3>
+                </div>
+                <div class="service-details">
+                    <p><strong>Chức năng:</strong> DDoS protection service</p>
+                    <div class="shield-tiers">
+                        <div class="tier">
+                            <h4>Shield Standard (Free)</h4>
+                            <ul>
+                                <li>Basic DDoS protection</li>
+                                <li>Layer 3/4 attacks</li>
+                                <li>Always-on detection</li>
+                            </ul>
+                        </div>
+                        <div class="tier">
+                            <h4>Shield Advanced ($3,000/month)</h4>
+                            <ul>
+                                <li>Enhanced DDoS protection</li>
+                                <li>Real-time attack notifications</li>
+                                <li>DDoS Response Team (DRT) support</li>
+                                <li>Cost protection</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+HTML
+
+cat > slides/slide-16.html <<'HTML'
+<div class="slide" id="slide-16" data-section="4">
+    <div class="slide-content">
+        <h1>Encryption Fundamentals</h1>
+        <div class="encryption-content">
+            <div class="encryption-types">
+                <div class="encryption-type">
+                    <h3>🔒 Encryption at Rest</h3>
+                    <p>Mã hóa dữ liệu khi được lưu trữ</p>
+                    <ul>
+                        <li>EBS volumes encryption</li>
+                        <li>S3 object encryption</li>
+                        <li>RDS database encryption</li>
+                        <li>EFS file system encryption</li>
+                    </ul>
+                </div>
+                <div class="encryption-type">
+                    <h3>🚀 Encryption in Transit</h3>
+                    <p>Mã hóa dữ liệu khi di chuyển</p>
+                    <ul>
+                        <li>TLS/SSL for web traffic</li>
+                        <li>HTTPS for API calls</li>
+                        <li>VPN connections</li>
+                        <li>AWS Direct Connect</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="encryption-methods">
+                <div class="method">
+                    <h3>🔑 Client-side Encryption</h3>
+                    <p>Khách hàng mã hóa trước khi gửi lên AWS</p>
+                    <ul>
+                        <li>Khách hàng quản lý keys</li>
+                        <li>Highest level of control</li>
+                        <li>AWS không thấy plaintext data</li>
+                    </ul>
+                </div>
+                <div class="method">
+                    <h3>☁️ Server-side Encryption</h3>
+                    <p>AWS mã hóa sau khi nhận data</p>
+                    <ul>
+                        <li>AWS-managed keys (SSE-S3)</li>
+                        <li>Customer-managed keys (SSE-KMS)</li>
+                        <li>Customer-provided keys (SSE-C)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+HTML
+
+cat > slides/slide-17.html <<'HTML'
+<div class="slide" id="slide-17" data-section="4">
+    <div class="slide-content">
+        <h1>AWS KMS Deep Dive</h1>
+        <div class="kms-content">
+            <div class="kms-overview">
+                <h3>🔐 AWS Key Management Service</h3>
+                <p>Managed service để tạo và kiểm soát encryption keys</p>
+            </div>
+            <div class="key-types">
+                <div class="key-type">
+                    <h4>🏢 AWS Managed Keys</h4>
+                    <ul>
+                        <li>Tự động tạo bởi AWS services</li>
+                        <li>Free to use</li>
+                        <li>Automatic rotation (3 years)</li>
+                        <li>Không thể xóa</li>
+                    </ul>
+                </div>
+                <div class="key-type">
+                    <h4>👤 Customer Managed Keys</h4>
+                    <ul>
+                        <li>Khách hàng tạo và quản lý</li>
+                        <li>$1/month per key</li>
+                        <li>Manual or automatic rotation</li>
+                        <li>Có thể disable/delete</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="kms-features">
+                <div class="feature">
+                    <h4>🎯 Key Policies</h4>
+                    <p>Resource-based policies kiểm soát access to keys</p>
+                </div>
+                <div class="feature">
+                    <h4>🔄 Key Rotation</h4>
+                    <p>Automatic rotation để enhance security</p>
+                </div>
+                <div class="feature">
+                    <h4>📊 CloudTrail Integration</h4>
+                    <p>Audit key usage và access patterns</p>
+                </div>
+                <div class="feature">
+                    <h4>🌐 Multi-Region Keys</h4>
+                    <p>Replicate keys across regions</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+HTML
+
+cat > slides/slide-18.html <<'HTML'
+<div class="slide" id="slide-18" data-section="4">
+    <div class="slide-content">
+        <h1>S3 Security & Encryption</h1>
+        <div class="s3-security">
+            <div class="access-control">
+                <h3>🔐 Access Control</h3>
+                <div class="control-methods">
+                    <div class="control-method">
+                        <h4>IAM Policies</h4>
+                        <p>User/role-based permissions</p>
+                    </div>
+                    <div class="control-method">
+                        <h4>Bucket Policies</h4>
+                        <p>Resource-based permissions</p>
+                    </div>
+                    <div class="control-method">
+                        <h4>ACLs</h4>
+                        <p>Object-level permissions (legacy)</p>
+                    </div>
+                    <div class="control-method">
+                        <h4>Block Public Access</h4>
+                        <p>Account/bucket level protection</p>
+                    </div>
+                </div>
+            </div>
+            <div class="encryption-options">
+                <h3>🔒 Encryption Options</h3>
+                <div class="encryption-grid">
+                    <div class="encryption-option">
+                        <h4>SSE-S3</h4>
+                        <p>AWS-managed keys</p>
+                        <span class="cost">Free</span>
+                    </div>
+                    <div class="encryption-option">
+                        <h4>SSE-KMS</h4>
+                        <p>Customer-managed keys</p>
+                        <span class="cost">$1/month + API calls</span>
+                    </div>
+                    <div class="encryption-option">
+                        <h4>SSE-C</h4>
+                        <p>Customer-provided keys</p>
+                        <span class="cost">Free</span>
+                    </div>
+                    <div class="encryption-option">
+                        <h4>Client-side</h4>
+                        <p>Encrypt before upload</p>
+                        <span class="cost">Free</span>
+                    </div>
+                </div>
+            </div>
+            <div class="security-features">
+                <h3>🛡️ Additional Security Features</h3>
+                <ul>
+                    <li><strong>MFA Delete:</strong> Require MFA to delete objects</li>
+                    <li><strong>Versioning:</strong> Protect against accidental deletion</li>
+                    <li><strong>Object Lock:</strong> WORM (Write Once Read Many)</li>
+                    <li><strong>Access Logging:</strong> Track requests</li>
+                    <li><strong>CloudTrail:</strong> API call logging</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+HTML
+
+cat > slides/slide-19.html <<'HTML'
+<div class="slide" id="slide-19" data-section="4">
+    <div class="slide-content">
+        <h1>Demo Setup - S3 Security</h1>
+        <div class="demo-s3">
+            <div class="demo-objectives">
+                <h3>🎯 Demo Objectives</h3>
+                <ul>
+                    <li>Tạo secure S3 bucket với encryption</li>
+                    <li>Cấu hình bucket policies</li>
+                    <li>Enable versioning và MFA delete</li>
+                    <li>Test access controls</li>
+                </ul>
+            </div>
+            <div class="demo-steps">
+                <h3>📋 Demo Steps</h3>
+                <div class="step-list">
+                    <div class="demo-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Bucket Creation</h4>
+                            <ul>
+                                <li>Create bucket với unique name</li>
+                                <li>Enable versioning</li>
+                                <li>Block all public access</li>
+                                <li>Enable default encryption (SSE-S3)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="demo-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Security Configuration</h4>
+                            <ul>
+                                <li>Create restrictive bucket policy</li>
+                                <li>Enable access logging</li>
+                                <li>Configure CloudTrail for S3 API calls</li>
+                                <li>Enable MFA delete (CLI required)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="demo-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Testing & Validation</h4>
+                            <ul>
+                                <li>Upload test objects</li>
+                                <li>Test IAM user access</li>
+                                <li>Verify encryption status</li>
+                                <li>Review access logs</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+HTML
+
+cat > slides/slide-20.html <<'HTML'
+<div class="slide" id="slide-20" data-section="4">
+    <div class="slide-content">
+        <h1>CloudFront Overview & S3 Integration</h1>
+        <div class="cloudfront-overview">
+            <div class="definition-section">
+                <h3>🌐 Amazon CloudFront</h3>
+                <p class="definition">Content Delivery Network (CDN) toàn cầu của AWS</p>
+            </div>
+            <div class="how-it-works">
+                <h3>🔄 Cách hoạt động</h3>
+                <div class="workflow-grid">
+                    <div class="workflow-step">
+                        <span class="workflow-icon">📍</span>
+                        <h4>Edge Locations</h4>
+                        <p>Hơn 400 điểm kết nối toàn cầu</p>
+                    </div>
+                    <div class="workflow-step">
+                        <span class="workflow-icon">💾</span>
+                        <h4>Cache Content</h4>
+                        <p>Lưu trữ tạm thời tại edge gần người dùng</p>
+                    </div>
+                    <div class="workflow-step">
+                        <span class="workflow-icon">⚡</span>
+                        <h4>Reduce Latency</h4>
+                        <p>Giảm thời gian tải xuống đáng kể</p>
+                    </div>
+                </div>
+            </div>
+            <div class="s3-integration">
+                <h3>🤝 S3 Integration</h3>
+                <div class="integration-flow">
+                    <div class="integration-step">
+                        <h4>S3 Origin Server</h4>
+                        <p>Lưu trữ files gốc (static websites, images, videos)</p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="integration-step">
+                        <h4>CloudFront CDN</h4>
+                        <p>Phân phối content đến users</p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="integration-step">
+                        <h4>Edge Location</h4>
+                        <p>Users truy cập từ location gần nhất</p>
+                    </div>
+                </div>
+            </div>
+            <div class="benefits">
+                <h3>✅ Benefits</h3>
+                <div class="benefits-grid">
+                    <div class="benefit-item">
+                        <span class="benefit-icon">🚀</span>
+                        <h4>Tăng tốc độ truy cập</h4>
+                        <p>Reduced latency, faster loading</p>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-icon">💰</span>
+                        <h4>Giảm chi phí egress S3</h4>
+                        <p>Lower data transfer costs</p>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-icon">📈</span>
+                        <h4>Tối ưu băng thông</h4>
+                        <p>Better bandwidth utilization</p>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-icon">🌍</span>
+                        <h4>Mở rộng toàn cầu</h4>
+                        <p>Global scalability & availability</p>
+                    </div>
+                </div>
+            </div>
+            <div class="content-types">
+                <h3>📂 Content Types</h3>
+                <p>Static websites • Images • Videos • APIs • Software downloads</p>
+            </div>
+        </div>
+    </div>
+</div>
+HTML
+
+cat > slides/slide-21.html <<'HTML'
+<div class="slide" id="slide-21" data-section="4">
+    <div class="slide-content">
+        <h1>CloudFront Security Features</h1>
+        <div class="cloudfront-security">
+            <div class="security-feature">
+                <h3>🔐 Origin Access Control (OAC) & Identity (OAI)</h3>
+                <div class="feature-details">
+                    <p><strong>Purpose:</strong> Chỉ CloudFront được truy cập S3 bucket</p>
+                    <ul>
+                        <li>S3 bucket private, không public access</li>
+                        <li>Ngăn direct access to S3 URLs</li>
+                        <li>OAC recommended over OAI (newer, more features)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="security-feature">
+                <h3>🔒 SSL/TLS Encryption</h3>
+                <div class="feature-details">
+                    <ul>
+                        <li><strong>HTTPS viewer protocol policy:</strong> Enforce HTTPS for viewers</li>
+                        <li><strong>Origin protocol policy:</strong> HTTPS to S3</li>
+                        <li><strong>Custom SSL certificates:</strong> ACM integration</li>
+                        <li><strong>TLS versions:</strong> Support TLS 1.0 to 1.3</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="security-feature">
+                <h3>🎫 Signed URLs & Signed Cookies</h3>
+                <div class="feature-details">
+                    <ul>
+                        <li><strong>Restrict access:</strong> Premium content protection</li>
+                        <li><strong>Time-limited access:</strong> Expiration controls</li>
+                        <li><strong>IP-based restrictions:</strong> Location-based access</li>
+                        <li><strong>Use cases:</strong> Paid content, private files, streaming</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="security-features-grid">
+                <div class="security-item">
+                    <h4>🌍 Geographic Restrictions</h4>
+                    <ul>
+                        <li>Whitelist/blacklist countries</li>
+                        <li>Comply với content licensing</li>
+                        <li>Regulatory requirements</li>
+                    </ul>
+                </div>
+                <div class="security-item">
+                    <h4>🛡️ AWS WAF Integration</h4>
+                    <ul>
+                        <li>Web Application Firewall</li>
+                        <li>SQL injection, XSS protection</li>
+                        <li>Rate limiting, custom rules</li>
+                    </ul>
+                </div>
+                <div class="security-item">
+                    <h4>🔰 AWS Shield Integration</h4>
+                    <ul>
+                        <li>DDoS protection (Standard & Advanced)</li>
+                        <li>Automatic mitigation</li>
+                        <li>Real-time monitoring</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+HTML
+
+cat > slides/slide-22.html <<'HTML'
+<div class="slide" id="slide-22" data-section="4">
+    <div class="slide-content">
+        <h1>CloudFront + S3 Best Practices</h1>
+        <div class="cloudfront-best-practices">
+            <div class="practice-category">
+                <h3>🔐 Security Configuration</h3>
+                <ul class="practice-list">
+                    <li><strong>Always use OAC/OAI:</strong> Never allow direct S3 access</li>
+                    <li><strong>Enable HTTPS everywhere:</strong> Viewer và origin protocols</li>
+                    <li><strong>Set proper cache behaviors:</strong> Security-appropriate TTL</li>
+                    <li><strong>Use signed URLs:</strong> For sensitive content access</li>
+                </ul>
+            </div>
+            <div class="practice-category">
+                <h3>🎯 Access Control</h3>
+                <ul class="practice-list">
+                    <li><strong>Implement least privilege:</strong> S3 bucket policies</li>
+                    <li><strong>Use CloudFront distribution policies:</strong> Restrict access</li>
+                    <li><strong>Configure proper headers:</strong> CORS, security headers</li>
+                    <li><strong>Enable CloudFront access logging:</strong> Monitor access patterns</li>
+                </ul>
+            </div>
+            <div class="practice-category">
+                <h3>⚡ Performance & Security</h3>
+                <ul class="practice-list">
+                    <li><strong>Cache static content:</strong> Don't cache dynamic/sensitive data</li>
+                    <li><strong>Set appropriate TTL values:</strong> Balance performance vs freshness</li>
+                    <li><strong>Use compression:</strong> Faster delivery, reduced bandwidth</li>
+                    <li><strong>Monitor với CloudWatch:</strong> Metrics và performance</li>
+                </ul>
+            </div>
+            <div class="practice-category">
+                <h3>💰 Cost Optimization</h3>
+                <ul class="practice-list">
+                    <li><strong>Choose appropriate price class:</strong> All, 100, 200 locations</li>
+                    <li><strong>Optimize cache hit ratio:</strong> Reduce origin requests</li>
+                    <li><strong>Use regional edge caches:</strong> Better performance</li>
+                    <li><strong>Monitor data transfer costs:</strong> CloudWatch metrics</li>
+                </ul>
+            </div>
+            <div class="practice-category">
+                <h3>📊 Monitoring & Compliance</h3>
+                <ul class="practice-list">
+                    <li><strong>Enable detailed monitoring:</strong> Real-time metrics</li>
+                    <li><strong>Set up alarms:</strong> Unusual activity detection</li>
+                    <li><strong>Regular security assessments:</strong> Penetration testing</li>
+                    <li><strong>Compliance:</strong> Data residency requirements</li>
+                </ul>
+            </div>
+            <div class="architecture-tip">
+                <h3>🏗️ Architecture Recommendation</h3>
+                <p><strong>Secure S3 + CloudFront:</strong> S3 (private) → CloudFront (OAC) → Users (HTTPS only)</p>
+            </div>
+        </div>
+    </div>
+</div>
+HTML
+
+cat > slides/slide-23.html <<'HTML'
+<div class="slide" id="slide-23" data-section="4">
+    <div class="slide-content">
+        <h1>Demo Setup - CloudFront + S3 Security</h1>
+        <div class="cloudfront-demo">
+            <div class="demo-objectives">
+                <h3>🎯 Demo Objectives</h3>
+                <ul>
+                    <li>Setup secure S3 + CloudFront architecture</li>
+                    <li>Implement Origin Access Control (OAC)</li>
+                    <li>Configure HTTPS end-to-end</li>
+                    <li>Test access controls và performance</li>
+                </ul>
+            </div>
+            <div class="demo-prerequisites">
+                <h3>📋 Prerequisites</h3>
+                <ul>
+                    <li>S3 bucket với static website content</li>
+                    <li>CloudFront permissions</li>
+                    <li>ACM certificate (optional)</li>
+                </ul>
+            </div>
+            <div class="demo-setup-steps">
+                <h3>🔧 Setup Steps</h3>
+                <div class="setup-grid">
+                    <div class="setup-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Prepare S3 Bucket</h4>
+                            <ul>
+                                <li>Upload static website files</li>
+                                <li>Configure bucket for static hosting</li>
+                                <li>Ensure bucket is NOT public</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="setup-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Create CloudFront Distribution</h4>
+                            <ul>
+                                <li>Set S3 bucket as origin</li>
+                                <li>Configure OAC (Origin Access Control)</li>
+                                <li>Set cache behaviors</li>
+                                <li>Configure SSL/HTTPS settings</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="setup-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Configure S3 Bucket Policy</h4>
+                            <ul>
+                                <li>Allow CloudFront OAC access</li>
+                                <li>Deny direct public access</li>
+                                <li>Test policy effectiveness</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="setup-step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Testing & Validation</h4>
+                            <ul>
+                                <li>Test CloudFront URL access (should work)</li>
+                                <li>Test direct S3 URL access (should fail)</li>
+                                <li>Verify HTTPS enforcement</li>
+                                <li>Check cache performance</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="security-validation">
+                <h3>✅ Security Validation</h3>
+                <ul>
+                    <li>S3 bucket không publicly accessible</li>
+                    <li>Tất cả traffic đều thông qua HTTPS</li>
+                    <li>Cache behaviors hoạt động chính xác</li>
+                    <li>CloudFront access logs được enable</li>
+                </ul>
+            </div>
+            <div class="troubleshooting">
+                <h3>🛠️ Troubleshooting</h3>
+                <ul>
+                    <li>Common OAC/OAI configuration issues</li>
+                    <li>Cache invalidation procedures</li>
+                    <li>SSL certificate problems</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+HTML
+
+cat > slides/slide-24.html <<'HTML'
+<div class="slide" id="slide-24" data-section="5">
+    <div class="slide-content">
+        <h1>AWS CloudTrail</h1>
+        <div class="cloudtrail-content">
+            <div class="definition-section">
+                <h3>📋 Definition</h3>
+                <p class="definition">Service ghi lại tất cả API calls được thực hiện trong AWS account</p>
+            </div>
+            <div class="importance-section">
+                <h3>⭐ Importance</h3>
+                <div class="importance-grid">
+                    <div class="importance-item">
+                        <span class="icon">🔍</span>
+                        <h4>Audit Trail</h4>
+                        <p>Theo dõi tất cả hoạt động</p>
+                    </div>
+                    <div class="importance-item">
+                        <span class="icon">📊</span>
+                        <h4>Compliance</h4>
+                        <p>Đáp ứng yêu cầu tuân thủ</p>
+                    </div>
+                    <div class="importance-item">
+                        <span class="icon">🔒</span>
+                        <h4>Security Analysis</h4>
+                        <p>Phân tích bảo mật</p>
+                    </div>
+                    <div class="importance-item">
+                        <span class="icon">🛠️</span>
+                        <h4>Troubleshooting</h4>
+                        <p>Khắc phục sự cố</p>
+                    </div>
+                </div>
+            </div>
+            <div class="event-types">
+                <h3>📝 Event Types</h3>
+                <div class="event-grid">
+                    <div class="event-type">
+                        <h4>Management Events</h4>
+                        <p>CreateBucket, TerminateInstance, CreateUser</p>
+                        <span class="included">Included by default</span>
+                    </div>
+                    <div class="event-type">
+                        <h4>Data Events</h4>
+                        <p>S3 object access, Lambda invocations</p>
+                        <span class="additional-cost">Additional cost</span>
+                    </div>
+                    <div class="event-type">
+                        <h4>Insight Events</h4>
+                        <p>ML-detected unusual activity patterns</p>
+                        <span class="additional-cost">Additional cost</span>
+                    </div>
+                </div>
+            </div>
+            <div class="features-section">
+                <h3>🚀 Features</h3>
+                <ul class="features-list">
+                    <li><strong>Multi-region trails:</strong> Capture events across all regions</li>
+                    <li><strong>Log file validation:</strong> Ensure integrity with digital signatures</li>
+                    <li><strong>CloudWatch integration:</strong> Real-time monitoring and alerting</li>
+                    <li><strong>S3 delivery:</strong> Secure, durable storage</li>
+                </ul>
+            </div>
+            <div class="use-cases">
+                <h3>🎯 Security Use Cases</h3>
+                <ul class="use-cases-list">
+                    <li><strong>Anomaly detection:</strong> Identify unusual patterns</li>
+                    <li><strong>Compliance reporting:</strong> Generate audit reports</li>
+                    <li><strong>Incident response:</strong> Investigate security incidents</li>
+                </ul>
+            </div>
+            <div class="best-practices">
+                <h3>✅ Best Practices</h3>
+                <ul class="practices-list">
+                    <li><strong>Enable in all regions:</strong> Comprehensive coverage</li>
+                    <li><strong>Dedicated S3 bucket:</strong> Separate from other data</li>
+                    <li><strong>Log validation:</strong> Enable file integrity checking</li>
+                    <li><strong>Retention policies:</strong> Define log retention periods</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+HTML
+
+cat > slides/slide-25.html <<'HTML'
+<div class="slide" id="slide-25" data-section="5">
+    <div class="slide-content">
+        <h1>CloudWatch Security</h1>
+        <div class="cloudwatch-content">
+            <div class="components-section">
+                <h3>🧩 Components</h3>
+                <div class="components-grid">
+                    <div class="component">Metrics</div>
+                    <div class="component">Logs</div>
+                    <div class="component">Alarms</div>
+                    <div class="component">Dashboards</div>
+                </div>
+            </div>
+            <div class="security-metrics">
+                <h3>📊 Security Metrics</h3>
+                <div class="metrics-grid">
+                    <div class="metric-item">
+                        <h4>Failed Login Attempts</h4>
+                        <p>Monitor authentication failures</p>
+                    </div>
+                    <div class="metric-item">
+                        <h4>Root Account Usage</h4>
+                        <p>Alert on any root activity</p>
+                    </div>
+                    <div class="metric-item">
+                        <h4>API Errors</h4>
+                        <p>Track 4xx/5xx error rates</p>
+                    </div>
+                    <div class="metric-item">
+                        <h4>Unusual Activity</h4>
+                        <p>Detect baseline deviations</p>
+                    </div>
+                </div>
+            </div>
+            <div class="cloudwatch-logs">
+                <h3>📜 CloudWatch Logs</h3>
+                <p>Centralized logging, log groups, retention, encryption</p>
+            </div>
+            <div class="security-alarms">
+                <h3>🚨 Security Alarms Examples</h3>
+                <div class="alarms-grid">
+                    <div class="alarm-example">
+                        <h4>Root Account Usage</h4>
+                        <p><strong>Threshold:</strong> 0 occurrences</p>
+                        <p><strong>Action:</strong> Immediate alert</p>
+                    </div>
+                    <div class="alarm-example">
+                        <h4>Failed Logins</h4>
+                        <p><strong>Threshold:</strong> >5 failures in 5 minutes</p>
+                        <p><strong>Action:</strong> Security team notification</p>
+                    </div>
+                    <div class="alarm-example">
+                        <h4>API Anomalies</h4>
+                        <p><strong>Threshold:</strong> 2 standard deviations above baseline</p>
+                        <p><strong>Action:</strong> Investigation required</p>
+                    </div>
+                </div>
+            </div>
+            <div class="insights-section">
+                <h3>🔍 CloudWatch Logs Insights</h3>
+                <p>Query examples for security analysis</p>
+            </div>
+            <div class="dashboards-section">
+                <h3>📋 Security Dashboards</h3>
+                <p>SOC views, incident response metrics</p>
+            </div>
+        </div>
+    </div>
+</div>
+HTML
+
+cat > slides/slide-26.html <<'HTML'
+<div class="slide" id="slide-26" data-section="5">
+    <div class="slide-content">
+        <h1>Amazon GuardDuty</h1>
+        <div class="guardduty-content">
+            <div class="definition-section">
+                <h3>🤖 Definition</h3>
+                <p class="definition">AI-powered threat detection service sử dụng machine learning</p>
+            </div>
+            <div class="data-sources">
+                <h3>📊 Data Sources</h3>
+                <div class="sources-grid">
+                    <div class="source-item">
+                        <h4>VPC Flow Logs</h4>
+                        <p>Network traffic analysis</p>
+                    </div>
+                    <div class="source-item">
+                        <h4>DNS Logs</h4>
+                        <p>Malicious domain detection</p>
+                    </div>
+                    <div class="source-item">
+                        <h4>CloudTrail Events</h4>
+                        <p>Suspicious API activities</p>
+                    </div>
+                    <div class="source-item">
+                        <h4>S3 Data Events</h4>
+                        <p>Unusual S3 access patterns</p>
+                    </div>
+                </div>
+            </div>
+            <div class="threat-intel">
+                <h3>🎯 Threat Intelligence</h3>
+                <p>AWS intelligence + CrowdStrike + Proofpoint + custom feeds</p>
+            </div>
+            <div class="finding-types">
+                <h3>🔍 Finding Types</h3>
+                <div class="findings-grid">
+                    <div class="finding-type">
+                        <h4>Reconnaissance</h4>
+                        <p>Port scanning, unauthorized API calls</p>
+                    </div>
+                    <div class="finding-type">
+                        <h4>Instance Compromise</h4>
+                        <p>Cryptocurrency mining, backdoor communication</p>
+                    </div>
+                    <div class="finding-type">
+                        <h4>Data Exfiltration</h4>
+                        <p>Suspicious data transfers, DNS tunneling</p>
+                    </div>
+                </div>
+            </div>
+            <div class="severity-levels">
+                <h3>⚠️ Severity Levels</h3>
+                <div class="severity-grid">
+                    <div class="severity low-severity">
+                        <h4>Low</h4>
+                        <p>1.0-3.9</p>
+                    </div>
+                    <div class="severity medium-severity">
+                        <h4>Medium</h4>
+                        <p>4.0-6.9</p>
+                    </div>
+                    <div class="severity high-severity">
+                        <h4>High</h4>
+                        <p>7.0-8.9</p>
+                    </div>
+                </div>
+            </div>
+            <div class="integration-section">
+                <h3>🔗 Integration</h3>
+                <ul class="integration-list">
+                    <li><strong>EventBridge:</strong> Automation workflows</li>
+                    <li><strong>Security Hub:</strong> Centralized findings</li>
+                    <li><strong>Lambda:</strong> Automated remediation</li>
+                </ul>
+            </div>
+            <div class="cost-model">
+                <h3>💰 Cost Model</h3>
+                <p>Based on data volume analyzed (VPC Flow Logs, DNS logs, CloudTrail events)</p>
+            </div>
+        </div>
+    </div>
+</div>
+HTML
+
+cat > slides/slide-27.html <<'HTML'
+<div class="slide" id="slide-27" data-section="6">
+    <div class="slide-content">
+        <h1>Common Security Scenarios & Cost Protection</h1>
+        <div class="scenarios-content">
+            <div class="scenario">
+                <h3>🚨 Scenario 1: Compromised EC2 Instance</h3>
+                <div class="scenario-details">
+                    <div class="detection">
+                        <h4>Detection Methods:</h4>
+                        <ul>
+                            <li><strong>GuardDuty alerts:</strong> Cryptocurrency mining, C&C communication</li>
+                            <li><strong>Network monitoring:</strong> Unusual outbound traffic, suspicious IPs</li>
+                            <li><strong>CloudTrail analysis:</strong> API calls from unusual locations</li>
+                        </ul>
+                    </div>
+                    <div class="response">
+                        <h4>Response Steps:</h4>
+                        <ol>
+                            <li><strong>Immediate isolation:</strong> Modify security groups</li>
+                            <li><strong>Forensic capture:</strong> EBS snapshot, memory dump</li>
+                            <li><strong>Clean recovery:</strong> Terminate và launch từ clean AMI</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="scenario">
+                <h3>🔓 Scenario 2: Accidental Public S3 Bucket</h3>
+                <div class="scenario-details">
+                    <div class="detection">
+                        <h4>Detection tools:</h4>
+                        <p>AWS Config rules, Trusted Advisor, Access Analyzer, Macie</p>
+                    </div>
+                    <div class="response">
+                        <h4>Response steps:</h4>
+                        <ol>
+                            <li><strong>Immediate action:</strong> Enable Block Public Access</li>
+                            <li><strong>Assessment:</strong> Analyze data exposure</li>
+                            <li><strong>Notification:</strong> Stakeholders, legal, compliance</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="scenario cloudfront-scenario">
+                <h3>🌐 Scenario 3: CloudFront Security Incident</h3>
+                <div class="scenario-details">
+                    <div class="detection">
+                        <h4>Incident:</h4>
+                        <p>Unauthorized access to content via direct S3 URLs</p>
+                    </div>
+                    <div class="response">
+                        <h4>Response:</h4>
+                        <ol>
+                            <li><strong>Detection:</strong> CloudTrail logs, unusual access patterns</li>
+                            <li><strong>Response:</strong> Enable OAC, update bucket policies</li>
+                            <li><strong>Recovery:</strong> Invalidate cache, monitor access</li>
+                            <li><strong>Prevention:</strong> Always use OAC, regular audits</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cost-protection">
+                <h3>💰 Cost Protection Strategies</h3>
+                <div class="cost-strategies">
+                    <div class="strategy">
+                        <h4>AWS Budgets</h4>
+                        <p>Monthly alerts at 50%, 80%, 100% thresholds</p>
+                    </div>
+                    <div class="strategy">
+                        <h4>Cost Anomaly Detection</h4>
+                        <p>Service-level monitors for unusual spending</p>
+                    </div>
+                    <div class="strategy">
+                        <h4>Resource Tagging</h4>
+                        <p>Comprehensive policy for cost allocation</p>
+                    </div>
+                    <div class="strategy">
+                        <h4>Regular Reviews</h4>
+                        <p>Monthly analysis, Reserved Instance optimization</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+HTML
+
+cat > slides/slide-28.html <<'HTML'
+<div class="slide" id="slide-28" data-section="7">
+    <div class="slide-content">
+        <h1>AWS Security Best Practices Summary</h1>
+        <div class="best-practices-summary">
+            <div class="practice-category">
+                <h3>🔑 Identity & Access Management</h3>
+                <ul>
+                    <li>Use IAM roles instead of users when possible</li>
+                    <li>Enable MFA for all privileged accounts</li>
+                    <li>Implement principle of least privilege</li>
+                    <li>Regular access reviews and cleanup</li>
+                </ul>
+                <p><strong>Tools:</strong> AWS IAM, AWS SSO, Organizations, Access Analyzer</p>
+            </div>
+
+            <div class="practice-category">
+                <h3>🌐 Network Security</h3>
+                <ul>
+                    <li>Use VPC with private subnets by default</li>
+                    <li>Implement defense in depth strategy</li>
+                    <li>Regular security group audits</li>
+                    <li>Use VPC endpoints for AWS service access</li>
+                </ul>
+                <p><strong>Tools:</strong> VPC, Security Groups, AWS WAF, AWS Shield</p>
+            </div>
+
+            <div class="practice-category">
+                <h3>🔐 Data Protection & CloudFront</h3>
+                <ul>
+                    <li>Encrypt everything (at rest and in transit)</li>
+                    <li>Proper key management with AWS KMS</li>
+                    <li>Use CloudFront for static content distribution</li>
+                    <li>Always implement OAC with S3, enable HTTPS</li>
+                </ul>
+                <p><strong>Tools:</strong> AWS KMS, S3 encryption, CloudFront, WAF, Shield</p>
+            </div>
+
+            <div class="practice-category">
+                <h3>📊 Monitoring & Logging</h3>
+                <ul>
+                    <li>Enable CloudTrail in all regions</li>
+                    <li>Set up comprehensive security monitoring</li>
+                    <li>CloudFront access logs, real-time metrics</li>
+                    <li>Automated threat detection with GuardDuty</li>
+                </ul>
+                <p><strong>Tools:</strong> CloudTrail, GuardDuty, Security Hub, CloudWatch</p>
+            </div>
+
+            <div class="practice-category">
+                <h3>🏢 Governance & Compliance</h3>
+                <ul>
+                    <li>Use AWS Organizations for multi-account governance</li>
+                    <li>Implement Service Control Policies (SCPs)</li>
+                    <li>Regular compliance assessments</li>
+                    <li>Document all security procedures</li>
+                </ul>
+                <p><strong>Tools:</strong> AWS Organizations, Config, Audit Manager</p>
+            </div>
+
+            <div class="practice-category">
+                <h3>🚨 Incident Response</h3>
+                <ul>
+                    <li><strong>Preparation:</strong> Response plans, team training</li>
+                    <li><strong>Detection:</strong> Automated threat detection, log analysis</li>
+                    <li><strong>Containment:</strong> Isolation procedures, access revocation</li>
+                    <li><strong>Recovery:</strong> Clean procedures, backup restoration</li>
+                </ul>
+            </div>
+
+            <div class="continuous-improvement">
+                <h3>🔄 Continuous Improvement</h3>
+                <ul>
+                    <li>Security is an ongoing process, not one-time setup</li>
+                    <li>Regular security assessments and penetration testing</li>
+                    <li>Keep up with AWS security updates and best practices</li>
+                    <li>Automate security controls where possible</li>
+                </ul>
+            </div>
+
+            <div class="conclusion-message">
+                <h2>🎯 Kết luận: Bảo mật AWS với CloudFront là một hành trình toàn diện!</h2>
+                <p>Cảm ơn các bạn đã tham gia khóa đào tạo AWS Security Training với CloudFront!</p>
+            </div>
+        </div>
+    </div>
+</div>
+HTML
+
+echo "Slides 2..28 written to slides/ directory."

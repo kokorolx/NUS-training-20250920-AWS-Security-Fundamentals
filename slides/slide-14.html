@@ -1,0 +1,43 @@
+<div class="slide" id="slide-14" data-section="3">
+    <div class="slide-content">
+        <h1>EC2 Security Best Practices</h1>
+        <div class="ec2-security">
+            <div class="security-category">
+                <h3>🔐 Access Control</h3>
+                <ul class="security-list">
+                    <li><strong>IAM Roles:</strong> Sử dụng roles thay vì hardcode credentials</li>
+                    <li><strong>Key Pairs:</strong> Secure key management, rotate keys</li>
+                    <li><strong>Bastion Hosts:</strong> Centralized SSH access</li>
+                    <li><strong>Session Manager:</strong> Browser-based shell access</li>
+                </ul>
+            </div>
+            <div class="security-category">
+                <h3>🛡️ Network Security</h3>
+                <ul class="security-list">
+                    <li><strong>Security Groups:</strong> Least privilege principle</li>
+                    <li><strong>Private Subnets:</strong> Sensitive workloads</li>
+                    <li><strong>VPC Endpoints:</strong> Private connectivity to AWS services</li>
+                    <li><strong>Disable Source/Destination Check:</strong> Only when needed</li>
+                </ul>
+            </div>
+            <div class="security-category">
+                <h3>💾 Data Protection</h3>
+                <ul class="security-list">
+                    <li><strong>EBS Encryption:</strong> Encrypt volumes at rest</li>
+                    <li><strong>Snapshots:</strong> Encrypted backup strategy</li>
+                    <li><strong>Instance Store:</strong> Temporary data only</li>
+                    <li><strong>Data in Transit:</strong> TLS/SSL encryption</li>
+                </ul>
+            </div>
+            <div class="security-category">
+                <h3>🔄 Monitoring & Maintenance</h3>
+                <ul class="security-list">
+                    <li><strong>CloudWatch:</strong> Performance and security metrics</li>
+                    <li><strong>CloudTrail:</strong> API call logging</li>
+                    <li><strong>Patch Management:</strong> Systems Manager Patch Manager</li>
+                    <li><strong>Antivirus:</strong> Third-party solutions</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

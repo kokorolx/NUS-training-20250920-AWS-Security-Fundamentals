@@ -1,0 +1,53 @@
+<div class="slide" id="slide-13" data-section="3">
+    <div class="slide-content">
+        <h1>Public vs Private Subnets</h1>
+        <div class="subnet-comparison">
+            <div class="subnet-type">
+                <div class="subnet-header public-header">
+                    <span class="subnet-icon">🌐</span>
+                    <h3>Public Subnet</h3>
+                </div>
+                <div class="subnet-features">
+                    <h4>Đặc điểm:</h4>
+                    <ul>
+                        <li>Route table có route đến Internet Gateway</li>
+                        <li>Instances có thể có Public IP</li>
+                        <li>Truy cập trực tiếp từ Internet</li>
+                    </ul>
+                    <h4>Sử dụng cho:</h4>
+                    <ul>
+                        <li>Web servers</li>
+                        <li>Load balancers</li>
+                        <li>Bastion hosts</li>
+                        <li>NAT Gateways</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="subnet-type">
+                <div class="subnet-header private-header">
+                    <span class="subnet-icon">🔒</span>
+                    <h3>Private Subnet</h3>
+                </div>
+                <div class="subnet-features">
+                    <h4>Đặc điểm:</h4>
+                    <ul>
+                        <li>Không có route trực tiếp đến IGW</li>
+                        <li>Chỉ có Private IP</li>
+                        <li>Internet access qua NAT Gateway/Instance</li>
+                    </ul>
+                    <h4>Sử dụng cho:</h4>
+                    <ul>
+                        <li>Database servers</li>
+                        <li>Application servers</li>
+                        <li>Backend services</li>
+                        <li>Sensitive workloads</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="architecture-tip">
+            <h3>🏗️ Architecture Best Practice</h3>
+            <p>Multi-tier architecture: Web tier (public) → App tier (private) → Database tier (private)</p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,43 @@
+<div class="slide" id="slide-11" data-section="3">
+    <div class="slide-content">
+        <h1>VPC Security Overview</h1>
+        <div class="vpc-security">
+            <div class="vpc-definition">
+                <h3>🌐 Virtual Private Cloud (VPC)</h3>
+                <p>Mạng ảo riêng biệt trong AWS Cloud của bạn</p>
+            </div>
+            <div class="security-layers">
+                <div class="layer-card">
+                    <span class="layer-icon">🛡️</span>
+                    <h4>Security Groups</h4>
+                    <p>Virtual firewall cho EC2 instances</p>
+                    <ul>
+                        <li>Stateful - tự động allow return traffic</li>
+                        <li>Instance level protection</li>
+                        <li>Default: deny all inbound, allow all outbound</li>
+                    </ul>
+                </div>
+                <div class="layer-card">
+                    <span class="layer-icon">🚧</span>
+                    <h4>Network ACLs</h4>
+                    <p>Subnet level firewall</p>
+                    <ul>
+                        <li>Stateless - phải cấu hình cả chiều</li>
+                        <li>Subnet level protection</li>
+                        <li>Default: allow all traffic</li>
+                    </ul>
+                </div>
+                <div class="layer-card">
+                    <span class="layer-icon">📊</span>
+                    <h4>VPC Flow Logs</h4>
+                    <p>Ghi lại network traffic</p>
+                    <ul>
+                        <li>Monitor network traffic patterns</li>
+                        <li>Security analysis</li>
+                        <li>Troubleshooting connectivity</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

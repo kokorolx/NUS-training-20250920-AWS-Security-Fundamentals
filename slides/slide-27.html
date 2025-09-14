@@ -1,0 +1,87 @@
+<div class="slide" id="slide-27" data-section="6">
+    <div class="slide-content">
+        <h1>Common Security Scenarios & Cost Protection</h1>
+        <div class="scenarios-content">
+            <div class="scenario">
+                <h3>🚨 Scenario 1: Compromised EC2 Instance</h3>
+                <div class="scenario-details">
+                    <div class="detection">
+                        <h4>Detection Methods:</h4>
+                        <ul>
+                            <li><strong>GuardDuty alerts:</strong> Cryptocurrency mining, C&C communication</li>
+                            <li><strong>Network monitoring:</strong> Unusual outbound traffic, suspicious IPs</li>
+                            <li><strong>CloudTrail analysis:</strong> API calls from unusual locations</li>
+                        </ul>
+                    </div>
+                    <div class="response">
+                        <h4>Response Steps:</h4>
+                        <ol>
+                            <li><strong>Immediate isolation:</strong> Modify security groups</li>
+                            <li><strong>Forensic capture:</strong> EBS snapshot, memory dump</li>
+                            <li><strong>Clean recovery:</strong> Terminate và launch từ clean AMI</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="scenario">
+                <h3>🔓 Scenario 2: Accidental Public S3 Bucket</h3>
+                <div class="scenario-details">
+                    <div class="detection">
+                        <h4>Detection tools:</h4>
+                        <p>AWS Config rules, Trusted Advisor, Access Analyzer, Macie</p>
+                    </div>
+                    <div class="response">
+                        <h4>Response steps:</h4>
+                        <ol>
+                            <li><strong>Immediate action:</strong> Enable Block Public Access</li>
+                            <li><strong>Assessment:</strong> Analyze data exposure</li>
+                            <li><strong>Notification:</strong> Stakeholders, legal, compliance</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="scenario cloudfront-scenario">
+                <h3>🌐 Scenario 3: CloudFront Security Incident</h3>
+                <div class="scenario-details">
+                    <div class="detection">
+                        <h4>Incident:</h4>
+                        <p>Unauthorized access to content via direct S3 URLs</p>
+                    </div>
+                    <div class="response">
+                        <h4>Response:</h4>
+                        <ol>
+                            <li><strong>Detection:</strong> CloudTrail logs, unusual access patterns</li>
+                            <li><strong>Response:</strong> Enable OAC, update bucket policies</li>
+                            <li><strong>Recovery:</strong> Invalidate cache, monitor access</li>
+                            <li><strong>Prevention:</strong> Always use OAC, regular audits</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cost-protection">
+                <h3>💰 Cost Protection Strategies</h3>
+                <div class="cost-strategies">
+                    <div class="strategy">
+                        <h4>AWS Budgets</h4>
+                        <p>Monthly alerts at 50%, 80%, 100% thresholds</p>
+                    </div>
+                    <div class="strategy">
+                        <h4>Cost Anomaly Detection</h4>
+                        <p>Service-level monitors for unusual spending</p>
+                    </div>
+                    <div class="strategy">
+                        <h4>Resource Tagging</h4>
+                        <p>Comprehensive policy for cost allocation</p>
+                    </div>
+                    <div class="strategy">
+                        <h4>Regular Reviews</h4>
+                        <p>Monthly analysis, Reserved Instance optimization</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

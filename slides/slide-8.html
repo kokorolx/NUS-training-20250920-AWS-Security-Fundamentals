@@ -1,0 +1,45 @@
+<div class="slide" id="slide-8" data-section="2">
+    <div class="slide-content">
+        <h1>IAM Policies</h1>
+        <div class="policies-content">
+            <div class="policy-types">
+                <div class="policy-type">
+                    <h3>📋 Identity-based Policies</h3>
+                    <p>Gán cho users, groups, roles</p>
+                    <ul>
+                        <li>AWS Managed Policies</li>
+                        <li>Customer Managed Policies</li>
+                        <li>Inline Policies</li>
+                    </ul>
+                </div>
+                <div class="policy-type">
+                    <h3>🏢 Resource-based Policies</h3>
+                    <p>Gán trực tiếp cho resources</p>
+                    <ul>
+                        <li>S3 Bucket Policies</li>
+                        <li>KMS Key Policies</li>
+                        <li>Lambda Resource Policies</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="policy-structure">
+                <h3>🔧 Policy Structure</h3>
+                <div class="json-example">
+                    <pre>{
+  "Version": "2012-10-17",
+  "Statement": [{
+    "Effect": "Allow",
+    "Action": "s3:GetObject",
+    "Resource": "arn:aws:s3:::bucket/*",
+    "Condition": {
+      "StringEquals": {
+        "s3:x-amz-server-side-encryption": "AES256"
+      }
+    }
+  }]
+}</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

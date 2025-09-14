@@ -1,4 +1,4 @@
-// AWS Security Training Presentation JavaScript - Updated for 28 slides with CloudFront
+ // AWS Security Training Presentation JavaScript - Updated for 28 slides with CloudFront
 class AWSSecurityPresentation {
     constructor() {
         this.currentSlide = 1;
@@ -11,7 +11,7 @@ class AWSSecurityPresentation {
         this.slideDotsContainer = document.getElementById('slideDots');
         this.progressFill = document.getElementById('progressFill');
         this.sectionBtns = document.querySelectorAll('.section-btn');
-        
+
         // Updated section mapping - which slides belong to which section
         this.sections = {
             1: { name: 'Giới thiệu', slides: [1, 2, 3, 4, 5], duration: '20 phút' },
@@ -22,10 +22,10 @@ class AWSSecurityPresentation {
             6: { name: 'Scenarios', slides: [27], duration: '15 phút' },
             7: { name: 'Best Practices', slides: [28], duration: '15 phút' }
         };
-        
+
         // CloudFront specific slides for special handling
         this.cloudfrontSlides = [20, 21, 22, 23];
-        
+
         this.init();
     }
 
@@ -36,11 +36,11 @@ class AWSSecurityPresentation {
         this.updateNavigationButtons();
         this.updateProgressBar();
         this.updateSectionHighlight();
-        
+
         // Event listeners
         this.prevBtn.addEventListener('click', () => this.goToPrevSlide());
         this.nextBtn.addEventListener('click', () => this.goToNextSlide());
-        
+
         // Section navigation
         this.sectionBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -48,10 +48,10 @@ class AWSSecurityPresentation {
                 this.goToSection(sectionId);
             });
         });
-        
+
         // Keyboard navigation
         document.addEventListener('keydown', (e) => this.handleKeydown(e));
-        
+
         // Prevent default arrow key scrolling
         document.addEventListener('keydown', (e) => {
             if(['ArrowLeft', 'ArrowRight'].includes(e.key)) {
@@ -61,7 +61,7 @@ class AWSSecurityPresentation {
 
         // Add fade-in animation to initial slide
         this.slides[0].classList.add('fade-in');
-        
+
         console.log('🛡️ AWS Security Training với CloudFront đã load thành công!');
         console.log(`📊 Tổng số slides: ${this.totalSlides}`);
         console.log('🌐 Slides mới về CloudFront: 20-23');
@@ -74,24 +74,24 @@ class AWSSecurityPresentation {
             const dot = document.createElement('span');
             dot.classList.add('dot');
             if (i === 1) dot.classList.add('active');
-            
+
             dot.addEventListener('click', () => this.goToSlide(i));
-            
+
             // Add section indicator and CloudFront special indicator
             const sectionInfo = this.getSectionForSlide(i);
             let title = `Slide ${i}`;
-            
+
             if (sectionInfo) {
                 title += ` - ${sectionInfo.name}`;
             }
-            
+
             if (this.cloudfrontSlides.includes(i)) {
                 title += ' (CloudFront)';
                 dot.classList.add('cloudfront-slide');
             }
-            
+
             dot.setAttribute('title', title);
-            
+
             this.slideDotsContainer.appendChild(dot);
         }
     }
@@ -103,6 +103,19 @@ class AWSSecurityPresentation {
             }
         }
         return null;
+    }
+
+    // Attempt to load a slide fragment from /slides/slide-<n>.html (returns HTML string or null)
+    async loadSlideFragment(slideNumber) {
+        try {
+            const resp = await fetch(`slides/slide-${slideNumber}.html`, { cache: "no-cache" });
+            if (!resp.ok) throw new Error('Not found');
+            const text = await resp.text();
+            return text;
+        } catch (err) {
+            // fragment not available; fallback to inline slides already present in DOM
+            return null;
+        }
     }
 
     updateSlideCounter() {
@@ -118,7 +131,7 @@ class AWSSecurityPresentation {
     updateSectionHighlight() {
         // Remove active class from all section buttons
         this.sectionBtns.forEach(btn => btn.classList.remove('active'));
-        
+
         // Find current section and highlight it
         const currentSection = this.getSectionForSlide(this.currentSlide);
         if (currentSection) {
@@ -132,10 +145,10 @@ class AWSSecurityPresentation {
     updateNavigationButtons() {
         // Update previous button
         this.prevBtn.disabled = this.currentSlide === 1;
-        
+
         // Update next button
         this.nextBtn.disabled = this.currentSlide === this.totalSlides;
-        
+
         // Update button text for different scenarios
         if (this.currentSlide === this.totalSlides) {
             this.nextBtn.innerHTML = 'Kết thúc 🎯';
@@ -144,7 +157,7 @@ class AWSSecurityPresentation {
         } else {
             this.nextBtn.innerHTML = 'Tiếp →';
         }
-        
+
         // Update previous button text
         if (this.currentSlide === 1) {
             this.prevBtn.innerHTML = '🏠 Bắt đầu';
@@ -160,49 +173,80 @@ class AWSSecurityPresentation {
         dots.forEach((dot, index) => {
             dot.classList.toggle('active', index + 1 === this.currentSlide);
         });
-        
+
         // Scroll active dot into view
         const activeDot = document.querySelector('.dot.active');
         if (activeDot && this.slideDotsContainer.scrollTo) {
             const containerRect = this.slideDotsContainer.getBoundingClientRect();
             const dotRect = activeDot.getBoundingClientRect();
-            
+
             if (dotRect.left < containerRect.left || dotRect.right > containerRect.right) {
                 activeDot.scrollIntoView({ behavior: 'smooth', inline: 'center' });
             }
         }
     }
 
-    goToSlide(slideNumber) {
+    async goToSlide(slideNumber) {
         if (slideNumber < 1 || slideNumber > this.totalSlides || slideNumber === this.currentSlide) {
             return;
         }
 
-        const currentSlideElement = this.slides[this.currentSlide - 1];
-        const targetSlideElement = this.slides[slideNumber - 1];
-        
+        // Try to load fragment (if available) before performing transition
+        const fragmentHtml = await this.loadSlideFragment(slideNumber);
+        const slideContainer = document.querySelector('.slide-container');
+
+        if (fragmentHtml) {
+            // If slide with id doesn't exist yet, insert it
+            if (!document.getElementById(`slide-${slideNumber}`)) {
+                const temp = document.createElement('div');
+                temp.innerHTML = fragmentHtml.trim();
+                const newSlide = temp.firstElementChild;
+                // Ensure the new slide is positioned absolutely like others
+                newSlide.style.position = 'absolute';
+                newSlide.style.top = '0';
+                newSlide.style.left = '0';
+                newSlide.style.width = '100%';
+                newSlide.style.height = '100%';
+                newSlide.style.boxSizing = 'border-box';
+                slideContainer.appendChild(newSlide);
+
+                // Refresh internal slides NodeList
+                this.slides = document.querySelectorAll('.slide');
+            }
+        }
+
+        // Determine current and target elements by id to work with dynamic slides
+        const currentSlideElement = document.getElementById(`slide-${this.currentSlide}`) || this.slides[this.currentSlide - 1];
+        const targetSlideElement = document.getElementById(`slide-${slideNumber}`) || this.slides[slideNumber - 1];
+
+        if (!currentSlideElement || !targetSlideElement) {
+            // If for some reason elements are missing, abort
+            console.warn('Slide elements missing for transition', this.currentSlide, slideNumber);
+            return;
+        }
+
         // Determine transition direction
         const isNext = slideNumber > this.currentSlide;
-        
+
         // Special handling for CloudFront slides
         if (this.cloudfrontSlides.includes(slideNumber)) {
             console.log(`🌐 Chuyển đến CloudFront slide ${slideNumber}`);
         }
-        
+
         // Remove active class from current slide
         currentSlideElement.classList.remove('active');
         currentSlideElement.classList.remove('fade-in');
-        
+
         // Add transition class
         if (isNext) {
             currentSlideElement.classList.add('prev');
         } else {
             currentSlideElement.style.transform = 'translateX(-100%)';
         }
-        
+
         // Update current slide
         this.currentSlide = slideNumber;
-        
+
         // Activate new slide with a slight delay for smooth transition
         setTimeout(() => {
             // Reset all slides
@@ -210,23 +254,27 @@ class AWSSecurityPresentation {
                 slide.classList.remove('active', 'prev');
                 slide.style.transform = '';
             });
-            
+
+            // Also ensure any dynamically added slide elements are included
+            const allSlides = document.querySelectorAll('.slide');
+            allSlides.forEach(s => s.classList.remove('active', 'prev'));
+
             // Activate target slide
             targetSlideElement.classList.add('active', 'fade-in');
-            
+
             // Update UI elements
             this.updateSlideCounter();
             this.updateNavigationButtons();
             this.updateSlideDots();
             this.updateProgressBar();
             this.updateSectionHighlight();
-            
+
             // Announce slide change for accessibility
             this.announceSlideChange();
-            
+
             // Update URL hash for bookmarking
             this.updateURL();
-            
+
         }, 50);
     }
 
@@ -258,6 +306,8 @@ class AWSSecurityPresentation {
     }
 
     handleKeydown(event) {
+        return
+
         switch(event.key) {
             case 'ArrowRight':
             case ' ': // Spacebar
@@ -290,21 +340,21 @@ class AWSSecurityPresentation {
             case '5':
             case '6':
             case '7':
-                if (event.ctrlKey || event.metaKey) {
-                    event.preventDefault();
-                    const sectionId = parseInt(event.key);
-                    if (this.sections[sectionId]) {
-                        this.goToSection(sectionId);
+                    if (event.ctrlKey /*|| event.metaKey*/) {
+                        event.preventDefault();
+                        const sectionId = parseInt(event.key);
+                        if (this.sections[sectionId]) {
+                            this.goToSection(sectionId);
+                        }
                     }
-                }
-                break;
+                    break;
             // CloudFront quick access
             case 'c':
             case 'C':
-                if (event.ctrlKey || event.metaKey) {
-                    event.preventDefault();
-                    this.goToCloudFrontSection();
-                }
+                // if (event.ctrlKey /*|| event.metaKey*/) {
+                //     event.preventDefault();
+                //     this.goToCloudFrontSection();
+                // }
                 break;
         }
     }
@@ -315,21 +365,21 @@ class AWSSecurityPresentation {
         announcement.setAttribute('aria-live', 'polite');
         announcement.setAttribute('aria-atomic', 'true');
         announcement.className = 'sr-only';
-        
+
         const slideTitle = this.slides[this.currentSlide - 1].querySelector('h1').textContent;
         const sectionInfo = this.getSectionForSlide(this.currentSlide);
         const sectionName = sectionInfo ? sectionInfo.name : '';
-        
+
         let announcementText = `Slide ${this.currentSlide} của ${this.totalSlides}: ${slideTitle}. Phần: ${sectionName}`;
-        
+
         if (this.cloudfrontSlides.includes(this.currentSlide)) {
             announcementText += '. Nội dung CloudFront mới.';
         }
-        
+
         announcement.textContent = announcementText;
-        
+
         document.body.appendChild(announcement);
-        
+
         // Remove announcement after a brief delay
         setTimeout(() => {
             document.body.removeChild(announcement);
@@ -340,15 +390,15 @@ class AWSSecurityPresentation {
         // Update browser URL hash for bookmarking
         const sectionInfo = this.getSectionForSlide(this.currentSlide);
         let hashName = 'slide';
-        
+
         if (sectionInfo) {
             hashName = sectionInfo.name.toLowerCase().replace(/\s+/g, '-').replace(/&/g, '');
         }
-        
+
         if (this.cloudfrontSlides.includes(this.currentSlide)) {
             hashName += '-cloudfront';
         }
-        
+
         history.replaceState(null, null, `#${hashName}-${this.currentSlide}`);
     }
 
@@ -358,7 +408,7 @@ class AWSSecurityPresentation {
             const h1 = slide.querySelector('h1');
             return h1 && h1.textContent.toLowerCase().includes(title.toLowerCase());
         });
-        
+
         if (slideIndex !== -1) {
             this.goToSlide(slideIndex + 1);
         }
@@ -369,7 +419,7 @@ class AWSSecurityPresentation {
         const currentSlideElement = this.slides[this.currentSlide - 1];
         const title = currentSlideElement.querySelector('h1')?.textContent || 'Untitled';
         const sectionInfo = this.getSectionForSlide(this.currentSlide);
-        
+
         return {
             number: this.currentSlide,
             total: this.totalSlides,
@@ -448,7 +498,7 @@ class AWSSecurityPresentation {
             'best-practices': 7,
             'practices': 7
         };
-        
+
         const sectionId = sectionMap[sectionName.toLowerCase()];
         if (sectionId) {
             this.goToSection(sectionId);
@@ -487,7 +537,7 @@ class AWSSecurityPresentation {
         if (this.isCurrentSlideCloudFront()) {
             const slideInfo = this.getCurrentSlideInfo();
             console.log(`📊 CloudFront slide performance: ${slideInfo.title}`);
-            
+
             // Could implement analytics here
             return {
                 slide: this.currentSlide,
@@ -504,7 +554,7 @@ class AWSSecurityPresentation {
         const sectionInfo = this.getSectionForSlide(this.currentSlide);
         const totalSections = Object.keys(this.sections).length;
         const currentSectionId = sectionInfo ? sectionInfo.id : 1;
-        
+
         return {
             currentSlide: this.currentSlide,
             totalSlides: this.totalSlides,
@@ -532,7 +582,7 @@ function addTouchSupport() {
     let endX = 0;
     let startY = 0;
     let endY = 0;
-    
+
     document.addEventListener('touchstart', e => {
         startX = e.changedTouches[0].screenX;
         startY = e.changedTouches[0].screenY;
@@ -548,7 +598,7 @@ function addTouchSupport() {
         const threshold = 100;
         const differenceX = startX - endX;
         const differenceY = Math.abs(startY - endY);
-        
+
         // Only process horizontal swipes (avoid vertical scrolling conflicts)
         if (Math.abs(differenceX) > threshold && differenceY < threshold) {
             if (differenceX > 0) {
@@ -569,26 +619,26 @@ function addKeyboardShortcuts() {
         if (e.target.tagName.toLowerCase() !== 'input' && e.target.tagName.toLowerCase() !== 'textarea') {
             switch(e.key.toLowerCase()) {
                 case 'f':
-                    if (e.ctrlKey || e.metaKey) {
+                    if (e.ctrlKey /*|| e.metaKey*/) {
                         e.preventDefault();
                         presentation.toggleFullscreen();
                     }
                     break;
                 case 'r':
-                    if (e.ctrlKey || e.metaKey) {
+                    if (e.ctrlKey /*|| e.metaKey*/) {
                         e.preventDefault();
                         presentation.goToSlide(1);
                     }
                     break;
                 case 'p':
-                    if (e.ctrlKey || e.metaKey) {
+                    if (e.ctrlKey /*|| e.metaKey*/) {
                         e.preventDefault();
                         console.log('Presentation Data:', presentation.getSessionData());
                         console.log('Training Progress:', presentation.getTrainingProgress());
                     }
                     break;
                 case 'a':
-                    if (e.ctrlKey || e.metaKey) {
+                    if (e.ctrlKey /*|| e.metaKey*/) {
                         e.preventDefault();
                         // Toggle auto-advance
                         if (presentation.autoAdvanceInterval) {
@@ -640,12 +690,12 @@ function addKeyboardShortcuts() {
 function showLoadingState() {
     // Add loading class to body
     document.body.classList.add('loading');
-    
+
     // Remove loading state after everything is loaded
     window.addEventListener('load', () => {
         document.body.classList.remove('loading');
         document.body.classList.add('loaded');
-        
+
         // Initialize from URL if present
         presentation.initFromURL();
     });
@@ -684,9 +734,9 @@ function addPresenterControls() {
     controlsToggle.style.cursor = 'pointer';
     controlsToggle.style.fontSize = '20px';
     controlsToggle.title = 'Toggle Presenter Controls';
-    
+
     let controlsVisible = false;
-    
+
     controlsToggle.addEventListener('click', () => {
         controlsVisible = !controlsVisible;
         if (controlsVisible) {
@@ -695,9 +745,9 @@ function addPresenterControls() {
             hidePresenterInfo();
         }
     });
-    
+
     document.body.appendChild(controlsToggle);
-    
+
     function showPresenterInfo() {
         const info = presentation.getCurrentSlideInfo();
         const progress = presentation.getTrainingProgress();
@@ -713,7 +763,7 @@ function addPresenterControls() {
         infoPanel.style.zIndex = '999';
         infoPanel.style.minWidth = '300px';
         infoPanel.style.fontSize = '14px';
-        
+
         infoPanel.innerHTML = `
             <h3 style="margin-top: 0; color: #FF9900;">Presenter Controls</h3>
             <p><strong>Current:</strong> ${info.number}/${info.total}</p>
@@ -738,10 +788,10 @@ function addPresenterControls() {
                 <li>Ctrl+P: Print session data</li>
             </ul>
         `;
-        
+
         document.body.appendChild(infoPanel);
     }
-    
+
     function hidePresenterInfo() {
         const infoPanel = document.getElementById('presenter-info');
         if (infoPanel) {
@@ -756,36 +806,40 @@ let presentation;
 document.addEventListener('DOMContentLoaded', () => {
     // Show loading state
     showLoadingState();
-    
+
     // Initialize presentation
     presentation = new AWSSecurityPresentation();
-    
+
     // Add touch support for mobile
     addTouchSupport();
-    
+
     // Add keyboard shortcuts
     addKeyboardShortcuts();
-    
+
     // Handle visibility changes
     handleVisibilityChange();
-    
+
     // Add presenter controls (optional)
     addPresenterControls();
-    
+
     // Add focus management for accessibility
     document.addEventListener('focusin', (e) => {
         if (e.target.closest('.slide:not(.active)')) {
             e.target.blur();
         }
     });
-    
-    // Prevent context menu on right-click (optional)
-    document.addEventListener('contextmenu', (e) => {
-        if (e.target.closest('.slide')) {
-            e.preventDefault();
-        }
-    });
-    
+
+/* Allow inspection by default. Presenter mode can enable stricter behavior. */
+window.PRESENTER_MODE = false;
+
+// Prevent context menu on right-click only when presenter mode enabled
+        document.addEventListener('contextmenu', (e) => {
+            if (!window.PRESENTER_MODE) return; // allow inspect unless presenter mode enabled
+            if (e.target.closest('.slide')) {
+                e.preventDefault();
+            }
+        });
+
     // Console message for developers and presenters
     console.log('🛡️ AWS Security Training với CloudFront đã load thành công!');
     console.log('📊 Tổng số slides: 28 (tăng từ 25)');

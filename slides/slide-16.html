@@ -1,0 +1,49 @@
+<div class="slide" id="slide-16" data-section="4">
+    <div class="slide-content">
+        <h1>Encryption Fundamentals</h1>
+        <div class="encryption-content">
+            <div class="encryption-types">
+                <div class="encryption-type">
+                    <h3>🔒 Encryption at Rest</h3>
+                    <p>Mã hóa dữ liệu khi được lưu trữ</p>
+                    <ul>
+                        <li>EBS volumes encryption</li>
+                        <li>S3 object encryption</li>
+                        <li>RDS database encryption</li>
+                        <li>EFS file system encryption</li>
+                    </ul>
+                </div>
+                <div class="encryption-type">
+                    <h3>🚀 Encryption in Transit</h3>
+                    <p>Mã hóa dữ liệu khi di chuyển</p>
+                    <ul>
+                        <li>TLS/SSL for web traffic</li>
+                        <li>HTTPS for API calls</li>
+                        <li>VPN connections</li>
+                        <li>AWS Direct Connect</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="encryption-methods">
+                <div class="method">
+                    <h3>🔑 Client-side Encryption</h3>
+                    <p>Khách hàng mã hóa trước khi gửi lên AWS</p>
+                    <ul>
+                        <li>Khách hàng quản lý keys</li>
+                        <li>Highest level of control</li>
+                        <li>AWS không thấy plaintext data</li>
+                    </ul>
+                </div>
+                <div class="method">
+                    <h3>☁️ Server-side Encryption</h3>
+                    <p>AWS mã hóa sau khi nhận data</p>
+                    <ul>
+                        <li>AWS-managed keys (SSE-S3)</li>
+                        <li>Customer-managed keys (SSE-KMS)</li>
+                        <li>Customer-provided keys (SSE-C)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

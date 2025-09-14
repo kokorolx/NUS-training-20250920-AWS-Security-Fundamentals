@@ -84,15 +84,15 @@
     BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-family-mono: "Berkeley Mono", ui-monospace, SFMono-Regular, Menlo,
     Monaco, Consolas, monospace;
-  --font-size-xs: 11px;
-  --font-size-sm: 12px;
-  --font-size-base: 14px;
-  --font-size-md: 14px;
-  --font-size-lg: 16px;
-  --font-size-xl: 18px;
-  --font-size-2xl: 20px;
-  --font-size-3xl: 24px;
-  --font-size-4xl: 30px;
+  --font-size-xs: 12px;
+  --font-size-sm: 15px;
+  --font-size-base: 24px;    /* increased from 16px */
+  --font-size-md: 18px;
+  --font-size-lg: 20px;
+  --font-size-xl: 22px;
+  --font-size-2xl: 28px;
+  --font-size-3xl: 34px;
+  --font-size-4xl: 44px;    /* increased from 36px for title slide */
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 550;
@@ -162,7 +162,7 @@
     --color-bg-6: rgba(194, 65, 12, 0.15); /* Dark orange */
     --color-bg-7: rgba(190, 24, 93, 0.15); /* Dark pink */
     --color-bg-8: rgba(8, 145, 178, 0.15); /* Dark cyan */
-    
+
     /* Semantic Color Tokens (Dark Mode) */
     --color-background: var(--color-charcoal-700);
     --color-surface: var(--color-charcoal-800);
@@ -222,7 +222,7 @@
   --color-bg-6: rgba(194, 65, 12, 0.15); /* Dark orange */
   --color-bg-7: rgba(190, 24, 93, 0.15); /* Dark pink */
   --color-bg-8: rgba(8, 145, 178, 0.15); /* Dark cyan */
-  
+
   /* Semantic Color Tokens (Dark Mode) */
   --color-background: var(--color-charcoal-700);
   --color-surface: var(--color-charcoal-800);
@@ -268,7 +268,7 @@
   --color-brown-600-rgb: 94, 82, 64;
   --color-teal-500-rgb: 33, 128, 141;
   --color-slate-900-rgb: 19, 52, 59;
-  
+
   /* Semantic Color Tokens (Light Mode) */
   --color-background: var(--color-cream-50);
   --color-surface: var(--color-cream-100);
@@ -750,7 +750,7 @@ select.form-control {
   --aws-white: #FFFFFF;
   --security-red: #DC3545;
   --success-green: #28A745;
-  
+
   /* Override design system colors for AWS theme */
   --color-primary: var(--aws-orange);
   --color-primary-hover: #E68A00;
@@ -878,14 +878,14 @@ body {
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   text-align: center;
 }
 
 /* Title Slide Specific */
 .title-slide {
-  background: linear-gradient(135deg, var(--aws-dark-blue) 0%, var(--aws-light-blue) 100%);
+  background: linear-gradient(135deg, var(--aws-light-blue) 0%, var(--aws-dark-blue) 100%);
   color: var(--aws-white);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
@@ -931,6 +931,10 @@ body {
   font-weight: var(--font-weight-bold);
   text-align: center;
   position: relative;
+}
+
+.slide-content h1.white {
+  color: white;
 }
 
 .slide-content h1::after {
@@ -1373,8 +1377,7 @@ body {
 
 .responsibility-diagram {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-24);
+  gap: 100px;
   align-items: center;
 }
 
@@ -2968,11 +2971,11 @@ body {
   .slide-content h1 {
     font-size: 2.2rem;
   }
-  
+
   .title-slide h1 {
     font-size: 2.8rem;
   }
-  
+
   .cloudtrail-content,
   .cloudwatch-content,
   .guardduty-content,
@@ -2988,29 +2991,29 @@ body {
     grid-template-columns: 1fr;
     gap: var(--space-16);
   }
-  
+
   .section-nav {
     flex-wrap: wrap;
     gap: var(--space-4);
   }
-  
+
   .section-btn {
     font-size: var(--font-size-xs);
     padding: var(--space-4) var(--space-8);
   }
-  
+
   .workflow-grid,
   .benefits-grid,
   .security-features-grid,
   .setup-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .integration-flow {
     grid-template-columns: 1fr;
     text-align: center;
   }
-  
+
   .flow-arrow {
     transform: rotate(90deg);
   }
@@ -3020,32 +3023,49 @@ body {
   .slide {
     padding: var(--space-16);
   }
-  
+
   .slide-content h1 {
     font-size: 1.8rem;
   }
-  
+
   .title-slide h1 {
     font-size: 2.2rem;
   }
-  
+
   .nav-footer {
     padding: var(--space-12) var(--space-16);
   }
-  
+
   .nav-btn {
     min-width: 80px;
     padding: var(--space-8) var(--space-16);
     font-size: var(--font-size-sm);
   }
-  
+
   .section-nav {
     display: none;
   }
-  
+
   .slide-dots {
     max-width: 200px;
   }
+}
+
+/* Responsive overrides to support larger typography */
+@media (max-width: 1024px) {
+  .slide-content h1 { font-size: 2.4rem; }      /* was 2.2rem */
+  .title-slide h1 { font-size: 3.2rem; }        /* was 2.8rem */
+  .aws-logo { font-size: 96px; }                /* scale down logo on medium screens */
+}
+
+@media (max-width: 768px) {
+  .slide {
+    padding: var(--space-16);
+  }
+
+  .slide-content h1 { font-size: 1.9rem; }      /* was 1.8rem */
+  .title-slide h1 { font-size: 2.4rem; }        /* was 2.2rem */
+  .presentation-container { padding: 8px; }
 }
 
 /* Animation Classes */
@@ -3062,4 +3082,9 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.size-12 {
+  width: 200px;
+  height: 200px;
 }
