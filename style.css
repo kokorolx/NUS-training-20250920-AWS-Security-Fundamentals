@@ -84,8 +84,8 @@
     BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-family-mono: "Berkeley Mono", ui-monospace, SFMono-Regular, Menlo,
     Monaco, Consolas, monospace;
-  --font-size-xs: 12px;
-  --font-size-sm: 15px;
+  --font-size-xs: 24px;
+  --font-size-sm: 24px;
   --font-size-base: 24px;    /* increased from 16px */
   --font-size-md: 18px;
   --font-size-lg: 20px;
@@ -370,7 +370,6 @@ code,
 pre {
   font-family: var(--font-family-mono);
   font-size: calc(var(--font-size-base) * 0.95);
-  background-color: var(--color-secondary);
   border-radius: var(--radius-sm);
 }
 
@@ -1507,6 +1506,7 @@ body {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
   border-left: 5px solid var(--success-green);
+  text-align: left;
 }
 
 .prevention-tips h3 {
@@ -1600,7 +1600,7 @@ body {
 
 .component-details li {
   padding: var(--space-6) 0;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   border-bottom: 1px solid var(--aws-gray);
   position: relative;
   padding-left: var(--space-16);
@@ -1609,7 +1609,7 @@ body {
 .component-details li::before {
   content: '→';
   position: absolute;
-  left: 0;
+  left: -10px;
   color: var(--aws-orange);
   font-weight: bold;
 }
@@ -1730,7 +1730,7 @@ body {
 
 .tools-list li {
   padding: var(--space-8) 0;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   border-bottom: 1px solid var(--aws-gray);
 }
 
@@ -1791,6 +1791,7 @@ body {
   list-style: none;
   padding: 0;
   margin: 0;
+  text-align: left;
 }
 
 .warning-list li,
@@ -1806,19 +1807,19 @@ body {
 .warning-list li::before {
   content: '⚠️';
   position: absolute;
-  left: 0;
+  left: -10px;
 }
 
 .practices-list li::before {
   content: '✅';
   position: absolute;
-  left: 0;
+  left: -10px;
 }
 
 .demo-list li::before {
   content: '🧪';
   position: absolute;
-  left: 0;
+  left: -10px;
 }
 
 /* VPC Security (Slide 11) */
@@ -1969,6 +1970,7 @@ body {
 
 .subnet-features {
   padding: var(--space-20);
+  text-align: left;
 }
 
 .subnet-features h4 {
@@ -1993,7 +1995,7 @@ body {
 .subnet-features li::before {
   content: '•';
   position: absolute;
-  left: 0;
+  left: -10px;
   color: var(--aws-orange);
   font-weight: bold;
 }
@@ -2037,6 +2039,7 @@ body {
   list-style: none;
   padding: 0;
   margin: 0;
+  text-align: left;
 }
 
 .security-list li {
@@ -2050,7 +2053,7 @@ body {
 .security-list li::before {
   content: '→';
   position: absolute;
-  left: 0;
+  left: -10px;
   color: var(--aws-orange);
   font-weight: bold;
 }
@@ -2477,7 +2480,7 @@ body {
 .practices-list li::before {
   content: '•';
   position: absolute;
-  left: 0;
+  left: -10px;
   color: var(--aws-orange);
 }
 
@@ -3087,4 +3090,12 @@ body {
 .size-12 {
   width: 200px;
   height: 200px;
+}
+
+/* Ensure list items use base font size unless explicitly overridden.
+   This makes all <li> match the design system's base size; keep
+   component-specific exceptions (e.g. badges, meta) using smaller
+   sizes by adding more specific selectors if needed. */
+li {
+  font-size: var(--font-size-base);
 }
