@@ -88,7 +88,7 @@
   --font-size-sm: 24px;
   --font-size-base: 24px;    /* increased from 16px */
   --font-size-md: 18px;
-  --font-size-lg: 20px;
+  --font-size-lg: calc(var(--font-size-base) + 4px);
   --font-size-xl: 22px;
   --font-size-2xl: 28px;
   --font-size-3xl: 34px;
@@ -880,6 +880,7 @@ body {
   justify-content: space-around;
   align-items: center;
   text-align: center;
+  overflow: auto;
 }
 
 /* Title Slide Specific */
@@ -1162,7 +1163,7 @@ body {
 .security-item li::before {
   content: '→';
   position: absolute;
-  left: 0;
+  left: -10px;
   color: var(--aws-orange);
 }
 
@@ -1291,7 +1292,7 @@ body {
 .setup-step li::before {
   content: '•';
   position: absolute;
-  left: 0;
+  left: -10px;
   color: var(--cloudfront-blue);
 }
 
@@ -1357,6 +1358,10 @@ body {
 
 .importance-item .icon {
   font-size: 2rem;
+}
+
+.importance-item.block {
+  display: block;
 }
 
 .importance-item h3 {
@@ -2850,7 +2855,7 @@ body {
 .practice-category li::before {
   content: '✓';
   position: absolute;
-  left: 0;
+  left: -10px;
   color: var(--success-green);
   font-weight: bold;
 }
@@ -3071,6 +3076,59 @@ body {
   .presentation-container { padding: 8px; }
 }
 
+/* Slide-20 canvas (scoped) ---------------------------------------------------
+   Scoped styles for the CloudFront canvas and accessible controls. Kept under
+   #slide-20 to avoid global side-effects. Respects prefers-reduced-motion.
+------------------------------------------------------------------------- */
+#slide-20 .cloudfront-canvas {
+  margin: var(--space-16) auto;
+  max-width: 900px;
+  width: calc(100% - var(--space-32));
+  background: var(--aws-white);
+  border-radius: var(--radius-md);
+  padding: var(--space-12);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  box-sizing: border-box;
+}
+
+#slide-20 canvas#cloudfront-canvas-element {
+  width: 100%;
+  height: 240px; /* visual height; actual backing store sized in JS for devicePixelRatio */
+  display: block;
+  background: transparent;
+  border-radius: 6px;
+}
+
+/* Fallback shown when JS is disabled or when user prefers reduced motion */
+#slide-20 .canvas-fallback {
+  display: none;
+  width: 100%;
+  height: 240px;
+  box-sizing: border-box;
+}
+
+/* Controls */
+#slide-20 .canvas-controls {
+  position: absolute;
+  right: var(--space-12);
+  top: var(--space-12);
+  z-index: 10;
+}
+
+#slide-20 .canvas-controls .btn {
+  padding: var(--space-6) var(--space-10);
+  font-size: var(--font-size-sm);
+}
+
+/* Reduced motion: hide canvas animations and expose fallback */
+@media (prefers-reduced-motion: reduce) {
+  #slide-20 canvas#cloudfront-canvas-element { display: none !important; }
+  #slide-20 .canvas-controls { display: none !important; }
+  #slide-20 .canvas-fallback { display: block !important; }
+}
+
+/* End slide-20 canvas styles ------------------------------------------------*/
 /* Animation Classes */
 .fade-in {
   animation: fadeIn 0.6s ease-in;

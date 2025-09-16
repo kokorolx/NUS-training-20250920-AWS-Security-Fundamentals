@@ -210,6 +210,37 @@ class AWSSecurityPresentation {
                 newSlide.style.boxSizing = 'border-box';
                 slideContainer.appendChild(newSlide);
 
+                // Execute any <script type="module"> tags found in the fragment.
+                // Module scripts inserted via innerHTML do not execute, so recreate them and append to the document to run.
+                (function runModuleScripts(rootElement) {
+                    const moduleScripts = rootElement.querySelectorAll('script[type="module"]');
+                    moduleScripts.forEach(oldScript => {
+                        const newScript = document.createElement('script');
+                        newScript.type = 'module';
+                        // Resolve relative src paths so they work when fragment was loaded from slides/
+                        const srcAttr = oldScript.getAttribute('src');
+                        if (srcAttr) {
+                            // If the src is relative (not starting with http(s) or /), prepend 'slides/' because fragments are served from slides/
+                            if (!/^(?:https?:|\/)/.test(srcAttr)) {
+                                newScript.src = `slides/${srcAttr}`;
+                            } else {
+                                newScript.src = srcAttr;
+                            }
+                        } else {
+                            // Inline module: copy text content
+                            newScript.textContent = oldScript.textContent;
+                        }
+                        // Copy other attributes (nonce, data-*, etc.) except type/src which we already set
+                        for (let i = 0; i < oldScript.attributes.length; i++) {
+                            const attr = oldScript.attributes[i];
+                            if (attr.name === 'type' || attr.name === 'src') continue;
+                            try { newScript.setAttribute(attr.name, attr.value); } catch (e) { /* ignore invalid attrs */ }
+                        }
+                        // Append to body so module executes in document context
+                        document.body.appendChild(newScript);
+                    });
+                })(newSlide);
+
                 // Refresh internal slides NodeList
                 this.slides = document.querySelectorAll('.slide');
             }
@@ -306,7 +337,7 @@ class AWSSecurityPresentation {
     }
 
     handleKeydown(event) {
-        return
+        // return
 
         switch(event.key) {
             case 'ArrowRight':
@@ -366,7 +397,10 @@ class AWSSecurityPresentation {
         announcement.setAttribute('aria-atomic', 'true');
         announcement.className = 'sr-only';
 
-        const slideTitle = this.slides[this.currentSlide - 1].querySelector('h1').textContent;
+        // Guard: slide element or its <h1> may be missing (dynamic loading). Avoid TypeError.
+        const slideEl = this.slides[this.currentSlide - 1] || document.getElementById(`slide-${this.currentSlide}`);
+        const slideTitleEl = slideEl ? slideEl.querySelector('h1') : null;
+        const slideTitle = slideTitleEl ? slideTitleEl.textContent : `Slide ${this.currentSlide}`;
         const sectionInfo = this.getSectionForSlide(this.currentSlide);
         const sectionName = sectionInfo ? sectionInfo.name : '';
 

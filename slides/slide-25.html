@@ -1,6 +1,6 @@
 <div class="slide" id="slide-25" data-section="5">
     <div class="slide-content">
-        <h1>CloudWatch Security</h1>
+        <h1>CloudWatch</h1>
         <div class="cloudwatch-content">
             <div class="components-section">
                 <h3>🧩 Components</h3>
@@ -58,7 +58,16 @@
             </div>
             <div class="insights-section">
                 <h3>🔍 CloudWatch Logs Insights</h3>
-                <p>Query examples for security analysis</p>
+                <div class="queries-section">
+                    <h4>Query examples for security analysis</h4>
+                    <ul class="query-examples" style="list-style:none;padding:12px;margin:8px 0;border:1px solid rgba(0,0,0,0.08);background-color:rgba(0,0,0,0.03);border-radius:8px;">
+                        <li style="margin:6px 0;"><strong>Failed SSH logins (24h):</strong> <code style="font-family:monospace;background:transparent;padding:0 4px;">count by src_ip where event='FailedLogin' and timestamp>now-24h</code></li>
+                        <li style="margin:6px 0;"><strong>CloudTrail CreateUser/Policy:</strong> <code style="font-family:monospace;background:transparent;padding:0 4px;">filter eventName in (CreateUser,PutUserPolicy) | where sourceIP not in (expected_ips)</code></li>
+                        <li style="margin:6px 0;"><strong>S3 public buckets:</strong> <code style="font-family:monospace;background:transparent;padding:0 4px;">config.resourceType='AWS::S3::Bucket' and (bucketPolicyPublic=true or aclPublic=true)</code></li>
+                        <li style="margin:6px 0;"><strong>Data exfil pattern:</strong> <code style="font-family:monospace;background:transparent;padding:0 4px;">sum(bytes) by user where action in (GetObject,Download) and bytes > 10MB</code></li>
+                        <li style="margin:6px 0;"><strong>Azure KQL (4625):</strong> <code style="font-family:monospace;background:transparent;padding:0 4px;">SecurityEvent | where EventID==4625 | summarize count() by Account, IPAddress</code></li>
+                    </ul>
+                </div>
             </div>
             <div class="dashboards-section">
                 <h3>📋 Security Dashboards</h3>
