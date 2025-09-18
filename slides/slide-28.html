@@ -1,85 +1,81 @@
-<div class="slide" id="slide-28" data-section="7">
+<div class="slide" id="slide-28" data-section="6">
     <div class="slide-content">
-        <h1>AWS Security Best Practices Summary</h1>
-        <div class="best-practices-summary">
-            <div class="practice-category">
-                <h3>🔑 Identity & Access Management</h3>
-                <ul>
-                    <li>Use IAM roles instead of users when possible</li>
-                    <li>Enable MFA for all privileged accounts</li>
-                    <li>Implement principle of least privilege</li>
-                    <li>Regular access reviews and cleanup</li>
-                </ul>
-                <p><strong>Tools:</strong> AWS IAM, AWS SSO, Organizations, Access Analyzer</p>
+        <img src="https://i.ytimg.com/vi/ng14ToMXnTA/maxresdefault.jpg" height="520px"/>
+        <div class="guardduty-content">
+            <div class="definition-section">
+                <h3>🤖 Definition</h3>
+                <p class="definition">AI-powered threat detection service sử dụng machine learning</p>
             </div>
-
-            <div class="practice-category">
-                <h3>🌐 Network Security</h3>
-                <ul>
-                    <li>Use VPC with private subnets by default</li>
-                    <li>Implement defense in depth strategy</li>
-                    <li>Regular security group audits</li>
-                    <li>Use VPC endpoints for AWS service access</li>
-                </ul>
-                <p><strong>Tools:</strong> VPC, Security Groups, AWS WAF, AWS Shield</p>
+            <div class="data-sources">
+                <h3>📊 Data Sources</h3>
+                <div class="sources-grid">
+                    <div class="source-item">
+                        <h4>VPC Flow Logs</h4>
+                        <p>Network traffic analysis</p>
+                    </div>
+                    <div class="source-item">
+                        <h4>DNS Logs</h4>
+                        <p>Malicious domain detection</p>
+                    </div>
+                    <div class="source-item">
+                        <h4>CloudTrail Events</h4>
+                        <p>Suspicious API activities</p>
+                    </div>
+                    <div class="source-item">
+                        <h4>S3 Data Events</h4>
+                        <p>Unusual S3 access patterns</p>
+                    </div>
+                </div>
             </div>
-
-            <div class="practice-category">
-                <h3>🔐 Data Protection & CloudFront</h3>
-                <ul>
-                    <li>Encrypt everything (at rest and in transit)</li>
-                    <li>Proper key management with AWS KMS</li>
-                    <li>Use CloudFront for static content distribution</li>
-                    <li>Always implement OAC with S3, enable HTTPS</li>
-                </ul>
-                <p><strong>Tools:</strong> AWS KMS, S3 encryption, CloudFront, WAF, Shield</p>
+            <div class="threat-intel">
+                <h3>🎯 Threat Intelligence</h3>
+                <p>AWS intelligence + CrowdStrike + Proofpoint + custom feeds</p>
             </div>
-
-            <div class="practice-category">
-                <h3>📊 Monitoring & Logging</h3>
-                <ul>
-                    <li>Enable CloudTrail in all regions</li>
-                    <li>Set up comprehensive security monitoring</li>
-                    <li>CloudFront access logs, real-time metrics</li>
-                    <li>Automated threat detection with GuardDuty</li>
-                </ul>
-                <p><strong>Tools:</strong> CloudTrail, GuardDuty, Security Hub, CloudWatch</p>
+            <div class="finding-types">
+                <h3>🔍 Finding Types</h3>
+                <div class="findings-grid">
+                    <div class="finding-type">
+                        <h4>Reconnaissance</h4>
+                        <p>Port scanning, unauthorized API calls</p>
+                    </div>
+                    <div class="finding-type">
+                        <h4>Instance Compromise</h4>
+                        <p>Cryptocurrency mining, backdoor communication</p>
+                    </div>
+                    <div class="finding-type">
+                        <h4>Data Exfiltration</h4>
+                        <p>Suspicious data transfers, DNS tunneling</p>
+                    </div>
+                </div>
             </div>
-
-            <div class="practice-category">
-                <h3>🏢 Governance & Compliance</h3>
-                <ul>
-                    <li>Use AWS Organizations for multi-account governance</li>
-                    <li>Implement Service Control Policies (SCPs)</li>
-                    <li>Regular compliance assessments</li>
-                    <li>Document all security procedures</li>
-                </ul>
-                <p><strong>Tools:</strong> AWS Organizations, Config, Audit Manager</p>
+            <div class="severity-levels">
+                <h3>⚠️ Severity Levels</h3>
+                <div class="severity-grid">
+                    <div class="severity low-severity">
+                        <h4>Low</h4>
+                        <p>1.0-3.9</p>
+                    </div>
+                    <div class="severity medium-severity">
+                        <h4>Medium</h4>
+                        <p>4.0-6.9</p>
+                    </div>
+                    <div class="severity high-severity">
+                        <h4>High</h4>
+                        <p>7.0-8.9</p>
+                    </div>
+                </div>
             </div>
-
-            <div class="practice-category">
-                <h3>🚨 Incident Response</h3>
-                <ul>
-                    <li><strong>Preparation:</strong> Response plans, team training</li>
-                    <li><strong>Detection:</strong> Automated threat detection, log analysis</li>
-                    <li><strong>Containment:</strong> Isolation procedures, access revocation</li>
-                    <li><strong>Recovery:</strong> Clean procedures, backup restoration</li>
-                </ul>
-            </div>
-
-            <div class="continuous-improvement">
-                <h3>🔄 Continuous Improvement</h3>
-                <ul>
-                    <li>Security is an ongoing process, not one-time setup</li>
-                    <li>Regular security assessments and penetration testing</li>
-                    <li>Keep up with AWS security updates and best practices</li>
-                    <li>Automate security controls where possible</li>
+            <div class="integration-section">
+                <h3>🔗 Integration</h3>
+                <ul class="integration-list">
+                    <li><strong>EventBridge:</strong> Automation workflows</li>
+                    <li><strong>Security Hub:</strong> Centralized findings</li>
+                    <li><strong>Lambda:</strong> Automated remediation</li>
                 </ul>
             </div>
-
-            <div class="conclusion-message">
-                <h2>🎯 Kết luận: Bảo mật AWS với CloudFront là một hành trình toàn diện!</h2>
-                <p>Cảm ơn các bạn đã tham gia khóa đào tạo AWS Security Training với CloudFront!</p>
+            <div class="cost-model">
+                <h3>💰 Cost Model</h3>
+                <p>Based on data volume analyzed (VPC Flow Logs, DNS logs, CloudTrail events)</p>
             </div>
         </div>
     </div>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shared Responsibility Model - AWS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        html,body{height:auto;min-height:100%;overflow-y:auto}
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030712; /* bg-gray-950 */
+        }
+        .responsibility-card {
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            height: 100%;
+            transition: all 0.3s ease-in-out;
+            border: 1px solid transparent;
+        }
+        .responsibility-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease-in-out;
+        }
+        .responsibility-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            transform: scale(1.02);
+        }
+        .icon {
+            flex-shrink: 0;
+            width: 1.75rem;
+            height: 1.75rem;
+            margin-right: 1rem;
+        }
+        .aws-card {
+             background: radial-gradient(circle at top, rgba(37, 99, 235, 0.15), transparent 70%);
+             border-color: rgba(59, 130, 246, 0.3);
+        }
+        .customer-card {
+            background: radial-gradient(circle at top, rgba(20, 184, 166, 0.15), transparent 70%);
+            border-color: rgba(20, 184, 166, 0.3);
+        }
+    </style>
+</head>
+<body class="text-gray-300 antialiased">
+
+    <div class="container mx-auto p-8 md:p-24">
+
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-3">Shared Responsibility Model - AWS</h1>
+            <p class="text-lg text-gray-400">An ninh trên Đám mây: Ai chịu trách nhiệm cho việc gì?</p>
+        </header>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+
+            <!-- AWS Responsibility Column -->
+            <div class="responsibility-card aws-card">
+                <h2 class="text-3xl font-bold text-blue-400 mb-6 flex items-center">
+                    <svg class="icon mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-2.433-2.433c-.504-.134-1.022-.134-1.526 0l3.056 3.056m-5.332-2.842a3 3 0 00-3.056-3.056c-.504-.134-1.022-.134-1.526 0l3.056 3.056" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.131-12.868M3.869 12.132A9.004 9.004 0 0112 3c1.995 0 3.861.63 5.404 1.732m-1.403 9.531l-3.056-3.056m0 0l-3.056 3.056m3.056-3.056l-3.056-3.056m3.056 3.056l3.056 3.056" />
+                    </svg>
+                    <span>Trách nhiệm CỦA AWS</span>
+                </h2>
+                <p class="mb-6 text-blue-200/80 text-lg font-semibold">Bảo mật <span class="font-extrabold">CỦA</span> Đám mây (Security OF the Cloud)</p>
+                <div class="space-y-4">
+
+                    <div class="responsibility-item">
+                        <div class="icon text-blue-400"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 17.25v-.228a4.5 4.5 0 00-.12-1.03l-2.268-9.64a3.375 3.375 0 00-3.285-2.602H7.923a3.375 3.375 0 00-3.285 2.602l-2.268 9.64a4.5 4.5 0 00-.12 1.03v.228m19.5 0a3 3 0 01-3 3H5.25a3 3 0 01-3-3m19.5 0a3 3 0 00-3-3H5.25a3 3 0 00-3 3m16.5 0h.008v.008h-.008v-.008zm-3 0h.008v.008h-.008v-.008z" /></svg></div>
+                        <div>
+                            <h3 class="font-semibold text-white">Hạ tầng Toàn cầu & Phần cứng</h3>
+                            <p class="text-gray-400 text-sm">Quản lý và bảo mật Regions, Availability Zones, Edge Locations, và toàn bộ phần cứng vật lý.</p>
+                        </div>
+                    </div>
+
+                    <div class="responsibility-item">
+                        <div class="icon text-blue-400"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 7.5l.415-.207a.75.75 0 011.085.67V10.5m0 0h6m-6 0a.75.75 0 001.085.67l.415-.207M3 7.5v6m18-6v6" /></svg></div>
+                        <div>
+                            <h3 class="font-semibold text-white">An ninh Vật lý</h3>
+                            <p class="text-gray-400 text-sm">Bảo vệ các trung tâm dữ liệu (data centers) khỏi các truy cập trái phép trên thực địa.</p>
+                        </div>
+                    </div>
+
+                    <div class="responsibility-item">
+                        <div class="icon text-blue-400"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9 9 0 000-18h.008c4.97 0 9 4.03 9 9s-4.03 9-9 9H12z" /></svg></div>
+                        <div>
+                            <h3 class="font-semibold text-white">Hạ tầng Mạng & Ảo hóa</h3>
+                            <p class="text-gray-400 text-sm">Chịu trách nhiệm cho network fabric, hypervisor (lớp ảo hóa), và an ninh tại các điểm của CloudFront.</p>
+                        </div>
+                    </div>
+
+                    <div class="responsibility-item">
+                        <div class="icon text-blue-400"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" /></svg></div>
+                        <div>
+                            <h3 class="font-semibold text-white">Dịch vụ Được quản lý (Managed Services)</h3>
+                            <p class="text-gray-400 text-sm">AWS quản lý lớp hệ điều hành và nền tảng cho các dịch vụ như RDS, Lambda, S3.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customer Responsibility Column -->
+            <div class="responsibility-card customer-card">
+                <h2 class="text-3xl font-bold text-teal-400 mb-6 flex items-center">
+                    <svg class="icon mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span>Trách nhiệm CỦA KHÁCH HÀNG</span>
+                </h2>
+                <p class="mb-6 text-teal-200/80 text-lg font-semibold">Bảo mật <span class="font-extrabold">TRONG</span> Đám mây (Security IN the Cloud)</p>
+                <div class="space-y-4">
+
+                    <div class="responsibility-item">
+                         <div class="icon text-teal-400"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" /></svg></div>
+                        <div>
+                            <h3 class="font-semibold text-white">Dữ liệu & Mã hóa</h3>
+                            <p class="text-gray-400 text-sm">Chịu trách nhiệm mã hóa dữ liệu cả phía máy khách (client-side) và phía máy chủ (server-side).</p>
+                        </div>
+                    </div>
+
+                    <div class="responsibility-item">
+                        <div class="icon text-teal-400"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" /></svg></div>
+                        <div>
+                            <h3 class="font-semibold text-white">Nền tảng, Ứng dụng & IAM</h3>
+                            <p class="text-gray-400 text-sm">Quản lý định danh và quyền truy cập (IAM), bảo mật ứng dụng và mã nguồn.</p>
+                        </div>
+                    </div>
+
+                     <div class="responsibility-item">
+                        <div class="icon text-teal-400"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-1.621-1.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" /></svg></div>
+                        <div>
+                            <h3 class="font-semibold text-white">Hệ điều hành & Tường lửa</h3>
+                            <p class="text-gray-400 text-sm">Cài đặt, vá lỗi hệ điều hành (trên EC2), và cấu hình tường lửa mạng (Security Groups, NACLs).</p>
+                        </div>
+                    </div>
+
+                    <div class="responsibility-item">
+                        <div class="icon text-teal-400"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg></div>
+                        <div>
+                            <h3 class="font-semibold text-white">Cấu hình Dịch vụ</h3>
+                            <p class="text-gray-400 text-sm">Chịu trách nhiệm cấu hình đúng cách các dịch vụ như CloudFront, Security Groups, S3 Buckets.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Footer -->
+        <footer class="text-center mt-12 pt-8 border-t border-gray-800">
+             <p class="text-gray-400 max-w-3xl mx-auto">Tóm lại: <strong class="text-white">AWS</strong> chịu trách nhiệm bảo vệ hạ tầng đám mây. <strong class="text-white">Bạn</strong> chịu trách nhiệm bảo vệ bất cứ thứ gì bạn đưa lên hoặc xây dựng trên đám mây đó.</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Config: Automated Compliance Loop</title>
+    <style>
+        /* --- Color Palette & Basic Setup --- */
+        :root {
+            --slate-900: #0F172A;
+            --slate-800: #1E293B;
+            --slate-700: #334155;
+            --slate-500: #64748B;
+            --slate-400: #94A3B8;
+            --slate-50: #F8FAFC;
+            --blue-600: #2563EB;
+            --blue-400: #60A5FA;
+            --emerald-500: #10B981;
+            --amber-500: #F59E0B;
+            --red-500: #EF4444;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--slate-900);
+            color: var(--slate-50);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+
+        /* --- Layout & Typography --- */
+        .container {
+            width: 100%;
+            max-width: 1152px; /* Corresponds to max-w-5xl */
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-size: 1.875rem; /* 3xl */
+            font-weight: 700;
+            color: white;
+            margin: 0;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        header p {
+            color: var(--slate-400);
+            margin-top: 0.5rem;
+        }
+
+        /* --- Main Card --- */
+        .card {
+            background-color: var(--slate-800);
+            border: 1px solid var(--slate-700);
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); /* shadow-2xl */
+            overflow: hidden;
+        }
+
+        .canvas-container {
+            background-color: rgba(15, 23, 42, 0.5); /* bg-slate-900/50 */
+            padding: 1rem;
+            border-bottom: 1px solid var(--slate-700);
+        }
+
+        .content-container {
+            padding: 1.5rem;
+            background-color: rgba(30, 41, 59, 0.5); /* bg-slate-800/50 */
+        }
+
+        /* --- Status Boxes Grid --- */
+        .status-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .status-box {
+            padding: 1rem;
+            border-radius: 0.5rem; /* rounded-lg */
+            border: 2px solid transparent;
+            transition: all 0.5s ease-in-out;
+            opacity: 0.5;
+            transform: scale(0.95);
+        }
+
+        .status-box.active {
+            opacity: 1;
+            transform: scale(1);
+            border-color: var(--blue-600);
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.5);
+        }
+
+        .status-box-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-box-header span {
+            color: var(--blue-400);
+            font-weight: 700;
+            font-size: 1.125rem; /* lg */
+            margin-right: 0.5rem;
+        }
+
+        .status-box-header svg {
+            height: 1.5rem; /* h-6 */
+            width: 1.5rem; /* w-6 */
+            stroke: var(--blue-400);
+        }
+
+        .status-box p {
+            color: var(--slate-400);
+            font-size: 0.875rem; /* sm */
+        }
+
+        /* --- Responsive Design --- */
+        @media (min-width: 768px) { /* md: */
+            h1 {
+                font-size: 2.25rem; /* 4xl */
+            }
+            .status-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>AWS Config: The Automated Compliance Loop</h1>
+            <p>Watch how a configuration change is automatically detected, reported, and remediated.</p>
+        </header>
+
+        <main class="card">
+            <div class="canvas-container">
+                <canvas id="awsCanvas"></canvas>
+            </div>
+            <div class="content-container">
+                <div class="status-grid">
+                    <!-- Step 1: Detect -->
+                    <div id="detect-box" class="status-box card">
+                        <div class="status-box-header">
+                            <span>1. DETECT</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        </div>
+                        <p>Config rules continuously evaluate resources. Non-compliant changes are flagged instantly.</p>
+                    </div>
+                    <!-- Step 2: Notify -->
+                    <div id="notify-box" class="status-box card">
+                        <div class="status-box-header">
+                            <span>2. NOTIFY</span>
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+                        </div>
+                        <p>Amazon SNS or EventBridge alerts teams via email, Slack, or a centralized dashboard.</p>
+                    </div>
+                    <!-- Step 3: Remediate -->
+                    <div id="remediate-box" class="status-box card">
+                         <div class="status-box-header">
+                            <span>3. REMEDIATE</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                        </div>
+                        <p>AWS Lambda or SSM Automation runs a playbook to automatically revert the change.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('awsCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // --- State ---
+        let animationFrameId;
+        let phase = 'change';
+        let phaseCounter = 0;
+        const phaseDurations = {
+            change: 60,
+            detect: 120,
+            notify: 120,
+            remediate: 180,
+            compliant: 120,
+            end: 180, // Pause before looping
+        };
+
+        let s3Bucket = { status: 'compliant' };
+        let entities = {};
+
+        // --- Helper Functions ---
+        const resizeCanvas = () => {
+            const parent = canvas.parentElement;
+            canvas.width = parent.clientWidth;
+            canvas.height = Math.min(parent.clientWidth * 0.5, 400);
+            draw();
+        };
+
+        const updateStatusBox = (activeBox) => {
+            ['detect-box', 'notify-box', 'remediate-box'].forEach(id => {
+                const el = document.getElementById(id);
+                if (id === activeBox) {
+                    el.classList.add('active');
+                } else {
+                    el.classList.remove('active');
+                }
+            });
+        };
+
+        // --- Drawing Functions ---
+        const drawIcon = (icon, x, y, size) => {
+            ctx.font = `${size}px sans-serif`;
+            ctx.fillText(icon, x, y);
+        };
+
+        const drawEntity = (label, x, y, color, icon) => {
+            const width = 120;
+            const height = 50;
+            const colors = { // Get CSS variables
+                compliant: getComputedStyle(document.documentElement).getPropertyValue('--emerald-500'),
+                changed: getComputedStyle(document.documentElement).getPropertyValue('--amber-500'),
+                noncompliant: getComputedStyle(document.documentElement).getPropertyValue('--red-500'),
+                default: color,
+            };
+
+            ctx.fillStyle = colors[color] || color;
+            ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--slate-400');
+            ctx.lineWidth = 2;
+
+            ctx.beginPath();
+            ctx.roundRect(x - width / 2, y - height / 2, width, height, 8);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--slate-50');
+            ctx.font = 'bold 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(label, x, y + 15);
+
+            ctx.font = '30px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
+            ctx.fillText(icon, x, y - 10);
+        };
+
+        const drawS3Bucket = (x, y, status) => {
+            const icon = '🪣';
+            drawEntity('S3 Bucket', x, y, status, icon);
+
+            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--slate-50');
+            ctx.font = '12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
+            const statusText = status.charAt(0).toUpperCase() + status.slice(1);
+            ctx.fillText(statusText, x, y + 35);
+        };
+
+        const drawStatusSymbol = (x, y, symbol, color) => {
+             ctx.font = '40px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
+             ctx.fillStyle = color;
+             ctx.textAlign = 'center';
+             ctx.textBaseline = 'middle';
+             ctx.fillText(symbol, x, y);
+        };
+
+        const drawFlowLine = (from, to, progress, text) => {
+             ctx.beginPath();
+             ctx.moveTo(from.x, from.y);
+             const midX = from.x + (to.x - from.x) * progress;
+             const midY = from.y + (to.y - from.y) * progress;
+             ctx.lineTo(midX, midY);
+             ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--slate-500');
+             ctx.lineWidth = 2;
+             ctx.setLineDash([5, 5]);
+             ctx.stroke();
+             ctx.setLineDash([]);
+
+             if (text && progress > 0.1) {
+                drawIcon(text, midX, midY - 15, 30);
+             }
+        };
+
+        const draw = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            entities = {
+                s3: { x: canvas.width / 2, y: canvas.height * 0.7 },
+                config: { x: canvas.width / 2, y: canvas.height * 0.25 },
+                sns: { x: canvas.width * 0.2, y: canvas.height * 0.25 },
+                lambda: { x: canvas.width * 0.8, y: canvas.height * 0.25 },
+            };
+
+            const slate700 = getComputedStyle(document.documentElement).getPropertyValue('--slate-700');
+            drawS3Bucket(entities.s3.x, entities.s3.y, s3Bucket.status);
+            drawEntity('AWS Config', entities.config.x, entities.config.y, slate700, '⚙️');
+            drawEntity('Amazon SNS', entities.sns.x, entities.sns.y, slate700, '✉️');
+            drawEntity('AWS Lambda', entities.lambda.x, entities.lambda.y, slate700, 'λ');
+
+            const red500 = getComputedStyle(document.documentElement).getPropertyValue('--red-500');
+            const emerald500 = getComputedStyle(document.documentElement).getPropertyValue('--emerald-500');
+
+            if (phase === 'detect') {
+                const progress = phaseCounter / phaseDurations.detect;
+                drawFlowLine(entities.config, entities.s3, progress);
+                if (progress > 0.9) {
+                    s3Bucket.status = 'noncompliant';
+                    drawStatusSymbol(entities.s3.x, entities.s3.y - 40, '⚠️', red500);
+                }
+            } else if (phase === 'noncompliant' || phase === 'notify') {
+                 drawStatusSymbol(entities.s3.x, entities.s3.y - 40, '⚠️', red500);
+            }
+
+            if (phase === 'notify') {
+                const progress = phaseCounter / phaseDurations.notify;
+                drawFlowLine(entities.s3, entities.sns, progress, '🔔');
+            }
+
+            if (phase === 'remediate') {
+                drawStatusSymbol(entities.s3.x, entities.s3.y - 40, '⚠️', red500);
+                const progress = phaseCounter / phaseDurations.remediate;
+                drawFlowLine(entities.lambda, entities.s3, progress, '🔧');
+                if (progress > 0.9) {
+                     s3Bucket.status = 'compliant';
+                }
+            }
+
+            if (phase === 'compliant' || phase === 'end') {
+                drawStatusSymbol(entities.s3.x, entities.s3.y - 40, '✅', emerald500);
+            }
+        };
+
+        // --- Animation Loop ---
+        const gameLoop = () => {
+            phaseCounter++;
+
+            switch (phase) {
+                case 'change':
+                    if (phaseCounter === 1) s3Bucket.status = 'changed';
+                    if (phaseCounter >= phaseDurations.change) {
+                        phase = 'detect';
+                        phaseCounter = 0;
+                        updateStatusBox('detect-box');
+                    }
+                    break;
+                case 'detect':
+                    if (phaseCounter >= phaseDurations.detect) {
+                        phase = 'noncompliant'; // a brief pause
+                        phaseCounter = 0;
+                    }
+                    break;
+                case 'noncompliant':
+                    if(phaseCounter > 30) {
+                        phase = 'notify';
+                        phaseCounter = 0;
+                        updateStatusBox('notify-box');
+                    }
+                    break;
+                case 'notify':
+                    if (phaseCounter >= phaseDurations.notify) {
+                        phase = 'remediate';
+                        phaseCounter = 0;
+                        updateStatusBox('remediate-box');
+                    }
+                    break;
+                case 'remediate':
+                    if (phaseCounter >= phaseDurations.remediate) {
+                        phase = 'compliant';
+                        phaseCounter = 0;
+                    }
+                    break;
+                case 'compliant':
+                     if (phaseCounter >= phaseDurations.compliant) {
+                        phase = 'end';
+                        phaseCounter = 0;
+                        updateStatusBox(null);
+                    }
+                    break;
+                case 'end':
+                    if (phaseCounter >= phaseDurations.end) {
+                       phase = 'change';
+                       phaseCounter = 0;
+                       s3Bucket.status = 'compliant';
+                    }
+                    break;
+            }
+
+            draw();
+            animationFrameId = requestAnimationFrame(gameLoop);
+        };
+
+        // --- Event Listeners ---
+        window.addEventListener('resize', resizeCanvas);
+
+        // --- Initial Setup ---
+        resizeCanvas();
+        gameLoop();
+    </script>
+</body>
+</html>
+

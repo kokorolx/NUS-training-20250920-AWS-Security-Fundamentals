@@ -1,0 +1,93 @@
+<!-- Chosen Palette: Professional Tech Blue -->
+<!-- Application Structure Plan: The application is structured as a single, focused narrative view. It starts with a concise introduction, moves to an interactive process flow diagram which is the core of the experience, and concludes with a side-by-side comparison of pros and cons, supported by a visualization. This top-down, "what-how-why" structure was chosen to guide the user logically from the high-level concept to the operational details and finally to the business implications, making a technical topic highly digestible in a single screen without tabs or complex navigation. -->
+<!-- Visualization & Content Choices: 1. Remediation Flow -> Goal: Organize/Inform -> Viz: Interactive Diagram -> Interaction: A "Run Simulation" button animates the flow step-by-step, highlighting each stage. -> Justification: An animated flow is far more effective at explaining a sequence of events than a static list, making the process tangible and easy to follow. (Method: HTML/CSS/JS). 2. Remediation Time Comparison -> Goal: Compare -> Viz: Chart.js Horizontal Bar Chart -> Interaction: Hover tooltips. -> Justification: This chart visually quantifies the most significant "pro" (Rapid Response/MTTR reduction), transforming an abstract benefit into a concrete, impactful visual that supports the text. (Library: Chart.js/Canvas). 3. Pros vs. Cons -> Goal: Compare -> Viz: Two-column card layout -> Interaction: Subtle hover effects. -> Justification: A direct side-by-side layout is the clearest way to present a balanced view, allowing for quick comparison of the points from the report. (Method: HTML/CSS). -->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Guide to AWS Config & Automated Remediation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>html { font-size: var(--font-size-base); }</style>
+    <style>
+        /* Ensure page can scroll when content is taller than viewport */
+        html,body{height:auto;min-height:100%;overflow-y:auto}
+        /* Slightly smaller chart on small screens, keep existing max-height */
+        .chart-container { height: 220px; max-height: 300px; }
+        @media (min-width:768px){ .chart-container{ height:300px; } }
+    </style>
+    <style>
+        .flow-step {
+            transition: all 0.5s ease-in-out;
+            border-color: #d1d5db; /* gray-300 */
+        }
+        .flow-step.active {
+            border-color: #2563eb; /* blue-600 */
+            background-color: #eff6ff; /* blue-50 */
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .flow-arrow {
+            transition: all 0.5s ease-in-out;
+            color: #9ca3af; /* gray-400 */
+        }
+        .flow-arrow.active {
+            color: #2563eb; /* blue-600 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 250px;
+            max-height: 300px;
+        }
+        @media (min-width: 768px) { .chart-container { height: 300px; } }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto p-8 md:p-24">
+        <img class="mx-auto" src="https://d2908q01vomqb2.cloudfront.net/77de68daecd823babbb58edb1c8e14d7106e83bb/2020/05/18/AWS-Config-Rules-1.jpg" height="520px">
+        <header class="text-center py-8">
+            <div class="definition-section text-lg md:text-xl text-gray-600 max-w-4xl mx-auto">AWS Config tracks resource configurations for compliance, security, and troubleshooting.</div>
+        </header>
+
+        <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+            <div class="border-gray-200">
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800">Pros & Cons</h2>
+                    <p class="text-gray-600 mt-1">Consider the benefits and challenges of this approach.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                    <div>
+                        <h3 class="font-bold text-lg text-center text-gray-700 mb-4">Advantages (Pros)</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start bg-green-50 p-3 rounded-lg"><span class="text-green-600 text-xl mr-3">🚀</span><div><p class="font-semibold text-green-800">Rapid Response</p><p class="text-sm text-gray-600">Reduces fix time (MTTR) from hours to seconds.</p></div></li>
+                            <li class="flex items-start bg-green-50 p-3 rounded-lg"><span class="text-green-600 text-xl mr-3">🔄</span><div><p class="font-semibold text-green-800">Continuous Compliance</p><p class="text-sm text-gray-600">Enforces security rules 24/7, with no manual work.</p></div></li>
+                            <li class="flex items-start bg-green-50 p-3 rounded-lg"><span class="text-green-600 text-xl mr-3">👥</span><div><p class="font-semibold text-green-800">Reduced Human Error</p><p class="text-sm text-gray-600">Removes the risk of manual mistakes.</p></div></li>
+                            <li class="flex items-start bg-green-50 p-3 rounded-lg"><span class="text-green-600 text-xl mr-3">📈</span><div><p class="font-semibold text-green-800">Scalability</p><p class="text-sm text-gray-600">Applies rules across many accounts and resources.</p></div></li>
+                        </ul>
+                    </div>
+                     <div>
+                        <h3 class="font-bold text-lg text-center text-gray-700 mb-4">Considerations (Cons)</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start bg-yellow-50 p-3 rounded-lg"><span class="text-yellow-600 text-xl mr-3">❗</span><div><p class="font-semibold text-yellow-800">Implementation Complexity</p><p class="text-sm text-gray-600">Requires careful planning and coding to avoid issues.</p></div></li>
+                            <li class="flex items-start bg-yellow-50 p-3 rounded-lg"><span class="text-yellow-600 text-xl mr-3">⚠️</span><div><p class="font-semibold text-yellow-800">Risk of Errors</p><p class="text-sm text-gray-600">Bad scripts can cause problems. Always test well.</p></div></li>
+                            <li class="flex items-start bg-yellow-50 p-3 rounded-lg"><span class="text-yellow-600 text-xl mr-3">💸</span><div><p class="font-semibold text-yellow-800">Associated Costs</p><p class="text-sm text-gray-600">Costs for services like Lambda can add up at scale.</p></div></li>
+                            <li class="flex items-start bg-yellow-50 p-3 rounded-lg"><span class="text-yellow-600 text-xl mr-3">🎯</span><div><p class="font-semibold text-yellow-800">Scope Limitations</p><p class="text-sm text-gray-600">Some issues are too complex to auto-fix and need manual review.</p></div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        html,body{height:auto;min-height:100%;overflow-y:auto}
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0F172A; /* Slate 900 */
+            color: #F8FAFC; /* Slate 50 */
+            overflow: hidden;
+        }
+
+        /* --- Animation Keyframes --- */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes line-draw {
+            from {
+                stroke-dashoffset: 1000;
+            }
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        /* --- Animation Application --- */
+        .animated-item {
+            opacity: 0;
+            animation: fadeInUp 0.7s ease-out forwards;
+        }
+
+        /* Staggered animation delays */
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.8s; }
+        .delay-4 { animation-delay: 1.4s; }
+        .delay-5 { animation-delay: 2.0s; }
+        .delay-6 { animation-delay: 2.6s; }
+
+        .connector-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: line-draw 1.5s ease-out forwards;
+        }
+
+        .process-arrow {
+            color: #F97316; /* Orange 500 */
+        }
+
+        .card {
+            background-color: #1E293B; /* Slate 800 */
+            border: 1px solid #334155; /* Slate 700 */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen pa-6 ">
+
+    <div class="container mx-auto p-8 md:p-24">
+
+        <!-- Header -->
+         <img class="mx-auto" src="https://i.ytimg.com/vi/RR4MtDl09Vk/maxresdefault.jpg" height="520px"/>
+
+        <header class="text-center py-8">
+            <div class="definition-section text-lg md:text-xl text-gray-600 max-w-4xl mx-auto">Automated Discover and protect your sensitive data</div>
+        </header>
+
+        <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <!-- Macie Overview -->
+            <div class="card rounded-xl p-6 md:col-span-2 lg:col-span-3 animated-item delay-2">
+                <h2 class="text-2xl font-semibold text-orange-400">Macie Overview</h2>
+                <p class="text-slate-300 mt-2 text-lg">
+                    <span class="font-semibold"> AI-powered sensitive data discovery</span> to automatically find, classify, and protect your data on AWS.
+                </p>
+            </div>
+
+            <!-- Discovery Process -->
+            <div class="card rounded-xl p-6 md:col-span-2 lg:col-span-3 animated-item delay-3">
+                <h2 class="text-2xl font-semibold text-orange-400 mb-4">Discovery Process</h2>
+                <div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 md:space-x-4 text-center">
+                    <div class="flex-1">
+                        <div class="p-4 bg-slate-700 rounded-lg">Scan S3 Buckets</div>
+                    </div>
+                    <span class="process-arrow text-2xl font-mono">&rarr;</span>
+                    <div class="flex-1">
+                        <div class="p-4 bg-slate-700 rounded-lg">Classify Data</div>
+                    </div>
+                    <span class="process-arrow text-2xl font-mono">&rarr;</span>
+                    <div class="flex-1">
+                        <div class="p-4 bg-slate-700 rounded-lg">Generate Findings</div>
+                    </div>
+                     <span class="process-arrow text-2xl font-mono">&rarr;</span>
+                    <div class="flex-1">
+                        <div class="p-4 bg-orange-600 text-white rounded-lg">Create Alerts</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Types -->
+            <div class="card rounded-xl p-6 animated-item delay-4">
+                <h2 class="text-2xl font-semibold text-orange-400 mb-3">Data Types Discovered</h2>
+                <ul class="space-y-3 text-slate-300">
+                    <li><strong class="text-slate-100">PII:</strong> Full Name, Address, Phone...</li>
+                    <li><strong class="text-slate-100">PHI:</strong> Medical Records, Health Info...</li>
+                    <li><strong class="text-slate-100">Financial:</strong> Credit Card, Bank Account...</li>
+                    <li><strong class="text-slate-100">Credentials:</strong> AWS Keys, Private Keys...</li>
+                </ul>
+            </div>
+
+            <!-- Integration -->
+            <div class="card rounded-xl p-6 animated-item delay-5">
+                <h2 class="text-2xl font-semibold text-orange-400 mb-3">Integration Ecosystem</h2>
+                 <p class="text-slate-300 mb-4">Route findings to other services for automated remediation.</p>
+                <div class="flex items-center justify-around space-x-4">
+                     <span class="font-bold text-lg text-orange-400">Macie</span>
+                     <svg class="h-6 w-24 text-slate-500" viewBox="0 0 100 20" preserveAspectRatio="none">
+                        <path class="connector-line" d="M0 10, C 20 10, 30 0, 50 10, S 80 20, 100 10" stroke="currentColor" stroke-width="2" fill="none" />
+                     </svg>
+                    <div class="flex flex-col space-y-2 text-center text-sm">
+                        <span class="bg-slate-700 p-2 rounded">EventBridge</span>
+                        <span class="bg-slate-700 p-2 rounded">Lambda</span>
+                        <span class="bg-slate-700 p-2 rounded">Security Hub</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Use Cases -->
+            <div class="card rounded-xl p-6 animated-item delay-6">
+                <h2 class="text-2xl font-semibold text-orange-400 mb-3">Common Use Cases</h2>
+                 <ul class="space-y-3 text-slate-300 list-disc list-inside">
+                    <li>Ensure safety during data migrations.</li>
+                    <li>Meet compliance (GDPR, HIPAA, etc.).</li>
+                    <li>Accelerate incident response.</li>
+                    <li>Prevent accidental data exposure.</li>
+                </ul>
+            </div>
+
+        </main>
+    </div>
+
+</body>
+</html>

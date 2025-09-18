@@ -2,7 +2,7 @@
 class AWSSecurityPresentation {
     constructor() {
         this.currentSlide = 1;
-        this.totalSlides = 28; // Updated to 28 slides
+        this.totalSlides = 30; // Updated to 28 slides
         this.slides = document.querySelectorAll('.slide');
         this.prevBtn = document.getElementById('prevBtn');
         this.nextBtn = document.getElementById('nextBtn');
@@ -19,8 +19,10 @@ class AWSSecurityPresentation {
             3: { name: 'Network', slides: [11, 12, 13, 14, 15], duration: '25 phút' },
             4: { name: 'Data & CloudFront', slides: [16, 17, 18, 19, 20, 21, 22, 23], duration: '30 phút' },
             5: { name: 'Monitoring', slides: [24, 25, 26], duration: '15 phút' },
-            6: { name: 'Scenarios', slides: [27], duration: '15 phút' },
-            7: { name: 'Best Practices', slides: [28], duration: '15 phút' }
+            6: { name: 'AI Guard', slides: [28, 29], duration: '15 phút' },
+            7: { name: 'Pricing Protection', slides: [29], duration: '15 phút' },
+            8: { name: 'Scenarios', slides: [29], duration: '15 phút' },
+            9: { name: 'Best Practices', slides: [30], duration: '15 phút' }
         };
 
         // CloudFront specific slides for special handling
@@ -42,9 +44,59 @@ class AWSSecurityPresentation {
         this.nextBtn.addEventListener('click', () => this.goToNextSlide());
 
         // Section navigation
+        // Generate nav buttons from this.sections if a container exists (keeps DOM and JS in sync)
+        const navContainer = document.getElementById('navHeader') || document.querySelector('.nav-header');
+        if (navContainer) {
+            navContainer.innerHTML = '';
+
+            // Make the nav horizontally scrollable on overflow and use flex layout
+            navContainer.style.display = 'flex';
+            navContainer.style.alignItems = 'center';
+            navContainer.style.overflowX = 'auto';
+            navContainer.style.whiteSpace = 'nowrap';
+            navContainer.style.gap = '0.5rem';
+            navContainer.style.padding = '0.5rem 0';
+
+            Object.entries(this.sections).forEach(([id, s]) => {
+                const btn = document.createElement('button');
+                btn.className = 'section-btn';
+                btn.dataset.section = id;
+                btn.type = 'button';
+                btn.textContent = s.name;
+
+                // Ensure buttons do not stretch and allow horizontal scroll
+                btn.style.flex = '0 0 auto';
+                btn.style.margin = '0 0.25rem';
+
+                navContainer.appendChild(btn);
+            });
+
+            // Create or update section progress badge at the end of the nav (shows X / N and percent)
+            let badge = navContainer.querySelector('#sectionProgressBadge');
+            if (!badge) {
+                badge = document.createElement('div');
+                badge.id = 'sectionProgressBadge';
+                badge.style.flex = '0 0 auto';
+                badge.style.marginLeft = 'auto';
+                badge.style.padding = '0.25rem 0.5rem';
+                badge.style.background = 'rgba(0,0,0,0.05)';
+                badge.style.borderRadius = '999px';
+                badge.style.fontSize = '0.9rem';
+                badge.style.color = '#1f2937';
+                badge.style.display = 'inline-flex';
+                badge.style.alignItems = 'center';
+                badge.style.gap = '0.5rem';
+                navContainer.appendChild(badge);
+            }
+            this.sectionProgressBadge = badge;
+
+            // Refresh cached buttons reference after dynamic generation
+            this.sectionBtns = document.querySelectorAll('.section-btn');
+        }
+
         this.sectionBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const sectionId = parseInt(e.target.dataset.section);
+                const sectionId = parseInt(e.currentTarget.dataset.section);
                 this.goToSection(sectionId);
             });
         });
@@ -134,11 +186,23 @@ class AWSSecurityPresentation {
 
         // Find current section and highlight it
         const currentSection = this.getSectionForSlide(this.currentSlide);
+        const totalSections = Object.keys(this.sections).length;
+        let currentIndex = 0;
+
         if (currentSection) {
             const currentSectionBtn = document.querySelector(`[data-section="${currentSection.id}"]`);
             if (currentSectionBtn) {
                 currentSectionBtn.classList.add('active');
             }
+            // Determine numeric index of current section in defined order
+            const keys = Object.keys(this.sections).map(k => parseInt(k));
+            currentIndex = keys.indexOf(currentSection.id) + 1;
+        }
+
+        // Update section progress badge if present
+        if (this.sectionProgressBadge) {
+            const percent = totalSections ? (currentIndex / totalSections) * 100 : 0;
+            this.sectionProgressBadge.textContent = `${currentIndex} / ${totalSections} (${Math.round(percent)}%)`;
         }
     }
 
@@ -371,6 +435,8 @@ class AWSSecurityPresentation {
             case '5':
             case '6':
             case '7':
+            case '8':
+            case '9':
                     if (event.ctrlKey /*|| event.metaKey*/) {
                         event.preventDefault();
                         const sectionId = parseInt(event.key);
@@ -528,9 +594,10 @@ class AWSSecurityPresentation {
             'data': 4,
             'cloudfront': 4, // CloudFront is in section 4
             'monitoring': 5,
-            'scenarios': 6,
-            'best-practices': 7,
-            'practices': 7
+            'auto-detect-remediation': 6,
+            'pricing-protection': 7,
+            'scenarios': 8,
+            'best-practices': 9,
         };
 
         const sectionId = sectionMap[sectionName.toLowerCase()];

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phân Tích Các Sự Cố An Ninh Mạng Thực Tế</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        html,body{height:auto;min-height:100%;overflow-y:auto}
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* bg-gray-900 */
+        }
+        .incident-content {
+            display: none;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+        .incident-content.active {
+            display: block;
+        }
+        .tab.active {
+            background-color: #BE123C; /* bg-rose-700 */
+            color: white;
+            border-color: #F43F5E; /* border-rose-500 */
+        }
+        .tab {
+             border-bottom: 3px solid transparent;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .stat-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #F43F5E; /* border-rose-500 */
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="text-gray-300 antialiased">
+
+    <div class="container mx-auto p-4 md:p-8 mt-12">
+
+        <!-- Header -->
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-3">Phân Tích An Ninh Mạng: Quá khứ & Tương lai</h1>
+            <p class="text-lg text-gray-400">Những bài học xương máu và xu hướng đáng báo động của ngành.</p>
+        </header>
+
+        <!-- Chart Section -->
+        <section class="mb-12 bg-gray-800/50 p-6 rounded-lg border border-gray-700">
+            <h2 class="text-2xl font-bold text-white text-center mb-4">Xu Hướng Tấn Công Mạng Toàn Cầu (2010-2025)</h2>
+            <div class="relative h-[500px]">
+                <canvas id="trendsChart"></canvas>
+            </div>
+            <p class="text-center text-xs text-gray-500 mt-4">Nguồn dữ liệu: Sectigo, Cobalt.io, FBI IC3 Reports.</p>
+        </section>
+
+
+        <!-- Tab Navigation -->
+        <nav class="mb-8 overflow-x-auto pb-2">
+             <h2 class="text-2xl font-bold text-white mb-4">Phân tích các sự cố điển hình</h2>
+            <div class="flex space-x-2 md:space-x-4 border-b border-gray-700">
+                <button class="tab active" onclick="showIncident(1)">Capital One (2019)</button>
+                <button class="tab" onclick="showIncident(2)">Dow Jones (2017)</button>
+                <button class="tab" onclick="showIncident(3)">Codecov (2021)</button>
+                <button class="tab" onclick="showIncident(4)">CIC Vietnam (2025)</button>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main id="incidents-container">
+
+            <!-- Incident 1: Capital One -->
+            <div id="incident-1" class="incident-content active">
+                <div class="bg-gray-800 rounded-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-bold text-rose-400 mb-6 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01" /></svg>
+                        Capital One: Lỗ hổng từ đặc quyền
+                    </h2>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-semibold text-white mb-2">Nguyên nhân</h3>
+                            <p>Kẻ tấn công khai thác một <strong class="text-rose-300">lỗ hổng trên Web Application Firewall (WAF)</strong> đã bị cấu hình sai. Điều này cho phép chúng gửi yêu cầu đến một máy chủ EC2 backend. Vấn đề nghiêm trọng nằm ở chỗ, máy chủ EC2 này được gán một IAM Role với <strong class="text-rose-300">đặc quyền quá lớn</strong>, bao gồm quyền đọc toàn bộ dữ liệu từ hàng chục S3 bucket chứa thông tin nhạy cảm của khách hàng.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-white mb-2">Bài học</h3>
+                            <p>Đây là bài học kinh điển về <strong class="text-rose-300">Nguyên tắc Đặc quyền Tối thiểu (Principle of Least Privilege)</strong>. Máy chủ EC2 đã được cấp quyền truy cập nhiều hơn rất nhiều so với những gì nó cần để thực hiện chức năng. Một điểm yếu (WAF) kết hợp với đặc quyền thừa thãi đã tạo ra một thảm họa.</p>
+                        </div>
+                    </div>
+                    <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="stat-card">
+                            <h4 class="text-lg font-semibold text-gray-400">Tác động</h4>
+                            <p class="text-3xl font-bold text-white mt-1">106 triệu</p>
+                            <p class="text-gray-300">hồ sơ khách hàng bị lộ.</p>
+                        </div>
+                        <div class="stat-card">
+                            <h4 class="text-lg font-semibold text-gray-400">Chi phí</h4>
+                            <p class="text-3xl font-bold text-white mt-1">$80 triệu</p>
+                            <p class="text-gray-300">tiền phạt từ cơ quan quản lý.</p>
+                        </div>
+                         <div class="stat-card">
+                            <h4 class="text-lg font-semibold text-gray-400">Dữ liệu nhạy cảm</h4>
+                            <p class="text-3xl font-bold text-white mt-1">140,000</p>
+                            <p class="text-gray-300">Số An sinh Xã hội bị đánh cắp.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Incident 2: Dow Jones -->
+            <div id="incident-2" class="incident-content">
+                <div class="bg-gray-800 rounded-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-bold text-rose-400 mb-6 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4M4 7v4c0 2.21 3.582 4 8 4s8-1.79 8-4V7" /></svg>
+                        Dow Jones & Accenture: Sai lầm "công khai"
+                    </h2>
+                     <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-semibold text-white mb-2">Nguyên nhân</h3>
+                            <p>Một S3 bucket chứa các bản sao lưu (backup) cơ sở dữ liệu và thông tin nhạy cảm đã bị <strong class="text-rose-300">cấu hình ở chế độ công khai (public)</strong>. Bất kỳ ai trên Internet cũng có thể duyệt và tải xuống toàn bộ nội dung. Lỗi này xảy ra bởi một nhà cung cấp bên thứ ba (Accenture) trong quá trình quản lý hạ tầng cho Dow Jones.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-white mb-2">Bài học</h3>
+                            <p>Cấu hình sai S3 bucket là một trong những lỗi phổ biến và nguy hiểm nhất. Việc bật tính năng <strong class="text-rose-300">S3 Block Public Access</strong> ở cấp độ tài khoản là một lớp bảo vệ tối quan trọng, không thể bỏ qua. An ninh của bên thứ ba cũng là một mắt xích không thể xem nhẹ.</p>
+                        </div>
+                    </div>
+                    <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="stat-card">
+                            <h4 class="text-lg font-semibold text-gray-400">Tác động</h4>
+                            <p class="text-3xl font-bold text-white mt-1">2.2 triệu</p>
+                            <p class="text-gray-300">khách hàng bị ảnh hưởng.</p>
+                        </div>
+                        <div class="stat-card">
+                            <h4 class="text-lg font-semibold text-gray-400">Chi phí</h4>
+                            <p class="text-3xl font-bold text-white mt-1">Khủng hoảng</p>
+                            <p class="text-gray-300">về mặt danh tiếng và uy tín.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Incident 3: Codecov -->
+            <div id="incident-3" class="incident-content">
+                <div class="bg-gray-800 rounded-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-bold text-rose-400 mb-6 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+                        Codecov: Tấn công Chuỗi cung ứng
+                    </h2>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-semibold text-white mb-2">Nguyên nhân</h3>
+                            <p>Kẻ tấn công đã xâm nhập vào hệ thống của Codecov và sửa đổi một tập lệnh (script) mà hàng ngàn khách hàng của họ sử dụng trong quy trình CI/CD. Tập lệnh độc hại này đã bí mật <strong class="text-rose-300">sao chép toàn bộ biến môi trường</strong> - thường chứa các thông tin nhạy cảm như AWS access key, token - và gửi về máy chủ của kẻ tấn công. </p>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-white mb-2">Bài học</h3>
+                            <p>Sự cố nhấn mạnh tầm quan trọng của việc <strong class="text-rose-300">giám sát và phát hiện mối đe dọa</strong>. Ngay cả khi thông tin xác thực bị đánh cắp, các công cụ như Amazon GuardDuty có thể phát hiện các hành vi bất thường (ví dụ: access key được sử dụng từ một vị trí lạ) và đưa ra cảnh báo sớm, giúp giảm thiểu thiệt hại.</p>
+                        </div>
+                    </div>
+                    <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="stat-card">
+                            <h4 class="text-lg font-semibold text-gray-400">Tác động</h4>
+                            <p class="text-3xl font-bold text-white mt-1">Hàng ngàn</p>
+                            <p class="text-gray-300">công ty khách hàng bị đánh cắp thông tin.</p>
+                        </div>
+                        <div class="stat-card">
+                            <h4 class="text-lg font-semibold text-gray-400">Thời gian không bị phát hiện</h4>
+                            <p class="text-3xl font-bold text-white mt-1">~2 tháng</p>
+                            <p class="text-gray-300">để kẻ tấn công khai thác dữ liệu.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Incident 4: CIC Vietnam -->
+            <div id="incident-4" class="incident-content">
+                <div class="bg-gray-800 rounded-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-bold text-rose-400 mb-6 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.657 7.343A8 8 0 0117.657 18.657z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.879 16.121A3 3 0 1014.12 11.88a3 3 0 00-4.242 4.242z" /></svg>
+                        CIC Vietnam: Thảm họa Quốc gia
+                    </h2>
+                     <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-semibold text-white mb-2">Nguyên nhân</h3>
+                            <p>Nhóm hacker khét tiếng <strong class="text-rose-300">ShinyHunters</strong> đã thực hiện vụ tấn công. Chúng đã khai thác một <strong class="text-rose-300">lỗ hổng "n-day"</strong> (lỗ hổng đã được công khai nhưng chưa được vá) tồn tại trong một phần mềm đã hết vòng đời (end-of-life) mà CIC đang sử dụng. Việc không cập nhật và vá lỗi cho các phần mềm quan trọng đã mở toang cánh cửa cho kẻ tấn công xâm nhập vào hệ thống.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-white mb-2">Bài học</h3>
+                            <p>Sự cố này là một bài học đau đớn về <strong class="text-rose-300">quản lý lỗ hổng và bản vá (Vulnerability & Patch Management)</strong>. Việc sử dụng phần mềm hết vòng đời là một rủi ro an ninh không thể chấp nhận. Ngoài ra, nó cũng cho thấy tầm quan trọng của <strong class="text-rose-300">"Phòng thủ theo chiều sâu"</strong>; nếu dữ liệu đã được mã hóa, thiệt hại có thể đã được giảm thiểu đáng kể ngay cả khi lớp phòng thủ đầu tiên bị xuyên thủng.</p>
+                        </div>
+                    </div>
+                    <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="stat-card">
+                            <h4 class="text-lg font-semibold text-gray-400">Tác động</h4>
+                            <p class="text-3xl font-bold text-white mt-1">160 triệu</p>
+                            <p class="text-gray-300">hồ sơ tín dụng quốc gia bị đánh cắp.</p>
+                        </div>
+                        <div class="stat-card">
+                            <h4 class="text-lg font-semibold text-gray-400">Chi phí</h4>
+                            <p class="text-3xl font-bold text-white mt-1">Khủng hoảng</p>
+                            <p class="text-gray-300">niềm tin vào hệ thống tài chính.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab');
+        const incidents = document.querySelectorAll('.incident-content');
+
+        function showIncident(incidentNumber) {
+            // Deactivate all
+            tabs.forEach(tab => tab.classList.remove('active'));
+            incidents.forEach(content => content.classList.remove('active'));
+
+            // Activate the selected one
+            const activeTab = document.querySelector(`.tab:nth-child(${incidentNumber})`);
+            const activeContent = document.getElementById(`incident-${incidentNumber}`);
+
+            if (activeTab) activeTab.classList.add('active');
+            if (activeContent) activeContent.classList.add('active');
+        }
+
+        // Chart.js implementation
+        document.addEventListener('DOMContentLoaded', () => {
+             // Tab styling
+             const baseStyles = 'tab flex-shrink-0 py-3 px-4 text-sm md:text-base font-semibold text-gray-400 transition-colors duration-300 ease-in-out hover:text-white focus:outline-none';
+             tabs.forEach(tab => {
+                const currentOnClick = tab.getAttribute('onclick');
+                tab.className = baseStyles;
+                tab.setAttribute('onclick', currentOnClick);
+             });
+             document.querySelector('.tab:nth-child(1)').classList.add('active');
+
+             // --- NEW TRENDS CHART ---
+             const ctx = document.getElementById('trendsChart').getContext('2d');
+
+             const years = ["2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025"];
+             const recordsExposed = [100, 100, 120, 150, 200, 200, 220, 250, 270, 300, 500, 600, 650, 800, 1000, 1200];
+             const economicDamage = [1, 1.2, 1.4, 1.6, 1.8, 3, 4, 5, 6, 7.5, 8.7, 9.6, 10, 12.5, 15, 15.63];
+
+             const recordsGradient = ctx.createLinearGradient(0, 0, 0, 500);
+             recordsGradient.addColorStop(0, 'rgba(37, 99, 235, 0.7)'); // blue-600
+             recordsGradient.addColorStop(1, 'rgba(30, 64, 175, 0.5)'); // blue-800
+
+             const trendsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: years,
+                    datasets: [
+                        {
+                            label: 'Số hồ sơ bị lộ (triệu)',
+                            data: recordsExposed,
+                            backgroundColor: recordsGradient,
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            borderWidth: 1,
+                            borderRadius: 4,
+                            yAxisID: 'y',
+                        },
+                        {
+                            label: 'Thiệt hại kinh tế (nghìn tỷ USD)',
+                            data: economicDamage,
+                            type: 'line',
+                            borderColor: 'rgba(244, 63, 94, 1)', // rose-500
+                            backgroundColor: 'rgba(244, 63, 94, 0.2)',
+                            tension: 0.4,
+                            fill: true,
+                            yAxisID: 'y1',
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: {
+                           display: true,
+                           position: 'top',
+                           labels: {
+                            color: '#d1d5db'
+                           }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        if (context.dataset.type === 'line') {
+                                             label += '$' + context.parsed.y + ' nghìn tỷ';
+                                        } else {
+                                             label += context.parsed.y + ' triệu';
+                                        }
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#9ca3af' }
+                        },
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: {
+                                color: '#9ca3af',
+                                callback: function(value) { return value + 'tr'; }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Số hồ sơ (triệu)',
+                                color: '#9ca3af'
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            beginAtZero: true,
+                            grid: { display: false },
+                            ticks: {
+                                color: '#fca5a5', // rose-300
+                                callback: function(value) { return '$' + value + 'T'; }
+                            },
+                             title: {
+                                display: true,
+                                text: 'Thiệt hại (nghìn tỷ USD)',
+                                color: '#fca5a5' // rose-300
+                            }
+                        }
+                    }
+                }
+             });
+        });
+
+    </script>
+
+</body>
+</html>
+
