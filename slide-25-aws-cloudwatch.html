@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS CloudWatch for Security Monitoring</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        html,body{height:auto;min-height:100%;overflow-y:auto}
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb; /* bg-gray-50 */
+        }
+        .tab-button {
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        .tab-button.active {
+            border-color: #4f46e5; /* border-indigo-600 */
+            color: #111827; /* text-gray-900 */
+        }
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.6s;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .code-block {
+            background-color: #1f2937; /* bg-gray-800 */
+            color: #d1d5db; /* text-gray-300 */
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+        .flow-arrow {
+            position: relative;
+            padding-right: 2rem;
+        }
+        .flow-arrow::after {
+            content: '→';
+            position: absolute;
+            right: 0.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased">
+
+    <div class="container mx-auto p-6 md:p-12">
+
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">AWS CloudWatch</h1>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">Giám sát, Phân tích và Phản ứng.</p>
+        </header>
+
+        <!-- Tabs Navigation -->
+        <div class="border-b border-gray-200 mb-8">
+            <nav class="-mb-px flex space-x-8 overflow-x-auto" aria-label="Tabs">
+                <button class="tab-button active flex-shrink-0 whitespace-nowrap py-4 px-1 text-base font-semibold text-gray-500 hover:text-gray-800" data-tab="scenario">
+                    Workflow & Scenario
+                </button>
+                <button class="tab-button flex-shrink-0 whitespace-nowrap py-4 px-1 text-base font-semibold text-gray-500 hover:text-gray-800" data-tab="components">
+                    Components
+                </button>
+                <button class="tab-button flex-shrink-0 whitespace-nowrap py-4 px-1 text-base font-semibold text-gray-500 hover:text-gray-800" data-tab="alarms">
+                    Metrics & Alarms
+                </button>
+                <button class="tab-button flex-shrink-0 whitespace-nowrap py-4 px-1 text-base font-semibold text-gray-500 hover:text-gray-800" data-tab="insights">
+                    Logs & Insights
+                </button>
+                 <button class="tab-button flex-shrink-0 whitespace-nowrap py-4 px-1 text-base font-semibold text-gray-500 hover:text-gray-800" data-tab="dashboards">
+                    Dashboards
+                </button>
+            </nav>
+        </div>
+
+        <!-- Tabs Content -->
+        <main>
+            <!-- Tab 0: Workflow & Scenario -->
+            <div id="scenario" class="tab-content active">
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Cách CloudWatch Phản ứng với một Cuộc tấn công</h2>
+                 <p class="text-gray-600 mb-6">Hãy xem cách các thành phần của CloudWatch phối hợp với nhau qua một kịch bản tấn công thực tế.</p>
+                 <div class="bg-white p-6 rounded-lg border mb-6">
+                     <h3 class="font-bold text-gray-800">Kịch bản: Tấn công Brute-force và Tạo User trái phép</h3>
+                     <p class="text-sm text-gray-600 mt-2"><strong>1. Tấn công:</strong> Hacker thực hiện nhiều lần đăng nhập thất bại vào AWS Console. <br><strong>2. Xâm nhập thành công:</strong> Cuối cùng, hacker đoán đúng mật khẩu và đăng nhập thành công. <br><strong>3. Hành động độc hại:</strong> Hacker tạo một IAM user mới (`backdoor_user`) với quyền admin để duy trì truy cập.</p>
+                 </div>
+                 <h3 class="text-xl font-bold text-gray-900 mb-4 mt-8">Luồng Phản ứng của CloudWatch</h3>
+                 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
+                    <div class="bg-white p-4 rounded-lg border flow-arrow">
+                        <span class="text-indigo-600 font-bold">1. Detect</span><br>
+                        <strong class="text-gray-800">Metrics</strong> (ConsoleSignInFailures) tăng đột biến.
+                    </div>
+                     <div class="bg-white p-4 rounded-lg border flow-arrow">
+                        <span class="text-indigo-600 font-bold">2. Alert</span><br>
+                        <strong class="text-gray-800">Alarm</strong> được kích hoạt khi ngưỡng đăng nhập thất bại bị vượt qua.
+                    </div>
+                     <div class="bg-white p-4 rounded-lg border flow-arrow">
+                        <span class="text-indigo-600 font-bold">3. Notify</span><br>
+                        Alarm gửi thông báo qua <strong class="text-gray-800">SNS</strong> đến đội an ninh.
+                    </div>
+                     <div class="bg-white p-4 rounded-lg border">
+                        <span class="text-indigo-600 font-bold">4. Investigate</span><br>
+                        Đội an ninh dùng <strong class="text-gray-800">Logs Insights</strong> để phân tích CloudTrail logs và tìm ra `backdoor_user`.
+                    </div>
+                 </div>
+            </div>
+
+            <!-- Tab 1: Components -->
+            <div id="components" class="tab-content">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">Bốn Trụ cột của CloudWatch</h2>
+                <p class="text-gray-600 mb-6">CloudWatch được xây dựng trên bốn thành phần chính, hoạt động cùng nhau để cung cấp khả năng quan sát toàn diện.</p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-lg border"><strong>📊 Metrics:</strong> Các chuỗi dữ liệu theo thời gian (time-series data) - ví dụ: CPU Utilization, Network In. Đây là các chỉ số sức khỏe của hệ thống.</div>
+                    <div class="bg-white p-6 rounded-lg border"><strong>📜 Logs:</strong> Nơi tập trung lưu trữ, tìm kiếm và phân tích log từ mọi nguồn (EC2, Lambda, CloudTrail...).</div>
+                    <div class="bg-white p-6 rounded-lg border"><strong>🚨 Alarms:</strong> Tự động thực hiện hành động khi một Metric vượt qua một ngưỡng nhất định. Đây là hệ thống phản ứng của bạn.</div>
+                    <div class="bg-white p-6 rounded-lg border"><strong>📈 Dashboards:</strong> Giao diện trực quan hóa, nơi bạn có thể tùy chỉnh để hiển thị các Metrics và Logs quan trọng nhất ở một nơi duy nhất.</div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Metrics & Alarms -->
+            <div id="alarms" class="tab-content">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">Ví dụ về Security Alarms</h2>
+                <p class="text-gray-600 mb-6">Kết hợp Metrics và Alarms để tạo ra các cảnh báo an ninh theo thời gian thực. Dưới đây là một số ví dụ thiết yếu.</p>
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-lg border border-yellow-300">
+                        <h3 class="font-bold text-yellow-800">Cảnh báo Failed Logins (Phát hiện Kịch bản Tấn công)</h3>
+                        <p class="text-sm text-gray-600 mt-1"><strong>Metric:</strong> Console Login Failures. | <strong>Threshold:</strong> > 5 lần trong 5 phút. | <strong>Action:</strong> Thông báo cho đội an ninh để điều tra khả năng tấn công brute-force.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg border border-red-300">
+                        <h3 class="font-bold text-red-800">Cảnh báo sử dụng Root Account</h3>
+                        <p class="text-sm text-gray-600 mt-1"><strong>Metric:</strong> CloudTrail events for Root login. | <strong>Threshold:</strong> > 0 (bất kỳ lần nào). | <strong>Action:</strong> Gửi cảnh báo khẩn cấp đến đội an ninh qua email/SNS.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg border border-blue-300">
+                        <h3 class="font-bold text-blue-800">Cảnh báo Thay đổi Network Firewall</h3>
+                        <p class="text-sm text-gray-600 mt-1"><strong>Metric:</strong> CloudTrail events for Security Group/NACL changes. | <strong>Threshold:</strong> > 0. | <strong>Action:</strong> Cảnh báo để xác minh thay đổi có được cho phép hay không.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Logs & Insights -->
+            <div id="insights" class="tab-content">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">Truy vấn với CloudWatch Logs Insights</h2>
+                <p class="text-gray-600 mb-6">Sử dụng ngôn ngữ truy vấn mạnh mẽ để tìm kiếm và phân tích hàng terabytes log trong vài giây. Đây là công cụ không thể thiếu để điều tra an ninh.</p>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="font-semibold text-gray-800 mb-2">Điều tra Kịch bản Tấn công: Tìm user được tạo trái phép</h3>
+                        <pre class="code-block"><code>fields @timestamp, eventName, sourceIPAddress, requestParameters.userName
+| filter eventName in ["CreateUser", "PutUserPolicy", "AttachUserPolicy"]
+| sort @timestamp desc
+| limit 20</code></pre>
+                    </div>
+                     <div>
+                        <h3 class="font-semibold text-gray-800 mb-2">Phân tích AWS WAF Logs để tìm các cuộc tấn công SQL Injection</h3>
+                        <pre class="code-block"><code>fields httpRequest.clientIp, httpRequest.uri, terminatingRuleId
+| filter terminatingRuleId like "SQLi"
+| stats count(*) by clientIp, uri
+| sort by count(*) desc</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 4: Dashboards -->
+            <div id="dashboards" class="tab-content">
+                 <h2 class="text-2xl font-bold text-gray-900 mb-4">Xây dựng Security Dashboards</h2>
+                 <p class="text-gray-600 mb-6">Tập hợp các thông tin an ninh quan trọng nhất vào một "single pane of glass" để đội ngũ SOC (Security Operations Center) có thể giám sát và phản ứng nhanh chóng.</p>
+                 <div class="bg-white p-8 rounded-lg border text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 mx-auto text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 B0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                    <p class="mt-4 font-semibold">Một dashboard hiệu quả có thể bao gồm:</p>
+                    <ul class="text-sm text-gray-600 mt-2 list-disc list-inside">
+                        <li>Biểu đồ số lượng Failed Logins theo thời gian.</li>
+                        <li>Trạng thái của các Alarms an ninh quan trọng.</li>
+                        <li>Danh sách các hoạt động của Root account gần đây.</li>
+                        <li>Số lượng phát hiện từ AWS GuardDuty.</li>
+                    </ul>
+                 </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('.tab-button');
+            const contents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const target = tab.getAttribute('data-tab');
+
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    contents.forEach(content => {
+                        if (content.id === target) {
+                            content.classList.add('active');
+                        } else {
+                            content.classList.remove('active');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
+

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS GuardDuty - Intelligent Threat Detection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        html,body{height:auto;min-height:100%;overflow-y:auto}
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* bg-gray-900 */
+        }
+        .card {
+            background-color: #1f2937; /* bg-gray-800 */
+            border: 1px solid #374151; /* border-gray-700 */
+        }
+        .flow-arrow {
+            color: #4b5563; /* text-gray-600 */
+        }
+    </style>
+</head>
+<body class="text-gray-300 antialiased">
+
+    <div class="container mx-auto p-6 md:p-12 max-w-6xl">
+
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4">AWS GuardDuty</h1>
+            <p class="text-lg text-gray-400">Threat detection service that monitors for malicious activity and anomalous behavior to protect AWS accounts, workloads, and data.</p>
+        </header>
+
+        <!-- What is GuardDuty -->
+        <section class="mb-12 flex flex-col md:flex-row items-center bg-gray-800 rounded-xl p-8 border border-gray-700">
+            <div class="flex-shrink-0 mb-6 md:mb-0 md:mr-8 text-cyan-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+            </div>
+            <div>
+                <p class="text-gray-300 text-lg">GuardDuty liên tục tuần tra toàn bộ tài khoản của bạn, sử dụng <strong class="text-cyan-300">Machine Learning, Phân tích Hành vi, và Threat Intelligence</strong> để tự động phát hiện các mối đe dọa. Bạn chỉ cần một cú nhấp chuột để kích hoạt, không cần cấu hình phức tạp.</p>
+            </div>
+        </section>
+
+        <!-- Data Sources -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-white text-center mb-8">I. Nguồn Dữ liệu được Phân tích</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+                <div class="card p-6 rounded-lg">VPC Flow Logs</div>
+                <div class="card p-6 rounded-lg">DNS Logs</div>
+                <div class="card p-6 rounded-lg">CloudTrail Events</div>
+                <div class="card p-6 rounded-lg">S3 Data Events</div>
+            </div>
+        </section>
+
+        <!-- Finding Types -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-white text-center mb-8">II. Các Loại Phát hiện Phổ biến</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="card p-6 rounded-lg">
+                    <h3 class="font-semibold text-xl text-white mb-2">Reconnaissance</h3>
+                    <p class="text-sm text-gray-400">Kẻ tấn công đang thăm dò hệ thống, ví dụ: quét cổng (port scanning) từ một IP độc hại.</p>
+                </div>
+                <div class="card p-6 rounded-lg">
+                    <h3 class="font-semibold text-xl text-white mb-2">Instance Compromise</h3>
+                    <p class="text-sm text-gray-400">Một server EC2 bị chiếm quyền, ví dụ: đang được dùng để đào tiền ảo.</p>
+                </div>
+                <div class="card p-6 rounded-lg">
+                    <h3 class="font-semibold text-xl text-white mb-2">Account Compromise</h3>
+                    <p class="text-sm text-gray-400">Thông tin đăng nhập của một user bị lộ, ví dụ: API call được thực hiện từ một mạng Tor.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Severity Levels -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-white text-center mb-8">III. Phân loại Mức độ Nghiêm trọng</h2>
+            <div class="bg-gray-800 rounded-lg p-6 flex flex-col md:flex-row justify-around space-y-4 md:space-y-0">
+                <div class="text-center p-4 rounded-lg bg-red-900/50 border border-red-700">
+                    <p class="font-extrabold text-2xl text-red-400">High</p>
+                    <p class="text-sm text-red-300">Mối đe dọa tức thời, cần xử lý ngay</p>
+                </div>
+                <div class="text-center p-4 rounded-lg bg-yellow-900/50 border border-yellow-700">
+                    <p class="font-extrabold text-2xl text-yellow-400">Medium</p>
+                    <p class="text-sm text-yellow-300">Hành vi đáng ngờ, cần điều tra</p>
+                </div>
+                <div class="text-center p-4 rounded-lg bg-green-900/50 border border-green-700">
+                    <p class="font-extrabold text-2xl text-green-400">Low</p>
+                    <p class="text-sm text-green-300">Hoạt động không mong muốn</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Integration -->
+        <section>
+            <h2 class="text-3xl font-bold text-white text-center mb-8">IV. Từ Phát hiện đến Hành động Tự động</h2>
+            <div class="grid grid-cols-1 md:grid-cols-5 items-center text-center gap-4">
+                <div class="card p-4 rounded-lg">GuardDuty Finding</div>
+                <div class="flow-arrow text-4xl">→</div>
+                <div class="card p-4 rounded-lg">EventBridge</div>
+                <div class="flow-arrow text-4xl">→</div>
+                <div class="card p-4 rounded-lg">AWS Lambda (Auto-Remediation)</div>
+            </div>
+            <p class="text-center mt-6 text-gray-400">Ví dụ: Tự động cô lập một server EC2 bị xâm nhập bằng cách thay đổi Security Group của nó.</p>
+        </section>
+
+    </div>
+</body>
+</html>

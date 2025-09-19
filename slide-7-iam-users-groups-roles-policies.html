@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trực Quan Hóa Các Khái Niệm AWS IAM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        html,body{height:auto;min-height:100%;overflow-y:auto}
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030712; /* bg-gray-950 */
+        }
+        .concept-card {
+            background-color: #111827; /* bg-gray-900 */
+            border: 1px solid #1f2937; /* border-gray-800 */
+            border-top: 4px solid #0891B2; /* border-cyan-600 */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .concept-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+        }
+        .code-block {
+            background-color: #0d1117;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body class="text-gray-300 antialiased">
+
+    <div class="container mx-auto p-6 md:p-12 mt-12">
+
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4">Các Thành Phần Cốt Lõi của AWS IAM</h1>
+            <p class="text-lg text-gray-400 max-w-3xl mx-auto">Hiểu rõ Users, Groups, Roles và Policies để xây dựng một nền tảng đám mây an toàn.</p>
+        </header>
+
+        <!-- Overarching Principle -->
+        <div class="mb-12 bg-gray-900 border-l-4 border-amber-400 p-6 rounded-lg text-center">
+            <h2 class="text-2xl font-bold text-amber-300 mb-2">🎯 Nguyên tắc Vàng: Đặc quyền Tối thiểu (Least Privilege)</h2>
+            <p class="text-gray-300">"Chỉ cấp những quyền hạn thực sự cần thiết để thực hiện công việc, và không hơn không kém."<br>Mọi công cụ dưới đây đều nhằm mục đích thực thi nguyên tắc này.</p>
+        </div>
+
+        <!-- Main Content Grid -->
+        <main class="grid md:grid-cols-2 gap-8">
+
+            <!-- Card 1: IAM Users -->
+            <div class="concept-card rounded-lg p-6 flex flex-col">
+                <h2 class="text-3xl font-bold text-white mb-4">👤 Users</h2>
+                <p class="text-gray-400 mb-4 flex-grow">Đại diện cho một **con người** hoặc một **ứng dụng** cần tương tác với AWS.</p>
+                <ul class="space-y-2 text-sm list-disc list-inside mb-6">
+                    <li>Có credentials dài hạn (mật khẩu, access keys).</li>
+                    <li>Gán quyền trực tiếp hoặc thông qua Groups.</li>
+                    <li>Nên tạo user riêng cho mỗi người.</li>
+                </ul>
+                <div class="mt-auto bg-gray-800 rounded-lg p-4 border border-gray-700">
+                    <h3 class="font-bold text-white mb-3">Quy tắc An toàn</h3>
+                    <div class="space-y-2 text-sm">
+                        <p class="flex items-start"><span class="text-red-400 mr-2">⚠️</span> <strong>KHÔNG</strong> dùng Root User cho công việc hàng ngày.</p>
+                        <p class="flex items-start"><span class="text-green-400 mr-2">✅</span> <strong>BẮT BUỘC</strong> kích hoạt Bảo mật Đa yếu tố (MFA).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: IAM Groups -->
+            <div class="concept-card rounded-lg p-6 flex flex-col">
+                <h2 class="text-3xl font-bold text-white mb-4">👥 Groups</h2>
+                <p class="text-gray-400 mb-4 flex-grow">Là một tập hợp các IAM Users, giúp đơn giản hóa việc quản lý quyền cho **nhiều người**.</p>
+                <ul class="space-y-2 text-sm list-disc list-inside mb-6">
+                    <li>Gán quyền cho Group, tất cả user trong Group sẽ có quyền đó.</li>
+                    <li>Một user có thể thuộc nhiều Group.</li>
+                    <li>Ví dụ: `Developers`, `Admins`, `DataScientists`.</li>
+                    <li>Không thể chứa Roles, chỉ chứa Users.</li>
+                </ul>
+                 <div class="mt-auto bg-gray-800 rounded-lg p-4 border border-gray-700">
+                    <h3 class="font-bold text-white mb-3">Mục đích chính</h3>
+                    <p class="text-sm">Quản lý quyền cho <strong class="text-cyan-400">con người</strong> một cách hiệu quả và có tổ chức.</p>
+                </div>
+            </div>
+
+            <!-- Card 3: IAM Roles -->
+            <div class="concept-card rounded-lg p-6 flex flex-col">
+                <h2 class="text-3xl font-bold text-white mb-4">🎭 Roles</h2>
+                <p class="text-gray-400 mb-4 flex-grow">Cung cấp một danh tính với các quyền hạn cụ thể mà **dịch vụ AWS** hoặc **ứng dụng** có thể "đảm nhận".</p>
+                <ul class="space-y-2 text-sm list-disc list-inside mb-6">
+                    <li>Sử dụng credentials **tạm thời**, tự động xoay vòng.</li>
+                    <li>An toàn hơn nhiều so với access keys dài hạn.</li>
+                    <li>Dùng cho EC2, Lambda, truy cập cross-account...</li>
+                    <li>Là best practice cho mọi ứng dụng trên AWS.</li>
+                </ul>
+                 <div class="mt-auto bg-gray-800 rounded-lg p-4 border border-gray-700">
+                    <h3 class="font-bold text-white mb-3">Tại sao ưu tiên?</h3>
+                    <p class="text-sm">Loại bỏ hoàn toàn nhu cầu lưu trữ access key trong mã nguồn, giảm thiểu rủi ro bị lộ thông tin nhạy cảm.</p>
+                </div>
+            </div>
+
+            <!-- Card 4: IAM Policies -->
+            <div class="concept-card rounded-lg p-6 flex flex-col">
+                <h2 class="text-3xl font-bold text-white mb-4">📜 Policies</h2>
+                <p class="text-gray-400 mb-4 flex-grow">Là các văn bản JSON, định nghĩa chi tiết các **quyền hạn** ("Allow" hoặc "Deny").</p>
+                <ul class="space-y-2 text-sm list-disc list-inside mb-6">
+                    <li>Là "bộ luật" được gắn vào Users, Groups, và Roles.</li>
+                    <li>Xác định hành động nào được phép trên tài nguyên nào.</li>
+                    <li>Có thể do AWS quản lý hoặc do bạn tự tạo.</li>
+                </ul>
+                <div class="mt-auto bg-gray-800 rounded-lg p-4 border border-gray-700">
+                    <h3 class="font-bold text-white mb-3">Ví dụ: S3 Read-Only</h3>
+                    <pre class="code-block"><code>{
+  <span class="text-sky-400">"Version"</span>: <span class="text-emerald-400">"2012-10-17"</span>,
+  <span class="text-sky-400">"Statement"</span>: [
+    {
+      <span class="text-sky-400">"Effect"</span>: <span class="text-emerald-400">"Allow"</span>,
+      <span class="text-sky-400">"Action"</span>: <span class="text-amber-400">"s3:GetObject"</span>,
+      <span class="text-sky-400">"Resource"</span>: <span class="text-amber-400">"arn:aws:s3:::my-bucket/*"</span>
+    }
+  ]
+}</code></pre>
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+</body>
+</html>
+

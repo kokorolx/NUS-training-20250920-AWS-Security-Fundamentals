@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudFront + S3 Best Practices</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        html,body{height:auto;min-height:100%;overflow-y:auto}
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb; /* bg-gray-50 */
+        }
+        .pillar-card {
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb; /* border-gray-200 */
+            border-top-width: 4px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .pillar-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .checklist-item {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 12px;
+        }
+        .checklist-item::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 1px;
+            font-weight: 600;
+            color: #16a34a; /* text-green-600 */
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased">
+
+    <div class="container mx-auto p-6 md:p-12">
+
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">CloudFront + S3 Best Practices</h1>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">Xây dựng kiến trúc an toàn, hiệu năng cao và tối ưu chi phí để phân phối nội dung.</p>
+        </header>
+
+        <!-- Architecture Recommendation -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 text-center mb-6">🏗️ The Secure & High-Performance Blueprint</h2>
+            <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <p class="text-center text-gray-600 text-lg">Mô hình kiến trúc được khuyên dùng để đảm bảo mọi yêu cầu đều được xác thực và bảo vệ tại lớp biên (edge) trước khi truy cập vào S3 bucket đã được khóa kín.</p>
+                <div class="mt-6 font-mono text-sm md:text-base text-center tracking-tight flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-4">
+                    <span class="bg-gray-100 p-2 rounded">User</span>
+                    <span class="text-indigo-600 font-bold">➔ HTTPS ➔</span>
+                    <span class="bg-indigo-100 text-indigo-800 p-2 rounded ring-2 ring-indigo-300">CloudFront (WAF/Shield)</span>
+                    <span class="text-indigo-600 font-bold">➔ OAC ➔</span>
+                    <span class="bg-gray-100 p-2 rounded">Private S3 Bucket</span>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Pillars Grid -->
+        <main class="grid md:grid-cols-2 gap-8">
+
+            <!-- Pillar 1: Security -->
+            <div class="pillar-card rounded-lg border-t-red-500">
+                <div class="p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">I. SECURITY (The Fortress)</h3>
+                    <ul class="checklist-item-container text-gray-700">
+                        <li class="checklist-item"><strong class="text-gray-900">Lock Down Your Origin:</strong> Luôn sử dụng OAC. S3 bucket không bao giờ được phép public.</li>
+                        <li class="checklist-item"><strong class="text-gray-900">Encrypt Everything in Transit:</strong> Thực thi HTTPS-only từ người dùng đến CloudFront và ngược lại.</li>
+                        <li class="checklist-item"><strong class="text-gray-900">Control Access to Content:</strong> Dùng Signed URLs/Cookies cho các nội dung nhạy cảm hoặc trả phí.</li>
+                        <li class="checklist-item"><strong class="text-gray-900">Deploy a Firewall at the Edge:</strong> Tích hợp AWS WAF để bảo vệ chống lại các cuộc tấn công web.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Pillar 2: Performance -->
+            <div class="pillar-card rounded-lg border-t-blue-500">
+                <div class="p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">II. PERFORMANCE (The Superhighway)</h3>
+                    <ul class="checklist-item-container text-gray-700">
+                        <li class="checklist-item"><strong class="text-gray-900">Master Your Caching Strategy:</strong> Tích cực cache các nội dung tĩnh với TTL cao. Không cache dữ liệu động/nhạy cảm.</li>
+                        <li class="checklist-item"><strong class="text-gray-900">Maximize Cache Hit Ratio:</strong> Đây là mục tiêu số 1 để giảm độ trễ, giảm tải cho S3 và tiết kiệm chi phí.</li>
+                        <li class="checklist-item"><strong class="text-gray-900">Compress Automatically:</strong> Bật tính năng nén (Gzip/Brotli) để giảm kích thước file và tăng tốc độ tải.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Pillar 3: Cost Optimization -->
+            <div class="pillar-card rounded-lg border-t-green-500">
+                <div class="p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">III. COST OPTIMIZATION (The Accountant)</h3>
+                     <ul class="checklist-item-container text-gray-700">
+                        <li class="checklist-item"><strong class="text-gray-900">Your Cache is Your Wallet:</strong> Cache Hit Ratio cao là cách tiết kiệm chi phí hiệu quả nhất bằng cách giảm thiểu yêu cầu về S3.</li>
+                        <li class="checklist-item"><strong class="text-gray-900">Choose the Right Price Class:</strong> Lựa chọn phạm vi địa lý phù hợp với tệp người dùng của bạn.</li>
+                        <li class="checklist-item"><strong class="text-gray-900">Monitor Data Transfer Costs:</strong> Theo dõi chặt chẽ chi phí "Data Transfer Out" từ CloudFront và S3.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Pillar 4: Monitoring & Operations -->
+            <div class="pillar-card rounded-lg border-t-yellow-500">
+                <div class="p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">IV. MONITORING & OPERATIONS (The Control Tower)</h3>
+                    <ul class="checklist-item-container text-gray-700">
+                        <li class="checklist-item"><strong class="text-gray-900">Log and Analyze Everything:</strong> Bật CloudFront access logging để phục vụ điều tra và phân tích.</li>
+                        <li class="checklist-item"><strong class="text-gray-900">Watch Your Key Metrics:</strong> Sử dụng CloudWatch để theo dõi Cache Hit Ratio, Error Rates, và Latency.</li>
+                        <li class="checklist-item"><strong class="text-gray-900">Set Alarms for Anomalies:</strong> Tạo CloudWatch Alarms để nhận cảnh báo ngay lập tức khi có sự cố.</li>
+                        <li class="checklist-item"><strong class="text-gray-900">Audit Regularly:</strong> Thường xuyên rà soát lại toàn bộ cấu hình để đảm bảo tuân thủ các quy tắc an ninh.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+</body>
+</html>

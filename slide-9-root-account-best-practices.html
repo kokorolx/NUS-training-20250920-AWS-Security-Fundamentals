@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảo Mật Tài Khoản Root AWS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        html,body{height:auto;min-height:100%;overflow-y:auto}
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* bg-gray-900 */
+        }
+        .card {
+            background-color: #1f2937; /* bg-gray-800 */
+            border: 1px solid #374151; /* border-gray-700 */
+        }
+        .step-card {
+             border-left: 4px solid #0891B2; /* border-cyan-600 */
+        }
+        .warning-box {
+            background-color: #450a0a; /* bg-red-950 */
+            border: 1px solid #7f1d1d; /* border-red-900 */
+        }
+        .best-practice-list li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 8px;
+        }
+        .best-practice-list li::before {
+            content: '✅';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #22c55e; /* text-green-500 */
+        }
+    </style>
+</head>
+<body class="text-gray-300 antialiased">
+
+    <div class="container mx-auto p-6 md:p-12 max-w-5xl mt-12">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4">Root Account Best Practices</h1>
+            <p class="text-lg text-gray-400">Cách bảo vệ "chìa khóa vạn năng" cho vương quốc AWS của bạn.</p>
+        </header>
+
+        <!-- Warning Section -->
+        <section class="mb-12 warning-box rounded-xl p-8">
+            <h2 class="text-3xl font-bold text-red-300 mb-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                Cảnh báo: Tài khoản Quyền lực Tối cao
+            </h2>
+            <p class="text-red-200 text-lg">Tài khoản Root có quyền <strong class="font-semibold">không giới hạn</strong>, không thể bị cản trở bởi bất kỳ chính sách IAM nào. Coi nó như một tài khoản "God Mode" - cực kỳ mạnh mẽ và cũng cực kỳ nguy hiểm nếu bị xâm phạm.</p>
+        </section>
+
+        <!-- 3-Step Security Roadmap -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-white text-center mb-8">Lộ trình An toàn 3 Bước</h2>
+            <div class="space-y-8">
+                <!-- Step 1: Secure It -->
+                <div class="card step-card rounded-lg p-8">
+                    <h3 class="text-2xl font-bold text-cyan-400 mb-4">Bước 1: BẢO VỆ (SECURE IT)</h3>
+                    <p class="mb-4">Hành động ngay lập tức để gia cố tài khoản Root.</p>
+                    <ul class="best-practice-list">
+                        <li><strong>Bật Xác thực Đa yếu tố (MFA):</strong> Đây là hành động quan trọng nhất, không thể trì hoãn.</li>
+                        <li><strong>Tạo Mật khẩu Cực mạnh:</strong> Dùng một mật khẩu dài, phức tạp và duy nhất.</li>
+                        <li><strong>Xóa toàn bộ Access Keys:</strong> Root user không bao giờ được phép truy cập bằng mã lệnh (programmatic access).</li>
+                    </ul>
+                </div>
+
+                <!-- Step 2: Replace It -->
+                <div class="card step-card rounded-lg p-8">
+                    <h3 class="text-2xl font-bold text-cyan-400 mb-4">Bước 2: THAY THẾ (REPLACE IT)</h3>
+                    <p class="mb-4">Tạo một tài khoản thay thế cho các công việc quản trị hàng ngày.</p>
+                     <ul class="best-practice-list">
+                        <li><strong>Tạo một IAM User riêng:</strong> Đặt tên là `admin` hoặc tên của bạn.</li>
+                        <li><strong>Gán quyền AdministratorAccess:</strong> Cấp cho user này quyền quản trị cần thiết.</li>
+                        <li><strong>Bật MFA cho IAM User này:</strong> Tài khoản admin cũng cần được bảo vệ tối đa.</li>
+                    </ul>
+                </div>
+
+                <!-- Step 3: Lock It Away & Monitor -->
+                <div class="card step-card rounded-lg p-8">
+                    <h3 class="text-2xl font-bold text-cyan-400 mb-4">Bước 3: CẤT ĐI & GIÁM SÁT (LOCK IT AWAY & MONITOR)</h3>
+                    <p class="mb-4">Không sử dụng tài khoản Root nữa và thiết lập cơ chế cảnh báo.</p>
+                     <ul class="best-practice-list">
+                        <li><strong>Cất giữ thông tin đăng nhập an toàn:</strong> Lưu trữ mật khẩu và thiết bị MFA ở nơi an toàn (như két sắt).</li>
+                        <li><strong>Sử dụng IAM User cho mọi việc:</strong> Đăng xuất khỏi Root và chỉ dùng tài khoản admin đã tạo.</li>
+                        <li><strong>Thiết lập cảnh báo đăng nhập:</strong> Dùng CloudTrail và CloudWatch/SNS để nhận email thông báo mỗi khi có ai đó đăng nhập bằng Root.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- When to Use Root Section -->
+        <section class="card rounded-xl p-8">
+             <h2 class="text-3xl font-bold text-amber-300 mb-4 text-center">Khi nào thì thực sự cần dùng Root?</h2>
+             <p class="text-center mb-6 text-gray-400">Chỉ đăng nhập vào Root user để thực hiện một số tác vụ đặc biệt mà IAM user không thể làm:</p>
+             <div class="grid md:grid-cols-2 gap-x-8 gap-y-4">
+                <p class="flex items-center"><span class="text-amber-400 mr-3">🔑</span> Thay đổi thông tin tài khoản (email, password).</p>
+                <p class="flex items-center"><span class="text-amber-400 mr-3">🔑</span> Đóng tài khoản AWS.</p>
+                <p class="flex items-center"><span class="text-amber-400 mr-3">🔑</span> Thay đổi Gói hỗ trợ (Support Plan).</p>
+                <p class="flex items-center"><span class="text-amber-400 mr-3">🔑</span> Xem một số thông tin thuế (tax invoices).</p>
+                <p class="flex items-center"><span class="text-amber-400 mr-3">🔑</span> Đăng ký làm GovCloud user.</p>
+                <p class="flex items-center"><span class="text-amber-400 mr-3">🔑</span> Cấu hình S3 Object Lock cho bucket.</p>
+             </div>
+        </section>
+
+    </div>
+</body>
+</html>

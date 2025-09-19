@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Protection & Cost Governance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        html,body{height:auto;min-height:100%;overflow-y:auto}
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb; /* bg-gray-50 */
+        }
+        .pillar-card {
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb; /* border-gray-200 */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .pillar-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .pillar-card-content {
+            flex-grow: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased">
+
+    <div class="container mx-auto p-6 md:p-12">
+
+        <!-- Header -->
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">Pricing Protection & Cost Governance</h1>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">Chủ động thiết lập các rào chắn và cơ chế giám sát để ngăn chặn "sốc hóa đơn" (bill shock).</p>
+        </header>
+
+        <main class="space-y-16">
+
+            <!-- Pillar 1: Prevent -->
+            <section>
+                <div class="text-center md:text-left mb-8">
+                    <h2 class="text-3xl font-bold text-gray-900 inline-flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                        1. PREVENT (Phòng ngừa - Thiết lập Rào chắn)
+                    </h2>
+                    <p class="text-gray-600 mt-2">Thiết lập các giới hạn cứng và quy tắc để ngăn chặn chi phí phát sinh ngoài tầm kiểm soát.</p>
+                </div>
+                <div class="grid md:grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="pillar-card rounded-lg p-6">
+                        <div class="pillar-card-content">
+                            <h3 class="font-bold text-lg mb-2">AWS Organizations & SCPs</h3>
+                            <p class="text-sm text-gray-600">Đặt ra các "giới hạn cứng" trên toàn bộ tổ chức.</p>
+                            <p class="text-sm font-semibold mt-4 mb-2">Kịch bản:</p>
+                            <ul class="text-xs list-disc list-inside space-y-1 text-gray-500">
+                                <li>Chặn các Region không sử dụng (vd: `ap-east-1`).</li>
+                                <li>Chặn các dịch vụ AI/ML đắt tiền như SageMaker trong tài khoản dev.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="pillar-card rounded-lg p-6">
+                        <div class="pillar-card-content">
+                            <h3 class="font-bold text-lg mb-2">IAM - Least Privilege</h3>
+                            <p class="text-sm text-gray-600">Quyền hạn càng ít, khả năng gây ra chi phí ngoài ý muốn càng thấp.</p>
+                             <p class="text-sm font-semibold mt-4 mb-2">Kịch bản:</p>
+                             <ul class="text-xs list-disc list-inside space-y-1 text-gray-500">
+                                <li>Chỉ cho phép developer tạo các instance EC2 loại `t3.micro`.</li>
+                                <li>Sử dụng Permissions Boundaries để ngăn leo thang đặc quyền.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="pillar-card rounded-lg p-6">
+                        <div class="pillar-card-content">
+                            <h3 class="font-bold text-lg mb-2">Resource Tagging Strategy</h3>
+                            <p class="text-sm text-gray-600">"Gán trách nhiệm" cho mọi chi phí.</p>
+                             <p class="text-sm font-semibold mt-4 mb-2">Kịch bản:</p>
+                             <ul class="text-xs list-disc list-inside space-y-1 text-gray-500">
+                                <li>Bắt buộc mọi tài nguyên phải có tag `Owner` và `Project`.</li>
+                                <li>Sử dụng AWS Config để tự động kiểm tra và báo cáo các tài nguyên không được gắn tag.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pillar 2: Detect -->
+            <section>
+                <div class="text-center md:text-left mb-8">
+                    <h2 class="text-3xl font-bold text-gray-900 inline-flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                        2. DETECT (Phát hiện - Giám sát Bất thường)
+                    </h2>
+                     <p class="text-gray-600 mt-2">Theo dõi chi phí trong thời gian thực và nhận cảnh báo khi có dấu hiệu bất thường.</p>
+                </div>
+                <div class="grid md:grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="pillar-card rounded-lg p-6">
+                        <div class="pillar-card-content">
+                            <h3 class="font-bold text-lg mb-2">AWS Budgets</h3>
+                            <p class="text-sm text-gray-600">Hoạt động như "chuông báo cháy" khi chi tiêu vượt ngưỡng.</p>
+                             <p class="text-sm font-semibold mt-4 mb-2">Kịch bản:</p>
+                             <ul class="text-xs list-disc list-inside space-y-1 text-gray-500">
+                                <li>Tạo budget cho từng project dựa trên tag `Project`.</li>
+                                <li>Cảnh báo khi chi phí dự kiến vượt 80% ngân sách.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="pillar-card rounded-lg p-6">
+                        <div class="pillar-card-content">
+                            <h3 class="font-bold text-lg mb-2">Cost Anomaly Detection</h3>
+                            <p class="text-sm text-gray-600">Sử dụng Machine Learning để tự động phát hiện đột biến chi phí.</p>
+                            <p class="text-sm font-semibold mt-4 mb-2">Kịch bản:</p>
+                             <ul class="text-xs list-disc list-inside space-y-1 text-gray-500">
+                                <li>Phát hiện chi phí Data Transfer tăng đột biến do một S3 bucket bị cấu hình sai.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="pillar-card rounded-lg p-6">
+                        <div class="pillar-card-content">
+                            <h3 class="font-bold text-lg mb-2">Amazon GuardDuty</h3>
+                            <p class="text-sm text-gray-600">Phát hiện các hoạt động tốn kém và trái phép.</p>
+                             <p class="text-sm font-semibold mt-4 mb-2">Kịch bản:</p>
+                             <ul class="text-xs list-disc list-inside space-y-1 text-gray-500">
+                                <li>Phát hiện finding type `CryptoCurrency:EC2/BitcoinTool.B!DNS`, cho thấy server đang bị dùng để đào tiền ảo.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+             <!-- Pillar 3: Respond -->
+            <section>
+                <div class="text-center md:text-left mb-8">
+                    <h2 class="text-3xl font-bold text-gray-900 inline-flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                        3. RESPOND (Phản ứng & Phân tích)
+                    </h2>
+                     <p class="text-gray-600 mt-2">Tự động hóa hành động khi có cảnh báo và điều tra nguyên nhân gốc rễ.</p>
+                </div>
+                <div class="grid md:grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="pillar-card rounded-lg p-6">
+                        <div class="pillar-card-content">
+                            <h3 class="font-bold text-lg mb-2">AWS Budgets Actions</h3>
+                            <p class="text-sm text-gray-600">Không chỉ cảnh báo, mà còn tự động hành động để ngăn chặn thiệt hại.</p>
+                            <p class="text-sm font-semibold mt-4 mb-2">Hành động:</p>
+                             <ul class="text-xs list-disc list-inside space-y-1 text-gray-500">
+                                <li>Khi budget vượt 120%, tự động áp dụng IAM policy `Deny-EC2-RunInstances`.</li>
+                                <li>Tự động tắt các instance EC2/RDS được tag `can-be-stopped`.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="pillar-card rounded-lg p-6">
+                        <div class="pillar-card-content">
+                            <h3 class="font-bold text-lg mb-2">AWS Cost Explorer</h3>
+                            <p class="text-sm text-gray-600">Công cụ phân tích và điều tra để trả lời câu hỏi "Tại sao?".</p>
+                            <p class="text-sm font-semibold mt-4 mb-2">Hành động:</p>
+                             <ul class="text-xs list-disc list-inside space-y-1 text-gray-500">
+                                <li>Sau khi có cảnh báo, nhóm theo "API Operation" để xem hành động nào gây tốn kém nhất.</li>
+                                <li>Lọc theo tag `Owner` để tìm ra người chịu trách nhiệm.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pillar 4: Optimize -->
+            <section>
+                <div class="text-center md:text-left mb-8">
+                    <h2 class="text-3xl font-bold text-gray-900 inline-flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
+                        4. OPTIMIZE (Tối ưu hóa - Giảm Chi phí)
+                    </h2>
+                     <p class="text-gray-600 mt-2">Chủ động tìm kiếm và áp dụng các cơ hội để giảm chi phí một cách bền vững.</p>
+                </div>
+                <div class="grid md:grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="pillar-card rounded-lg p-6">
+                        <div class="pillar-card-content">
+                            <h3 class="font-bold text-lg mb-2">AWS Compute Optimizer</h3>
+                            <p class="text-sm text-gray-600">Sử dụng ML để đưa ra khuyến nghị rightsizing (điều chỉnh cấu hình).</p>
+                             <p class="text-sm font-semibold mt-4 mb-2">Hành động:</p>
+                            <ul class="text-xs list-disc list-inside space-y-1 text-gray-500">
+                                <li>Giảm cấu hình các instance EC2 đang chạy với CPU utilization dưới 5%.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="pillar-card rounded-lg p-6">
+                         <div class="pillar-card-content">
+                            <h3 class="font-bold text-lg mb-2">AWS Trusted Advisor</h3>
+                            <p class="text-sm text-gray-600">Kiểm tra toàn diện tài khoản để tìm các cơ hội tiết kiệm.</p>
+                            <p class="text-sm font-semibold mt-4 mb-2">Hành động:</p>
+                             <ul class="text-xs list-disc list-inside space-y-1 text-gray-500">
+                                <li>Xóa các EBS volume không còn được sử dụng.</li>
+                                <li>Xóa các Elastic IP không được gán.</li>
+                            </ul>
+                        </div>
+                    </div>
+                     <div class="pillar-card rounded-lg p-6">
+                         <div class="pillar-card-content">
+                            <h3 class="font-bold text-lg mb-2">Savings Plans & RIs</h3>
+                            <p class="text-sm text-gray-600">Cam kết sử dụng để nhận chiết khấu lớn cho các workload ổn định.</p>
+                             <p class="text-sm font-semibold mt-4 mb-2">Hành động:</p>
+                             <ul class="text-xs list-disc list-inside space-y-1 text-gray-500">
+                                <li>Mua Gói Tiết kiệm (Savings Plan) cho lượng sử dụng EC2 ổn định hàng giờ.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+</body>
+</html>

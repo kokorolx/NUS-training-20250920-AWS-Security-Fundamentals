@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tổng Quan AWS AI-Powered Security</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        html,body{height:auto;min-height:100%;overflow-y:auto}
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030712; /* bg-gray-950 */
+        }
+        .accordion-button {
+            transition: background-color 0.3s ease;
+        }
+        .accordion-button.active, .accordion-button:hover {
+            background-color: #1f2937; /* bg-gray-800 */
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+        }
+        .accordion-icon {
+            transition: transform 0.5s ease;
+        }
+        .accordion-button.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="text-gray-300 antialiased">
+
+    <div class="container mx-auto p-6 md:p-12">
+
+        <!-- Header -->
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4">Tổng Quan AWS AI-Powered Security</h1>
+            <p class="text-lg text-gray-400 max-w-3xl mx-auto">Sử dụng Machine Learning để tự động hóa và nâng cao khả năng bảo vệ trên toàn bộ hạ tầng đám mây.</p>
+        </header>
+
+        <main class="space-y-12">
+            <!-- Pillar 1: Threat Detection -->
+            <section>
+                <h2 class="text-3xl font-bold text-white mb-6 border-l-4 border-blue-500 pl-4">Threat Detection</h2>
+                <div class="space-y-4">
+                    <!-- GuardDuty -->
+                    <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
+                        <button class="accordion-button w-full p-6 text-left flex justify-between items-center">
+                            <span class="text-xl font-bold text-blue-400">GuardDuty</span>
+                            <svg class="accordion-icon h-6 w-6 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </button>
+                        <div class="accordion-content px-6">
+                            <div class="py-6 border-t border-gray-700 text-gray-400">
+                                <p class="mb-4">Là dịch vụ phát hiện mối đe dọa thông minh, liên tục giám sát tài khoản AWS của bạn để tìm các hoạt động độc hại và hành vi trái phép.</p>
+                                <strong class="text-white">Tính năng AI:</strong> ML-based threat detection<br>
+                                <strong class="text-white">Trường hợp sử dụng:</strong> Tự động phát hiện các mối đe dọa như trinh sát, xâm nhập server, và xâm nhập tài khoản.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Fraud Detector -->
+                    <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
+                        <button class="accordion-button w-full p-6 text-left flex justify-between items-center">
+                            <span class="text-xl font-bold text-blue-400">Fraud Detector</span>
+                            <svg class="accordion-icon h-6 w-6 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </button>
+                        <div class="accordion-content px-6">
+                             <div class="py-6 border-t border-gray-700 text-gray-400">
+                                <p class="mb-4">Cho phép bạn xây dựng, triển khai và quản lý các mô hình machine learning tùy chỉnh để phát hiện các hành vi gian lận trực tuyến tiềm ẩn.</p>
+                                <strong class="text-white">Tính năng AI:</strong> Custom ML for fraud patterns<br>
+                                <strong class="text-white">Trường hợp sử dụng:</strong> Chống gian lận trong thanh toán, tạo tài khoản giả, lạm dụng khuyến mãi.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pillar 2: Data Protection -->
+            <section>
+                <h2 class="text-3xl font-bold text-white mb-6 border-l-4 border-green-500 pl-4">Data Protection</h2>
+                 <div class="space-y-4">
+                     <!-- Macie -->
+                    <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
+                        <button class="accordion-button w-full p-6 text-left flex justify-between items-center">
+                            <span class="text-xl font-bold text-green-400">Macie</span>
+                            <svg class="accordion-icon h-6 w-6 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </button>
+                        <div class="accordion-content px-6">
+                             <div class="py-6 border-t border-gray-700 text-gray-400">
+                                <p class="mb-4">Là dịch vụ bảo vệ dữ liệu, sử dụng machine learning và nhận dạng mẫu để khám phá và bảo vệ dữ liệu nhạy cảm của bạn trên S3.</p>
+                                <strong class="text-white">Tính năng AI:</strong> ML for sensitive data discovery<br>
+                                <strong class="text-white">Trường hợp sử dụng:</strong> Ngăn chặn rò rỉ dữ liệu (DLP), đáp ứng các yêu cầu tuân thủ về quyền riêng tư dữ liệu.
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+            </section>
+
+            <!-- Pillar 3: Vulnerability & Risk Management -->
+            <section>
+                 <h2 class="text-3xl font-bold text-white mb-6 border-l-4 border-yellow-500 pl-4">Vulnerability & Risk Management</h2>
+                 <div class="space-y-4">
+                     <!-- Inspector -->
+                    <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
+                        <button class="accordion-button w-full p-6 text-left flex justify-between items-center">
+                            <span class="text-xl font-bold text-yellow-400">Inspector</span>
+                            <svg class="accordion-icon h-6 w-6 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </button>
+                        <div class="accordion-content px-6">
+                             <div class="py-6 border-t border-gray-700 text-gray-400">
+                                <p class="mb-4">Tự động quét các workload AWS của bạn để tìm các lỗ hổng phần mềm và các rủi ro do vô tình tiếp xúc với mạng.</p>
+                                <strong class="text-white">Tính năng AI:</strong> ML-based CVE & malware risk scoring<br>
+                                <strong title="bảo mật trên hạ tầng cloud như EC2, container (Amazon ECR), và Lambda." class="text-white">Trường hợp sử dụng:</strong> Quản lý lỗ hổng của tài sản (Asset vulnerability management).
+                            </div>
+                        </div>
+                    </div>
+                     <!-- IAM Access Analyzer -->
+                    <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
+                        <button class="accordion-button w-full p-6 text-left flex justify-between items-center">
+                            <span class="text-xl font-bold text-yellow-400">IAM Access Analyzer</span>
+                            <svg class="accordion-icon h-6 w-6 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </button>
+                        <div class="accordion-content px-6">
+                             <div class="py-6 border-t border-gray-700 text-gray-400">
+                                <p class="mb-4">Giúp bạn xác định các tài nguyên trong tổ chức và tài khoản của mình được chia sẻ với một thực thể bên ngoài, dựa trên phân tích logic.</p>
+                                <strong class="text-white">Tính năng AI:</strong> ML/Automated reasoning for policy risk<br>
+                                <strong class="text-white">Trường hợp sử dụng:</strong> Thực thi Nguyên tắc Đặc quyền Tối thiểu (Least Privilege).
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+            </section>
+
+            <!-- Pillar 4: Incident Response & Analysis -->
+            <section>
+                <h2 class="text-3xl font-bold text-white mb-6 border-l-4 border-purple-500 pl-4">Incident Response & Analysis</h2>
+                 <div class="space-y-4">
+                     <!-- Security Hub -->
+                    <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
+                        <button class="accordion-button w-full p-6 text-left flex justify-between items-center">
+                            <span class="text-xl font-bold text-purple-400">Security Hub Insights</span>
+                            <svg class="accordion-icon h-6 w-6 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </button>
+                        <div class="accordion-content px-6">
+                             <div class="py-6 border-t border-gray-700 text-gray-400">
+                                <p class="mb-4">Cung cấp một cái nhìn toàn diện về tình hình an ninh của bạn, tổng hợp các cảnh báo từ nhiều dịch vụ AWS khác nhau vào một nơi duy nhất.</p>
+                                <strong class="text-white">Tính năng AI:</strong> ML-based findings prioritization<br>
+                                <strong class="text-white">Trường hợp sử dụng:</strong> Tổng hợp và quản lý hoạt động an ninh (SecOps aggregation).
+                            </div>
+                        </div>
+                    </div>
+                     <!-- Detective -->
+                    <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
+                        <button class="accordion-button w-full p-6 text-left flex justify-between items-center">
+                            <span class="text-xl font-bold text-purple-400">Detective</span>
+                            <svg class="accordion-icon h-6 w-6 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </button>
+                        <div class="accordion-content px-6">
+                             <div class="py-6 border-t border-gray-700 text-gray-400">
+                                <p class="mb-4">Tự động thu thập dữ liệu log từ các tài nguyên AWS của bạn và sử dụng machine learning, phân tích thống kê, và lý thuyết đồ thị để giúp bạn hình dung và tiến hành điều tra an ninh nhanh hơn, hiệu quả hơn.</p>
+                                <strong class="text-white">Tính năng AI:</strong> ML/Graph for forensics<br>
+                                <strong class="text-white">Trường hợp sử dụng:</strong> Điều tra sự cố và phân tích nguyên nhân gốc rễ.
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const accordionButtons = document.querySelectorAll('.accordion-button');
+
+            accordionButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = button.nextElementSibling;
+                    const isActive = button.classList.contains('active');
+
+                    // Optional: Close all other accordions
+                    // accordionButtons.forEach(otherButton => {
+                    //     if (otherButton !== button) {
+                    //         otherButton.classList.remove('active');
+                    //         otherButton.nextElementSibling.style.maxHeight = null;
+                    //         otherButton.nextElementSibling.style.paddingTop = '0';
+                    //         otherButton.nextElementSibling.style.paddingBottom = '0';
+                    //     }
+                    // });
+
+                    if (isActive) {
+                        button.classList.remove('active');
+                        content.style.maxHeight = null;
+                        content.style.paddingTop = '0';
+                        content.style.paddingBottom = '0';
+                    } else {
+                        button.classList.add('active');
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        content.style.paddingTop = '1.5rem';
+                        content.style.paddingBottom = '1.5rem';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+

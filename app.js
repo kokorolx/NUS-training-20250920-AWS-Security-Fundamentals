@@ -2,7 +2,7 @@
 class AWSSecurityPresentation {
     constructor() {
         this.currentSlide = 1;
-        this.totalSlides = 30; // Updated to 28 slides
+        this.totalSlides = 33;
         this.slides = document.querySelectorAll('.slide');
         this.prevBtn = document.getElementById('prevBtn');
         this.nextBtn = document.getElementById('nextBtn');
@@ -19,10 +19,10 @@ class AWSSecurityPresentation {
             3: { name: 'Network', slides: [11, 12, 13, 14, 15], duration: '25 phút' },
             4: { name: 'Data & CloudFront', slides: [16, 17, 18, 19, 20, 21, 22, 23], duration: '30 phút' },
             5: { name: 'Monitoring', slides: [24, 25, 26], duration: '15 phút' },
-            6: { name: 'AI Guard', slides: [28, 29], duration: '15 phút' },
-            7: { name: 'Pricing Protection', slides: [29], duration: '15 phút' },
-            8: { name: 'Scenarios', slides: [29], duration: '15 phút' },
-            9: { name: 'Best Practices', slides: [30], duration: '15 phút' }
+            6: { name: 'AI Guard', slides: [28, 29, 30], duration: '15 phút' },
+            7: { name: 'Pricing Protection', slides: [31], duration: '15 phút' },
+            8: { name: 'Scenarios', slides: [32], duration: '15 phút' },
+            9: { name: 'Best Practices', slides: [33], duration: '15 phút' }
         };
 
         // CloudFront specific slides for special handling
@@ -363,6 +363,9 @@ class AWSSecurityPresentation {
             this.updateSlideDots();
             this.updateProgressBar();
             this.updateSectionHighlight();
+
+            // Dispatch slide-activated event for slide-specific scripts
+            window.dispatchEvent(new CustomEvent('slide-activated', { detail: { slide: this.currentSlide, element: targetSlideElement } }));
 
             // Announce slide change for accessibility
             this.announceSlideChange();
@@ -940,24 +943,6 @@ window.PRESENTER_MODE = false;
                 e.preventDefault();
             }
         });
-
-    // Console message for developers and presenters
-    console.log('🛡️ AWS Security Training với CloudFront đã load thành công!');
-    console.log('📊 Tổng số slides: 28 (tăng từ 25)');
-    console.log('🌐 CloudFront slides mới: 20, 21, 22, 23');
-    console.log('📚 Sections: Introduction, IAM, Network Security, Data Protection & CloudFront, Logging & Monitoring, Security Scenarios, Best Practices');
-    console.log('⏱️  Thời gian training: 2 tiếng 15 phút (tăng 15 phút)');
-    console.log('⌨️  Keyboard shortcuts:');
-    console.log('   Arrow keys: Navigate slides');
-    console.log('   Home/End: First/Last slide');
-    console.log('   Ctrl+F: Toggle fullscreen');
-    console.log('   Ctrl+R: Return to first slide');
-    console.log('   Ctrl+1-7: Jump to specific section');
-    console.log('   Alt+C: Jump to CloudFront section');
-    console.log('   Alt+I/M/S/B: Quick section navigation');
-    console.log('   Ctrl+A: Toggle auto-advance');
-    console.log('   Ctrl+P: Print session data');
-    console.log('🎮 Click the control button (top-right) for presenter mode');
 });
 
 // Handle browser back/forward buttons

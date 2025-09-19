@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tổng Quan Trực Quan về AWS IAM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+    <style>
+        html,body{height:auto;min-height:100%;overflow-y:auto}
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* bg-gray-900 */
+        }
+        .feature-card {
+            background-color: #1f2937; /* bg-gray-800 */
+            border: 1px solid #374151; /* border-gray-700 */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(8, 145, 178, 0.1), 0 4px 6px -2px rgba(8, 145, 178, 0.05);
+            border-color: #0891B2; /* border-cyan-600 */
+        }
+        .highlight-box {
+            background: linear-gradient(145deg, #1f2937, #111827);
+            border: 1px solid #374151;
+        }
+    </style>
+</head>
+<body class="text-gray-300 antialiased">
+
+    <div class="container mx-auto p-6 md:p-12 mt-12">
+
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4">Identity and Access Management (IAM)</h1>
+            <p class="text-lg text-gray-400">Người bảo vệ kỹ thuật số cho tài khoản AWS của bạn.</p>
+        </header>
+
+        <!-- Analogy Section -->
+        <section class="mb-12 flex flex-col md:flex-row items-center bg-gray-800 rounded-xl p-8 border border-gray-700">
+            <div class="flex-shrink-0 mb-6 md:mb-0 md:mr-8 text-cyan-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+            </div>
+            <div>
+                <h2 class="text-2xl font-bold text-white mb-3">IAM hoạt động như thế nào?</h2>
+                <p class="text-gray-400">Hãy xem IAM như một <strong class="text-cyan-300">"Người bảo vệ Kỹ thuật số"</strong>. Người bảo vệ này làm hai việc chính:</p>
+                <ul class="list-disc list-inside mt-2 space-y-1">
+                    <li><strong>Xác thực (Authentication):</strong> Kiểm tra danh tính, đảm bảo "bạn là người bạn nói".</li>
+                    <li><strong>Ủy quyền (Authorization):</strong> Kiểm tra xem bạn có trong danh sách được phép làm một việc gì đó hay không.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Core Question Section -->
+        <section class="mb-12 text-center highlight-box rounded-xl p-8">
+            <h2 class="text-2xl font-bold text-white mb-3">Câu hỏi Cốt lõi của IAM</h2>
+            <p class="text-lg text-gray-400 max-w-4xl mx-auto">Mọi chính sách IAM đều được thiết kế để trả lời câu hỏi duy nhất:</p>
+            <p class="text-xl md:text-2xl font-semibold text-white mt-4">
+                <span class="text-amber-400">Ai (Who)</span> được làm
+                <span class="text-green-400">gì (What)</span> trên
+                <span class="text-rose-400">tài nguyên nào (Which Resource)</span> và
+                <span class="text-sky-400">trong điều kiện nào (Under Which Conditions)?</span>
+            </p>
+        </section>
+
+        <!-- Main Features Grid -->
+        <main class="grid md:grid-cols-2 gap-8">
+
+            <!-- Card 1: Fine-grained Access Control -->
+            <div class="feature-card rounded-xl p-8">
+                <h3 class="text-2xl font-bold text-white mb-3 flex items-center">
+                    <span class="text-2xl mr-3">🔑</span> Fine-grained Access Control
+                </h3>
+                <p class="text-gray-400 mb-4">Cung cấp khả năng kiểm soát chi tiết đến từng hành động (action) trên từng tài nguyên (resource).</p>
+                <div class="bg-gray-900/50 rounded p-3 text-sm">
+                    <strong class="text-cyan-300">Mục tiêu chính:</strong> Thực thi <strong class="text-amber-300">Nguyên tắc Đặc quyền Tối thiểu</strong>, đảm bảo người dùng và ứng dụng chỉ có những quyền họ thực sự cần.
+                </div>
+            </div>
+
+            <!-- Card 2: Multi-factor Authentication -->
+            <div class="feature-card rounded-xl p-8">
+                <h3 class="text-2xl font-bold text-white mb-3 flex items-center">
+                    <span class="text-2xl mr-3">🛡️</span> Multi-factor Authentication
+                </h3>
+                <p class="text-gray-400 mb-4">Thêm một lớp bảo vệ thứ hai ngoài mật khẩu, yêu cầu một mã xác thực từ thiết bị vật lý hoặc ứng dụng.</p>
+                <div class="bg-gray-900/50 rounded p-3 text-sm">
+                    <strong class="text-cyan-300">Mục tiêu chính:</strong> Bảo vệ danh tính (cái "Who") một cách mạnh mẽ nhất, chống lại việc mật khẩu hoặc access key bị đánh cắp.
+                </div>
+            </div>
+
+            <!-- Card 3: Identity Federation -->
+            <div class="feature-card rounded-xl p-8">
+                <h3 class="text-2xl font-bold text-white mb-3 flex items-center">
+                    <span class="text-2xl mr-3">🔄</span> Identity Federation
+                </h3>
+                <p class="text-gray-400 mb-4">Cho phép người dùng từ các hệ thống quản lý danh tính khác (như Active Directory, Google Workspace) truy cập AWS.</p>
+                <div class="bg-gray-900/50 rounded p-3 text-sm">
+                     <strong class="text-cyan-300">Mục tiêu chính:</strong> Giúp nhân viên sử dụng <strong class="text-amber-300">một danh tính duy nhất</strong>, giảm thiểu rủi ro và đơn giản hóa quản lý.
+                </div>
+            </div>
+
+            <!-- Card 4: Access Analysis -->
+            <div class="feature-card rounded-xl p-8">
+                <h3 class="text-2xl font-bold text-white mb-3 flex items-center">
+                    <span class="text-2xl mr-3">📊</span> Access Analysis
+                </h3>
+                <p class="text-gray-400 mb-4">Các công cụ như IAM Access Analyzer giúp bạn phân tích, xác minh và tinh chỉnh các quyền truy cập trong tài khoản.</p>
+                <div class="bg-gray-900/50 rounded p-3 text-sm">
+                    <strong class="text-cyan-300">Mục tiêu chính:</strong> Liên tục kiểm tra và chứng minh rằng bạn đang tuân thủ các quy tắc an ninh và Nguyên tắc Đặc quyền Tối thiểu.
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+</body>
+</html>

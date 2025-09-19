@@ -1,55 +1,91 @@
 <div class="slide" id="slide-22" data-section="4">
     <div class="slide-content">
-        <h1>CloudFront + S3 Best Practices</h1>
-        <div class="cloudfront-best-practices">
-            <div class="practice-category">
-                <h3>🔐 Security Configuration</h3>
-                <ul class="practice-list">
-                    <li><strong>Always use OAC/OAI:</strong> Never allow direct S3 access</li>
-                    <li><strong>Enable HTTPS everywhere:</strong> Viewer và origin protocols</li>
-                    <li><strong>Set proper cache behaviors:</strong> Security-appropriate TTL</li>
-                    <li><strong>Use signed URLs:</strong> For sensitive content access</li>
+        <h1>Demo Setup - CloudFront + S3 Security</h1>
+        <div class="cloudfront-demo">
+            <div class="demo-objectives">
+                <h3>🎯 Demo Objectives</h3>
+                <ul>
+                    <li>Setup secure S3 + CloudFront architecture</li>
+                    <li>Implement Origin Access Control (OAC)</li>
+                    <li>Configure HTTPS end-to-end</li>
+                    <li>Test access controls và performance</li>
                 </ul>
             </div>
-            <div class="practice-category">
-                <h3>🎯 Access Control</h3>
-                <ul class="practice-list">
-                    <li><strong>Implement least privilege:</strong> S3 bucket policies</li>
-                    <li><strong>Use CloudFront distribution policies:</strong> Restrict access</li>
-                    <li><strong>Configure proper headers:</strong> CORS, security headers</li>
-                    <li><strong>Enable CloudFront access logging:</strong> Monitor access patterns</li>
+            <div class="demo-prerequisites">
+                <h3>📋 Prerequisites</h3>
+                <ul>
+                    <li>S3 bucket với static website content</li>
+                    <li>CloudFront permissions</li>
+                    <li>ACM certificate (optional)</li>
                 </ul>
             </div>
-            <div class="practice-category">
-                <h3>⚡ Performance & Security</h3>
-                <ul class="practice-list">
-                    <li><strong>Cache static content:</strong> Don't cache dynamic/sensitive data</li>
-                    <li><strong>Set appropriate TTL values:</strong> Balance performance vs freshness</li>
-                    <li><strong>Use compression:</strong> Faster delivery, reduced bandwidth</li>
-                    <li><strong>Monitor với CloudWatch:</strong> Metrics và performance</li>
+            <div class="demo-setup-steps">
+                <h3>🔧 Setup Steps</h3>
+                <div class="setup-grid">
+                    <div class="setup-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Prepare S3 Bucket</h4>
+                            <ul>
+                                <li>Upload static website files</li>
+                                <li>Configure bucket for static hosting</li>
+                                <li>Ensure bucket is NOT public</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="setup-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Create CloudFront Distribution</h4>
+                            <ul>
+                                <li>Set S3 bucket as origin</li>
+                                <li>Configure OAC (Origin Access Control)</li>
+                                <li>Set cache behaviors</li>
+                                <li>Configure SSL/HTTPS settings</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="setup-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Configure S3 Bucket Policy</h4>
+                            <ul>
+                                <li>Allow CloudFront OAC access</li>
+                                <li>Deny direct public access</li>
+                                <li>Test policy effectiveness</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="setup-step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Testing & Validation</h4>
+                            <ul>
+                                <li>Test CloudFront URL access (should work)</li>
+                                <li>Test direct S3 URL access (should fail)</li>
+                                <li>Verify HTTPS enforcement</li>
+                                <li>Check cache performance</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="security-validation">
+                <h3>✅ Security Validation</h3>
+                <ul>
+                    <li>S3 bucket không publicly accessible</li>
+                    <li>Tất cả traffic đều thông qua HTTPS</li>
+                    <li>Cache behaviors hoạt động chính xác</li>
+                    <li>CloudFront access logs được enable</li>
                 </ul>
             </div>
-            <div class="practice-category">
-                <h3>💰 Cost Optimization</h3>
-                <ul class="practice-list">
-                    <li><strong>Choose appropriate price class:</strong> All, 100, 200 locations</li>
-                    <li><strong>Optimize cache hit ratio:</strong> Reduce origin requests</li>
-                    <li><strong>Use regional edge caches:</strong> Better performance</li>
-                    <li><strong>Monitor data transfer costs:</strong> CloudWatch metrics</li>
+            <div class="troubleshooting">
+                <h3>🛠️ Troubleshooting</h3>
+                <ul>
+                    <li>Common OAC/OAI configuration issues</li>
+                    <li>Cache invalidation procedures</li>
+                    <li>SSL certificate problems</li>
                 </ul>
-            </div>
-            <div class="practice-category">
-                <h3>📊 Monitoring & Compliance</h3>
-                <ul class="practice-list">
-                    <li><strong>Enable detailed monitoring:</strong> Real-time metrics</li>
-                    <li><strong>Set up alarms:</strong> Unusual activity detection</li>
-                    <li><strong>Regular security assessments:</strong> Penetration testing</li>
-                    <li><strong>Compliance:</strong> Data residency requirements</li>
-                </ul>
-            </div>
-            <div class="architecture-tip">
-                <h3>🏗️ Architecture Recommendation</h3>
-                <p><strong>Secure S3 + CloudFront:</strong> S3 (private) → CloudFront (OAC) → Users (HTTPS only)</p>
             </div>
         </div>
     </div>

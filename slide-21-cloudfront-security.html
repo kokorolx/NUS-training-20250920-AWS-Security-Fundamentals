@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS CloudFront Security Features</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        html,body{height:auto;min-height:100%;overflow-y:auto}
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb; /* bg-gray-50 */
+        }
+        .accordion-button {
+            transition: background-color 0.3s ease;
+        }
+        .accordion-button.active, .accordion-button:hover {
+            background-color: #f3f4f6; /* bg-gray-100 */
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+        }
+        .accordion-icon {
+            transition: transform 0.5s ease;
+        }
+        .accordion-button.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased">
+
+    <div class="container mx-auto p-6 md:p-12 max-w-4xl mt-12">
+
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">AWS CloudFront</h1>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">Xây dựng một vành đai an ninh vững chắc ở Edge để bảo vệ ứng dụng và dữ liệu của bạn.</p>
+        </header>
+
+        <!-- Interactive Accordion -->
+        <main id="security-accordion" class="space-y-4">
+
+            <!-- Item 1: Origin Protection -->
+            <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
+                <button class="accordion-button w-full p-6 text-left flex justify-between items-center">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 mr-5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900">Origin Protection</h2>
+                            <p class="text-gray-500 text-sm mt-1">Ngăn chặn truy cập "cửa sau" trực tiếp vào S3 bucket.</p>
+                        </div>
+                    </div>
+                    <svg class="accordion-icon h-6 w-6 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                </button>
+                <div class="accordion-content px-6">
+                    <div class="py-6 border-t border-gray-200">
+                        <ul class="space-y-2 text-sm list-disc list-inside text-gray-600">
+                            <li>Dùng <strong class="font-semibold text-gray-800">Origin Access Control (OAC)</strong> để khóa S3 bucket.</li>
+                            <li>Chỉ cho phép duy nhất CloudFront có quyền truy cập.</li>
+                            <li>OAC là tiêu chuẩn mới, được khuyên dùng thay cho OAI.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 2: Encryption in Transit -->
+            <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
+                <button class="accordion-button w-full p-6 text-left flex justify-between items-center">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 mr-5">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900">Encryption in Transit</h2>
+                            <p class="text-gray-500 text-sm mt-1">Bảo vệ dữ liệu khỏi bị nghe lén khi đang truyền đi.</p>
+                        </div>
+                    </div>
+                     <svg class="accordion-icon h-6 w-6 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                </button>
+                <div class="accordion-content px-6">
+                    <div class="py-6 border-t border-gray-200">
+                        <ul class="space-y-2 text-sm list-disc list-inside text-gray-600">
+                            <li>Thực thi HTTPS giữa người dùng và CloudFront.</li>
+                            <li>Thực thi HTTPS giữa CloudFront và Origin.</li>
+                            <li>Tích hợp miễn phí với AWS Certificate Manager (ACM).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 3: User Access Control -->
+             <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
+                <button class="accordion-button w-full p-6 text-left flex justify-between items-center">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 mr-5">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 002 2h3m10 0h3a2 2 0 002-2v-3a2 2 0 00-2-2h-3m-6.794 3.395A3.003 3.003 0 0112 15a3.003 3.003 0 01-1.206-.283m-1.15-.395a3.003 3.003 0 01-1.15.395A3.003 3.003 0 018 15c0-1.29.742-2.404 1.845-2.885M16 9.115a3.003 3.003 0 01-1.845 2.885m1.15.395a3.003 3.003 0 011.15-.395A3.003 3.003 0 0116 12c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3c0 .245.032.483.092.711z" /></svg>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900">User Access Control</h2>
+                            <p class="text-gray-500 text-sm mt-1">Bảo vệ nội dung trả phí hoặc riêng tư.</p>
+                        </div>
+                    </div>
+                     <svg class="accordion-icon h-6 w-6 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                </button>
+                <div class="accordion-content px-6">
+                    <div class="py-6 border-t border-gray-200">
+                        <ul class="space-y-2 text-sm list-disc list-inside text-gray-600">
+                            <li>Dùng <strong class="font-semibold text-gray-800">Signed URLs/Cookies</strong> để tạo "vé xem" dùng một lần.</li>
+                            <li>Giới hạn quyền truy cập theo thời gian, địa chỉ IP.</li>
+                            <li>Lý tưởng cho nội dung premium, streaming, file download.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 4: Geographic Restrictions -->
+            <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
+                <button class="accordion-button w-full p-6 text-left flex justify-between items-center">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 mr-5">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2h1a2 2 0 002-2v-1a2 2 0 012-2h1.945M7.7 9.928l.345.345a.5.5 0 00.707 0l.345-.345a.5.5 0 01.707 0l.345.345a.5.5 0 00.707 0l.345-.345a.5.5 0 01.707 0l.345.345a.5.5 0 00.707 0l.345-.345a.5.5 0 01.707 0" /><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900">Geographic Restrictions</h2>
+                            <p class="text-gray-500 text-sm mt-1">Giới hạn nội dung ở một số quốc gia nhất định.</p>
+                        </div>
+                    </div>
+                     <svg class="accordion-icon h-6 w-6 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                </button>
+                <div class="accordion-content px-6">
+                    <div class="py-6 border-t border-gray-200">
+                        <ul class="space-y-2 text-sm list-disc list-inside text-gray-600">
+                            <li>Dùng <strong class="font-semibold text-gray-800">Geo-Restrictions</strong> để tạo "chốt kiểm soát biên giới".</li>
+                            <li>Tạo danh sách trắng (chỉ cho phép) hoặc danh sách đen (chặn).</li>
+                            <li>Tuân thủ các quy định về bản quyền và cấp phép nội dung.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+             <!-- Item 5: Application Layer Protection -->
+            <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
+                <button class="accordion-button w-full p-6 text-left flex justify-between items-center">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 mr-5">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900">Application Layer Protection</h2>
+                            <p class="text-gray-500 text-sm mt-1">Chặn các kỹ thuật tấn công ứng dụng web phổ biến.</p>
+                        </div>
+                    </div>
+                     <svg class="accordion-icon h-6 w-6 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                </button>
+                <div class="accordion-content px-6">
+                    <div class="py-6 border-t border-gray-200">
+                        <ul class="space-y-2 text-sm list-disc list-inside text-gray-600">
+                             <li>Tích hợp với <strong class="font-semibold text-gray-800">AWS WAF</strong> để làm "người bảo vệ thông minh".</li>
+                            <li>Lọc và chặn các yêu cầu độc hại như SQL injection, XSS.</li>
+                            <li>Thiết lập các quy tắc giới hạn tần suất (rate limiting).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 6: Network Layer Protection -->
+            <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
+                <button class="accordion-button w-full p-6 text-left flex justify-between items-center">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 mr-5">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 14l9-5-9-5-9 5 9 5z" /><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-9.998 12.078 12.078 0 01.665-6.479L12 14z" /><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-9.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222 4 2.222V20M12 12L8 9.778 12 7.556 16 9.778 12 12z" /></svg>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900">Network Layer Protection</h2>
+                            <p class="text-gray-500 text-sm mt-1">Chống lại các cuộc tấn công từ chối dịch vụ (DDoS).</p>
+                        </div>
+                    </div>
+                     <svg class="accordion-icon h-6 w-6 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                </button>
+                <div class="accordion-content px-6">
+                    <div class="py-6 border-t border-gray-200">
+                        <ul class="space-y-2 text-sm list-disc list-inside text-gray-600">
+                            <li><strong class="font-semibold text-gray-800">AWS Shield Standard</strong> được bật miễn phí, tự động.</li>
+                            <li>Hoạt động như một "bức tường bê tông" chống lại các cuộc tấn công DDoS phổ biến.</li>
+                            <li>Nâng cấp lên Shield Advanced để có sự bảo vệ toàn diện hơn.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const accordion = document.getElementById('security-accordion');
+            const headers = accordion.querySelectorAll('.accordion-button');
+
+            headers.forEach(header => {
+                header.addEventListener('click', () => {
+                    const content = header.nextElementSibling;
+                    const isActive = header.classList.contains('active');
+
+                    // Close all other items
+                    headers.forEach(h => {
+                        if (h !== header) {
+                            h.classList.remove('active');
+                            h.nextElementSibling.style.maxHeight = null;
+                            h.nextElementSibling.style.paddingTop = '0';
+                            h.nextElementSibling.style.paddingBottom = '0';
+                        }
+                    });
+
+                    // Toggle the clicked item
+                    if (isActive) {
+                        header.classList.remove('active');
+                        content.style.maxHeight = null;
+                        content.style.paddingTop = '0';
+                        content.style.paddingBottom = '0';
+                    } else {
+                        header.classList.add('active');
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        content.style.paddingTop = '1.5rem';
+                        content.style.paddingBottom = '1.5rem';
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
+

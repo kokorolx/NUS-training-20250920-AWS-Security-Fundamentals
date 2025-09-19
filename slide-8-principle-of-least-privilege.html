@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nguyên Tắc Đặc Quyền Tối Thiểu (PoLP)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        html,body{height:auto;min-height:100%;overflow-y:auto}
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030712; /* bg-gray-950 */
+        }
+        .card {
+            background-color: #111827; /* bg-gray-900 */
+            border: 1px solid #1f2937; /* border-gray-800 */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .step-number {
+            background-color: #0891B2; /* bg-cyan-600 */
+            color: white;
+            border-radius: 9999px;
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body class="text-gray-300 antialiased">
+
+      <div class="container mx-auto p-6 md:p-12">
+
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4">Principle of Least Privilege (PoLP)</h1>
+            <p class="text-lg text-gray-400">Nguyên tắc nền tảng để xây dựng một hệ thống an toàn và vững chắc.</p>
+        </header>
+
+        <!-- Definition and Goal Section -->
+        <section class="mb-12 grid md:grid-cols-2 gap-8 items-center">
+            <div class="card rounded-xl p-8">
+                <h2 class="text-2xl font-bold text-white mb-3 flex items-center">
+                    <span class="text-3xl mr-3">🎯</span> Định nghĩa
+                </h2>
+                <p class="text-gray-400 text-lg">Chỉ cấp cho người dùng hoặc hệ thống những quyền hạn **tối thiểu, vừa đủ** để họ hoàn thành công việc được giao.</p>
+            </div>
+            <div class="card rounded-xl p-8 border-l-4 border-amber-400 bg-amber-900/10">
+                <h2 class="text-2xl font-bold text-white mb-3 flex items-center">
+                    <span class="text-3xl mr-3">💥</span> Mục tiêu Cốt lõi
+                </h2>
+                <p class="text-gray-400 text-lg">Giảm thiểu **"Bán kính ảnh hưởng" (Blast Radius)**. Khi một tài khoản bị xâm phạm, thiệt hại sẽ được giới hạn trong phạm vi quyền hạn nhỏ nhất có thể.</p>
+            </div>
+        </section>
+
+        <!-- Analogy Section -->
+        <section class="mb-12 card rounded-xl p-8">
+            <h2 class="text-3xl font-bold text-white text-center mb-6">🏨 Phép so sánh: Chìa khóa Thẻ từ Khách sạn</h2>
+            <div class="grid md:grid-cols-3 gap-6 text-center">
+                <div class="bg-gray-800 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-cyan-400 mb-2">👤 Khách</h3>
+                    <p>Chỉ mở được phòng của mình và các khu vực chung (hồ bơi, gym).</p>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-green-400 mb-2">🧹 Nhân viên Dọn phòng</h3>
+                    <p>Mở được các phòng trên tầng được giao trong ca làm việc.</p>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-rose-400 mb-2">👑 Quản lý</h3>
+                    <p>Mở được tất cả các phòng và khu vực vận hành.</p>
+                </div>
+            </div>
+            <p class="text-center mt-6 text-gray-400">IAM cũng hoạt động tương tự, mỗi người chỉ có "chìa khóa" cho những "căn phòng" (tài nguyên) mà họ thực sự cần.</p>
+        </section>
+
+        <!-- Implementation Cycle -->
+        <section>
+            <h2 class="text-3xl font-bold text-white text-center mb-8">🔄 Best practice</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+
+                <!-- Step 1 -->
+                <div class="card rounded-xl p-8 flex items-start">
+                    <div class="step-number mr-6">1</div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white mb-2">Bắt đầu Tối thiểu</h3>
+                        <p class="text-gray-400">Luôn bắt đầu bằng một chính sách không có quyền nào cả (deny-all) và chỉ thêm các quyền thực sự cần thiết.</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="card rounded-xl p-8 flex items-start">
+                    <div class="step-number mr-6">2</div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white mb-2">Cấp thêm khi cần</h3>
+                        <p class="text-gray-400">Khi có yêu cầu mới, chỉ cấp thêm quyền cụ thể cho tác vụ đó. Sử dụng <strong class="text-cyan-400">IAM Policy Simulator</strong> để kiểm tra chính sách trước khi áp dụng.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="card rounded-xl p-8 flex items-start">
+                    <div class="step-number mr-6">3</div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white mb-2">Xem xét Định kỳ</h3>
+                        <p class="text-gray-400">Thường xuyên rà soát lại các quyền đã cấp. Dùng <strong class="text-cyan-400">Access Advisor</strong> để xem quyền ít dùng và <strong class="text-cyan-400">CloudTrail</strong> để phân tích việc sử dụng quyền trong thực tế.</p>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="card rounded-xl p-8 flex items-start">
+                    <div class="step-number mr-6">4</div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white mb-2">Loại bỏ Quyền thừa</h3>
+                        <p class="text-gray-400">Gỡ bỏ các quyền không còn được sử dụng. Dùng <strong class="text-cyan-400">Access Analyzer</strong> để tự động phát hiện các quyền hạn quá rộng hoặc không an toàn.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+</body>
+</html>

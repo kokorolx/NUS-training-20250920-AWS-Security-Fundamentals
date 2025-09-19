@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Security - Key Takeaways</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* bg-gray-900 */
+        }
+        .takeaway-card {
+            background-color: #1f2937; /* bg-gray-800 */
+            border: 1px solid #374151; /* border-gray-700 */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .takeaway-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 0 30px -5px rgba(56, 189, 248, 0.2);
+        }
+    </style>
+</head>
+<body class="text-gray-300 antialiased">
+
+    <div class="container mx-auto p-6 md:p-12 max-w-5xl">
+
+        <!-- Header -->
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4">AWS Security: Key Takeaways & Mindset</h1>
+            <p class="text-lg text-gray-400 max-w-3xl mx-auto">Các nguyên tắc cốt lõi và kịch bản thực tế để xây dựng một môi trường AWS an toàn.</p>
+        </header>
+
+        <!-- Main Grid -->
+        <main class="grid md:grid-cols-2 gap-8">
+
+            <!-- Takeaway 1: Defense in Depth -->
+            <div class="takeaway-card rounded-xl p-8">
+                <div class="bg-gray-900 p-4 rounded-full inline-flex mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3">Think in Layers (Defense in Depth)</h3>
+                <p class="text-gray-400">Không bao giờ dựa vào một lớp bảo vệ duy nhất. Kết hợp nhiều dịch vụ (WAF + Shield + Security Group) để tạo ra các lớp phòng thủ chồng chéo. Nếu một lớp thất bại, các lớp khác vẫn còn đó để bảo vệ.</p>
+            </div>
+
+            <!-- Takeaway 2: Least Privilege -->
+            <div class="takeaway-card rounded-xl p-8">
+                <div class="bg-gray-900 p-4 rounded-full inline-flex mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3">Enforce Least Privilege</h3>
+                <p class="text-gray-400">Đây là nguyên tắc vàng. Luôn bắt đầu với quyền hạn tối thiểu và chỉ cấp thêm khi thực sự cần thiết. Sử dụng IAM Roles cho ứng dụng và bật MFA cho mọi người dùng. Mục tiêu là giảm thiểu "bán kính ảnh hưởng" khi có sự cố.</p>
+            </div>
+
+            <!-- Takeaway 3: Automate Everything -->
+            <div class="takeaway-card rounded-xl p-8">
+                <div class="bg-gray-900 p-4 rounded-full inline-flex mb-6">
+                     <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3">Automate Everything</h3>
+                <p class="text-gray-400">Con người có thể mắc lỗi, nhưng quy trình tự động thì không. Sử dụng các chuỗi phản ứng tự động (GuardDuty → EventBridge → Lambda) để phát hiện và khắc phục các mối đe dọa trong thời gian thực, 24/7.</p>
+            </div>
+
+            <!-- Takeaway 4: Visibility is Key -->
+            <div class="takeaway-card rounded-xl p-8">
+                <div class="bg-gray-900 p-4 rounded-full inline-flex mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                         <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3">Visibility is Key</h3>
+                <p class="text-gray-400">Bạn không thể bảo vệ thứ bạn không nhìn thấy. Bật CloudTrail trên toàn bộ khu vực, tập trung logs, và sử dụng CloudWatch Alarms để biến dữ liệu thành các cảnh báo có thể hành động. Giám sát là nền tảng của mọi hoạt động an ninh.</p>
+            </div>
+        </main>
+
+        <!-- Free Tier Security Scenarios -->
+        <section class="mt-20">
+            <header class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white">Kịch bản An ninh Không mất phí (hoặc Chi phí thấp)</h2>
+                <p class="text-md text-gray-500 mt-2">Tăng cường bảo vệ ngay lập tức bằng các dịch vụ và tính năng có sẵn miễn phí.</p>
+            </header>
+            <div class="grid md:grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Scenario 1: Securing the Front Door -->
+                <div class="takeaway-card border-t-4 border-green-500 p-8">
+                    <h3 class="font-bold text-lg text-white mb-3">1. Bảo vệ "Cổng chính" (Root & IAM)</h3>
+                    <p class="text-sm text-gray-400 mb-4"><strong>Rủi ro:</strong> Tài khoản bị chiếm quyền qua thông tin đăng nhập bị đánh cắp.</p>
+                    <strong class="text-sm text-gray-300">Công cụ miễn phí:</strong>
+                    <ul class="text-xs list-disc list-inside mt-2 space-y-1 text-gray-400">
+                        <li><strong>IAM:</strong> Bật MFA cho Root user & mọi IAM user.</li>
+                        <li><strong>IAM:</strong> Tạo admin user riêng và cất giữ Root user.</li>
+                        <li><strong>IAM:</strong> Thiết lập chính sách mật khẩu mạnh.</li>
+                        <li><strong>CloudWatch Alarms (Free Tier):</strong> Tạo cảnh báo khi có đăng nhập bằng Root user.</li>
+                    </ul>
+                </div>
+                <!-- Scenario 2: Basic Web App Protection -->
+                <div class="takeaway-card border-t-4 border-green-500 p-8">
+                    <h3 class="font-bold text-lg text-white mb-3">2. Bảo vệ Cơ bản cho Ứng dụng Web</h3>
+                    <p class="text-sm text-gray-400 mb-4"><strong>Rủi ro:</strong> Tấn công DDoS và truy cập mạng trái phép.</p>
+                    <strong class="text-sm text-gray-300">Công cụ miễn phí:</strong>
+                    <ul class="text-xs list-disc list-inside mt-2 space-y-1 text-gray-400">
+                        <li><strong>VPC Security Groups:</strong> Hoạt động như tường lửa, chỉ mở các cổng cần thiết (80, 443).</li>
+                        <li><strong>AWS Shield Standard:</strong> Tự động bật để chống lại các cuộc tấn công DDoS phổ biến.</li>
+                        <li><strong>IAM Roles for EC2:</strong> Tránh lưu trữ access key trong mã nguồn ứng dụng.</li>
+                        <li><strong>ACM:</strong> Cung cấp chứng chỉ SSL/TLS miễn phí.</li>
+                    </ul>
+                </div>
+                <!-- Scenario 3: Proactive Posture Management -->
+                <div class="takeaway-card border-t-4 border-green-500 p-8">
+                    <h3 class="font-bold text-lg text-white mb-3">3. Quản lý Chủ động Trạng thái An ninh</h3>
+                    <p class="text-sm text-gray-400 mb-4"><strong>Rủi ro:</strong> Các lỗi cấu hình an ninh không được phát hiện.</p>
+                    <strong class="text-sm text-gray-300">Công cụ miễn phí / Free Tier:</strong>
+                     <ul class="text-xs list-disc list-inside mt-2 space-y-1 text-gray-400">
+                        <li><strong>Security Hub (Free Tier):</strong> Tổng hợp các phát hiện từ IAM Access Analyzer, AWS Config...</li>
+                        <li><strong>Trusted Advisor (Core Checks):</strong> Quét các lỗi phổ biến như S3 bucket public, Security Group mở toang.</li>
+                        <li><strong>AWS Config (Free Tier):</strong> Ghi lại các thay đổi cấu hình trên các tài nguyên quan trọng.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center mt-16 text-gray-500 text-sm">
+            <p>Presentation Summary</p>
+        </footer>
+
+    </div>
+</body>
+</html>
+
