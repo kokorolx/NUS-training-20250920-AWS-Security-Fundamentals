@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4 Kịch Bản Giám sát & Phản ứng Tự động trên AWS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030712; /* bg-gray-950 */
+        }
+        .accordion-button {
+            transition: background-color 0.3s ease;
+        }
+        .accordion-button.active, .accordion-button:hover {
+            background-color: #1f2937; /* bg-gray-800 */
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s ease-in-out, padding 0.6s ease-in-out;
+        }
+        .accordion-icon {
+            transition: transform 0.6s ease;
+        }
+        .accordion-button.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+        .flow-item {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 0.75rem;
+            background-color: #1f2937;
+            border-radius: 0.5rem;
+            border: 1px solid #374151;
+        }
+        .flow-arrow {
+            color: #4b5563; /* text-gray-600 */
+            font-size: 2rem;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-300 antialiased">
+
+    <div class="container mx-auto p-6 md:p-12 max-w-5xl">
+
+        <!-- Header -->
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4">Giám sát & Phản ứng Tự động trên AWS</h1>
+            <p class="text-lg text-gray-400 max-w-3xl mx-auto">Các kịch bản thực tế kết hợp dịch vụ AWS để tăng cường an ninh và quản trị.</p>
+        </header>
+
+        <main id="security-accordion" class="space-y-4">
+
+            <!-- Scenario 1: S3 + CloudFront OAC -->
+            <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
+                <button class="accordion-button w-full p-6 text-left flex justify-between items-center">
+                    <span class="text-xl font-bold text-white">1. Bảo vệ Phân phối Nội dung (S3 + CloudFront)</span>
+                    <svg class="accordion-icon h-6 w-6 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                </button>
+                <div class="accordion-content px-6">
+                    <div class="py-6 border-t border-gray-700">
+                        <p class="text-gray-400 mb-2"><strong>Tình huống:</strong> Cần phân phối các tệp tin (hình ảnh, video) từ S3 ra Internet một cách an toàn và hiệu năng cao.</p>
+                        <p class="text-gray-400 mb-6"><strong>Rủi ro:</strong> S3 bucket bị public, cho phép truy cập trực tiếp, dẫn đến rò rỉ dữ liệu và tốn chi phí Data Transfer không kiểm soát.</p>
+                        <strong class="text-white block mb-4">Sơ đồ Giải pháp:</strong>
+                        <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
+                            <div class="flow-item font-semibold text-cyan-400">User</div>
+                            <div class="flow-arrow hidden md:block">→</div>
+                            <div class="flow-item font-semibold text-cyan-400">CloudFront</div>
+                            <div class="flow-arrow hidden md:block">→</div>
+                            <div class="flow-item font-semibold text-cyan-400">Origin Access Control (OAC)</div>
+                            <div class="flow-arrow hidden md:block">→</div>
+                            <div class="flow-item font-semibold text-cyan-400">Private S3 Bucket</div>
+                        </div>
+                        <p class="mt-6 text-gray-400"><strong>Diễn giải:</strong> Yêu cầu của người dùng sẽ đi đến <strong class="text-white">CloudFront</strong>. CloudFront sử dụng một danh tính đặc biệt (<strong class="text-white">OAC</strong>) để truy cập S3. Bucket Policy của S3 được cấu hình để <strong class="text-white">chỉ cho phép</strong> danh tính OAC này, do đó khóa chặt mọi truy cập trực tiếp khác từ Internet.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scenario 2: AWS Config Alert -->
+            <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
+                <button class="accordion-button w-full p-6 text-left flex justify-between items-center">
+                    <span class="text-xl font-bold text-white">2. Cảnh báo Lỗi Cấu hình An ninh (Public SSH)</span>
+                    <svg class="accordion-icon h-6 w-6 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                </button>
+                <div class="accordion-content px-6">
+                    <div class="py-6 border-t border-gray-700">
+                        <p class="text-gray-400 mb-2"><strong>Tình huống:</strong> Một developer vô tình mở cổng SSH (22) của một server EC2 ra toàn bộ Internet (`0.0.0.0/0`).</p>
+                        <p class="text-gray-400 mb-6"><strong>Rủi ro:</strong> Server bị phơi bày trước các cuộc tấn công dò quét và brute-force, có nguy cơ bị chiếm quyền điều khiển.</p>
+                        <strong class="text-white block mb-4">Sơ đồ Giải pháp:</strong>
+                        <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
+                            <div class="flow-item font-semibold text-green-400">Security Group Change</div>
+                            <div class="flow-arrow hidden md:block">→</div>
+                            <div class="flow-item font-semibold text-green-400">AWS Config Rule</div>
+                            <div class="flow-arrow hidden md:block">→</div>
+                            <div class="flow-item font-semibold text-green-400">SNS Topic</div>
+                            <div class="flow-arrow hidden md:block">→</div>
+                            <div class="flow-item font-semibold text-green-400">Email Alert</div>
+                        </div>
+                        <p class="mt-6 text-gray-400"><strong>Diễn giải:</strong> <strong class="text-white">AWS Config</strong> liên tục giám sát cấu hình tài nguyên. Khi phát hiện một Security Group vi phạm quy tắc đã định sẵn (ví dụ: `restricted-ssh`), nó sẽ đánh dấu tài nguyên là "Non-compliant". Sự kiện này sẽ kích hoạt một thông báo đến <strong class="text-white">SNS Topic</strong>, sau đó gửi một <strong class="text-white">email cảnh báo</strong> đến đội an ninh.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scenario 3: Budget Alert to Slack -->
+            <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
+                <button class="accordion-button w-full p-6 text-left flex justify-between items-center">
+                    <span class="text-xl font-bold text-white">3. Cảnh báo Chi phí Vượt ngưỡng tới Slack</span>
+                    <svg class="accordion-icon h-6 w-6 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                </button>
+                <div class="accordion-content px-6">
+                    <div class="py-6 border-t border-gray-700">
+                        <p class="text-gray-400 mb-2"><strong>Tình huống:</strong> Chi phí tháng đột ngột tăng cao do một tài nguyên được tạo ra ngoài kế hoạch hoặc bị lạm dụng.</p>
+                        <p class="text-gray-400 mb-6"><strong>Rủi ro:</strong> "Sốc hóa đơn" (Bill shock) cuối tháng, lãng phí ngân sách của dự án/tổ chức.</p>
+                        <strong class="text-white block mb-4">Sơ đồ Giải pháp:</strong>
+                        <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
+                            <div class="flow-item font-semibold text-yellow-400">Cost Overrun</div>
+                            <div class="flow-arrow hidden md:block">→</div>
+                            <div class="flow-item font-semibold text-yellow-400">AWS Budgets</div>
+                            <div class="flow-arrow hidden md:block">→</div>
+                            <div class="flow-item font-semibold text-yellow-400">SNS Topic</div>
+                             <div class="flow-arrow hidden md:block">→</div>
+                            <div class="flow-item font-semibold text-yellow-400">AWS Chatbot</div>
+                            <div class="flow-arrow hidden md:block">→</div>
+                            <div class="flow-item font-semibold text-yellow-400">Slack</div>
+                        </div>
+                        <p class="mt-6 text-gray-400"><strong>Diễn giải:</strong> <strong class="text-white">AWS Budgets</strong> theo dõi chi tiêu so với ngân sách đã đặt. Khi chi phí dự kiến hoặc thực tế vượt ngưỡng, nó sẽ gửi thông báo đến <strong class="text-white">SNS Topic</strong>. <strong class="text-white">AWS Chatbot</strong>, đã được cấu hình để tích hợp với SNS và Slack, sẽ nhận thông báo này và đẩy nó về một kênh <strong class="text-white">Slack</strong> cụ thể, giúp đội ngũ phản ứng kịp thời.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scenario 4: Network Anomaly Detection -->
+            <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
+                <button class="accordion-button w-full p-6 text-left flex justify-between items-center">
+                    <span class="text-xl font-bold text-white">4. Phát hiện Hành vi Mạng Bất thường</span>
+                    <svg class="accordion-icon h-6 w-6 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                </button>
+                <div class="accordion-content px-6">
+                    <div class="py-6 border-t border-gray-700">
+                        <p class="text-gray-400 mb-2"><strong>Tình huống:</strong> Một server EC2 bị nhiễm malware và bắt đầu giao tiếp với một địa chỉ IP độc hại đã biết (máy chủ C&C) để nhận lệnh.</p>
+                        <p class="text-gray-400 mb-6"><strong>Rủi ro:</strong> Server bị chiếm quyền hoàn toàn, dữ liệu bị đánh cắp, server bị dùng để tấn công các hệ thống khác.</p>
+                        <strong class="text-white block mb-4">Sơ đồ Giải pháp:</strong>
+                         <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
+                            <div class="flow-item font-semibold text-rose-400">VPC Flow Logs</div>
+                            <div class="flow-arrow hidden md:block">→</div>
+                            <div class="flow-item font-semibold text-rose-400">Amazon GuardDuty</div>
+                            <div class="flow-arrow hidden md:block">→</div>
+                            <div class="flow-item font-semibold text-rose-400">GuardDuty Finding</div>
+                            <div class="flow-arrow hidden md:block">→</div>
+                            <div class="flow-item font-semibold text-rose-400">EventBridge</div>
+                        </div>
+                        <p class="mt-6 text-gray-400"><strong>Diễn giải:</strong> <strong class="text-white">Amazon GuardDuty</strong> liên tục phân tích <strong class="text-white">VPC Flow Logs</strong> (cùng với DNS logs, CloudTrail) bằng Machine Learning và Threat Intelligence. Khi phát hiện server đang giao tiếp với một IP độc hại, nó sẽ tạo ra một <strong class="text-white">"Finding"</strong> với mức độ nghiêm trọng cao. Finding này sẽ được gửi đến <strong class="text-white">EventBridge</strong>, từ đó có thể kích hoạt các hành động tự động như thông báo hoặc cô lập server.</p>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const accordionButtons = document.querySelectorAll('.accordion-button');
+
+            accordionButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = button.nextElementSibling;
+                    const isActive = button.classList.contains('active');
+
+                    if (isActive) {
+                        button.classList.remove('active');
+                        content.style.maxHeight = null;
+                    } else {
+                        // Optional: close other accordions
+                        accordionButtons.forEach(otherButton => {
+                            if(otherButton !== button) {
+                                otherButton.classList.remove('active');
+                                otherButton.nextElementSibling.style.maxHeight = null;
+                            }
+                        });
+                        button.classList.add('active');
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

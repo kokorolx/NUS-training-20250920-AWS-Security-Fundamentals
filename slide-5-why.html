@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tại sao AWS Security quan trọng?</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000000;
+            margin: 0;
+            overflow: hidden;
+        }
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        .slide-container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+        .main-title {
+            font-size: 4.5rem;
+            font-weight: 900;
+            color: #e2e8f0; /* slate-200 */
+            text-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+            animation: fadeIn 3s ease-out;
+            max-width: 800px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .main-title { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="slide-container">
+        <h1 class="main-title">Tại sao AWS Security quan trọng?</h1>
+    </div>
+
+    <script>
+        // --- Three.js Scene Setup ---
+        let scene, camera, renderer, particles;
+        let mouseX = 0, mouseY = 0;
+        const clock = new THREE.Clock();
+
+        const uniforms = {
+            time: { value: 0.0 },
+            ripple_center: { value: new THREE.Vector2(0.0, 0.0) },
+            ripple_start_time: { value: -100.0 }, // Start time far in the past
+            ripple_active: { value: 0.0 }
+        };
+
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({
+                canvas: document.querySelector('#bg-canvas'),
+                antialias: true,
+            });
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            camera.position.set(0, 30, 100);
+            camera.lookAt(scene.position);
+
+            // --- Particle Plane ---
+            const PARTICLE_COUNT = 150 * 150;
+            const particleGeometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(PARTICLE_COUNT * 3);
+
+            let i = 0;
+            for (let ix = 0; ix < 150; ix++) {
+                for (let iy = 0; iy < 150; iy++) {
+                    positions[i * 3] = ix * 2 - 150;
+                    positions[i * 3 + 1] = 0;
+                    positions[i * 3 + 2] = iy * 2 - 150;
+                    i++;
+                }
+            }
+            particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+            const particleMaterial = new THREE.ShaderMaterial({
+                uniforms: uniforms,
+                vertexShader: `
+                    uniform float time;
+                    uniform vec2 ripple_center;
+                    uniform float ripple_start_time;
+                    uniform float ripple_active;
+
+                    void main() {
+                        vec3 pos = position;
+                        float dist = distance(pos.xz, ripple_center);
+                        float time_since_ripple = time - ripple_start_time;
+
+                        if (ripple_active > 0.5) {
+                           float wave_front = time_since_ripple * 50.0;
+                           float wave_width = 30.0;
+                           if (dist > wave_front - wave_width && dist < wave_front) {
+                                float wave_falloff = 1.0 - (wave_front - dist) / wave_width;
+                                pos.y += sin(wave_falloff * 3.14159) * 15.0;
+                           }
+                        }
+
+                        pos.y += sin(pos.x * 0.1 + time) * 0.5 + sin(pos.z * 0.1 + time) * 0.5;
+                        gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+                        gl_PointSize = 1.5;
+                    }
+                `,
+                fragmentShader: `
+                    uniform float time;
+                    uniform vec2 ripple_center;
+                    uniform float ripple_start_time;
+                    uniform float ripple_active;
+
+                    void main() {
+                        vec3 base_color = vec3(0.2, 0.5, 0.9);
+                        vec3 threat_color = vec3(1.0, 0.1, 0.1);
+                        vec3 final_color = base_color;
+
+                        float dist = distance(gl_PointCoord, vec2(0.5));
+                        if (dist > 0.5) discard;
+
+                        float time_since_ripple = time - ripple_start_time;
+                        float dist_from_center = distance(vec2(gl_FragCoord.x/10.0, gl_FragCoord.y/10.0), ripple_center);
+
+
+                        if (ripple_active > 0.5) {
+                           float wave_front = time_since_ripple * 50.0;
+                           float wave_width = 40.0;
+                           if (dist_from_center > wave_front - wave_width && dist_from_center < wave_front) {
+                               float intensity = 1.0 - (wave_front - dist_from_center) / wave_width;
+                               final_color = mix(base_color, threat_color, intensity);
+                           }
+                        }
+
+                        gl_FragColor = vec4(final_color, 1.0);
+                    }
+                `,
+                transparent: true,
+            });
+
+            particles = new THREE.Points(particleGeometry, particleMaterial);
+            scene.add(particles);
+
+            // --- Event Listeners ---
+            document.addEventListener('mousemove', onMouseMove);
+            window.addEventListener('resize', onWindowResize);
+
+            // Trigger ripples periodically
+            setInterval(triggerRipple, 5000);
+        }
+
+        function triggerRipple() {
+            uniforms.ripple_active.value = 1.0;
+            uniforms.ripple_center.value.x = (Math.random() - 0.5) * 300;
+            uniforms.ripple_center.value.y = (Math.random() - 0.5) * 300;
+            uniforms.ripple_start_time.value = clock.getElapsedTime();
+        }
+
+        function onMouseMove(event) {
+            mouseX = (event.clientX - window.innerWidth / 2);
+            mouseY = (event.clientY - window.innerHeight / 2);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const elapsedTime = clock.getElapsedTime();
+            uniforms.time.value = elapsedTime;
+
+            camera.position.x += (mouseX * 0.01 - camera.position.x) * 0.02;
+            camera.position.y += (-mouseY * 0.01 - camera.position.y) * 0.02;
+            camera.lookAt(scene.position);
+
+            renderer.render(scene, camera);
+        }
+
+        init();
+        animate();
+    </script>
+</body>
+</html>

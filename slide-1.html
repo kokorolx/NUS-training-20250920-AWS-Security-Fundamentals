@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Security Fundamental</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #020617; /* bg-slate-950 */
+            margin: 0;
+            overflow: hidden;
+        }
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        .slide-container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+            animation: fadeIn 1.5s ease-out;
+        }
+        .logo-container img {
+            height: 4.5rem; /* 56px */
+        }
+        .logo-container .plus-icon {
+            font-size: 2rem;
+            color: #475569; /* slate-600 */
+        }
+        .presentation-title {
+            font-size: 4rem;
+            font-weight: 900;
+            color: #e2e8f0; /* slate-200 */
+            text-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+            animation: fadeIn 2s ease-out;
+            margin-bottom: 0.5rem;
+        }
+        .company-name {
+            font-size: 1.75rem;
+            font-weight: 500;
+            color: #94a3b8; /* slate-400 */
+            margin-bottom: 2.5rem;
+            animation: fadeIn 2.5s ease-out;
+        }
+        .presenter-info {
+            color: #64748b; /* slate-500 */
+            font-size: 1rem;
+            animation: fadeIn 3s ease-out;
+        }
+        .presenter-info a {
+            color: #7dd3fc; /* sky-300 */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .presenter-info a:hover {
+            color: #e0f2fe; /* sky-100 */
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 768px) {
+            .presentation-title { font-size: 2.5rem; }
+            .company-name { font-size: 1.25rem; }
+            .logo-container img { height: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="slide-container">
+        <div class="logo-container">
+            <img src="https://logos-world.net/wp-content/uploads/2021/08/Amazon-Web-Services-AWS-Logo.png" alt="AWS Logo">
+            <span class="plus-icon">+</span>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiaZvQvXQQzdVh-vuFOF16MxWHFA7N63hWsw&s" alt="NUS Technology Logo">
+        </div>
+        <h2 class="company-name">Training Section</h2>
+        <h1 class="presentation-title">AWS Security Fundamental</h1>
+        <div class="presenter-info">
+            <p>Trainer: <a href="https://thnkandgrow.com/about" target="_blank">TamLH</a> | Date: Sep 20, 2025</p>
+        </div>
+    </div>
+
+    <script>
+        // --- Three.js Scene Setup ---
+        let scene, camera, renderer, particles, lines;
+        let mouseX = 0, mouseY = 0;
+        const PARTICLE_COUNT = 300;
+        const MAX_DISTANCE = 60;
+
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({
+                canvas: document.querySelector('#bg-canvas'),
+                antialias: true,
+            });
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            camera.position.z = 150;
+
+            // --- Particles ---
+            const particleGeometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(PARTICLE_COUNT * 3);
+            const velocities = [];
+
+            for (let i = 0; i < PARTICLE_COUNT; i++) {
+                positions[i * 3] = (Math.random() - 0.5) * 300;
+                positions[i * 3 + 1] = (Math.random() - 0.5) * 300;
+                positions[i * 3 + 2] = (Math.random() - 0.5) * 300;
+                velocities.push((Math.random() - 0.5) * 0.1);
+                velocities.push((Math.random() - 0.5) * 0.1);
+                velocities.push((Math.random() - 0.5) * 0.1);
+            }
+            particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            particleGeometry.setAttribute('velocity', new THREE.Float32BufferAttribute(velocities, 3));
+
+            const particleMaterial = new THREE.PointsMaterial({ color: 0x38bdf8, size: 1.5, transparent: true });
+            particles = new THREE.Points(particleGeometry, particleMaterial);
+            scene.add(particles);
+
+            // --- Lines ---
+            const lineGeometry = new THREE.BufferGeometry();
+            const linePositions = new Float32Array(PARTICLE_COUNT * PARTICLE_COUNT * 3);
+            lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
+            const lineMaterial = new THREE.LineBasicMaterial({ color: 0x3b82f6, transparent: true, opacity: 0.1 });
+            lines = new THREE.LineSegments(lineGeometry, lineMaterial);
+            scene.add(lines);
+
+            // --- Event Listeners ---
+            document.addEventListener('mousemove', onMouseMove);
+            window.addEventListener('resize', onWindowResize);
+        }
+
+        function onMouseMove(event) {
+            mouseX = (event.clientX - window.innerWidth / 2);
+            mouseY = (event.clientY - window.innerHeight / 2);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const positions = particles.geometry.attributes.position.array;
+            const velocities = particles.geometry.attributes.velocity.array;
+
+            let lineVertexIndex = 0;
+            const linePositions = lines.geometry.attributes.position.array;
+
+            for (let i = 0; i < PARTICLE_COUNT; i++) {
+                // Update particle position
+                positions[i * 3] += velocities[i * 3];
+                positions[i * 3 + 1] += velocities[i * 3 + 1];
+                positions[i * 3 + 2] += velocities[i * 3 + 2];
+
+                // Boundary check
+                if (Math.abs(positions[i * 3]) > 150) velocities[i * 3] *= -1;
+                if (Math.abs(positions[i * 3 + 1]) > 150) velocities[i * 3 + 1] *= -1;
+                if (Math.abs(positions[i * 3 + 2]) > 150) velocities[i * 3 + 2] *= -1;
+
+                // Check for lines
+                for (let j = i + 1; j < PARTICLE_COUNT; j++) {
+                    const dx = positions[i * 3] - positions[j * 3];
+                    const dy = positions[i * 3 + 1] - positions[j * 3 + 1];
+                    const dz = positions[i * 3 + 2] - positions[j * 3 + 2];
+                    const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+
+                    if (dist < MAX_DISTANCE) {
+                        linePositions[lineVertexIndex++] = positions[i * 3];
+                        linePositions[lineVertexIndex++] = positions[i * 3 + 1];
+                        linePositions[lineVertexIndex++] = positions[i * 3 + 2];
+                        linePositions[lineVertexIndex++] = positions[j * 3];
+                        linePositions[lineVertexIndex++] = positions[j * 3 + 1];
+                        linePositions[lineVertexIndex++] = positions[j * 3 + 2];
+                    }
+                }
+            }
+
+            // Clear unused line vertices
+            for (let i = lineVertexIndex; i < linePositions.length; i++) {
+                linePositions[i] = 0;
+            }
+
+            lines.geometry.attributes.position.needsUpdate = true;
+            particles.geometry.attributes.position.needsUpdate = true;
+
+            // Animate camera
+            camera.position.x += (mouseX * 0.05 - camera.position.x) * 0.02;
+            camera.position.y += (-mouseY * 0.05 - camera.position.y) * 0.02;
+            camera.lookAt(scene.position);
+
+            renderer.render(scene, camera);
+        }
+
+        init();
+        animate();
+    </script>
+</body>
+</html>
+

@@ -1,4 +1,5 @@
 <div class="slide" id="slide-20" data-section="4">
+    <!-- moved duplicated layout rules to style.css -->
     <div class="slide-content">
         <h1>CloudFront Overview & S3 Integration</h1>
         <div class="cloudfront-overview">
@@ -55,15 +56,15 @@
                 <!-- Non-JS fallback (static image) and reduced-motion fallback (same) -->
                 <div class="canvas-fallback" aria-hidden="true">
                     <!-- Simple inline SVG fallback to ensure visual is present for no-JS or reduced motion -->
-                    <svg width="100%" height="240" viewBox="0 0 900 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CloudFront request flow static diagram">
+                    <svg class="responsive-svg" viewBox="0 0 900 240" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CloudFront request flow static diagram">
                         <rect x="0" y="0" width="900" height="240" fill="transparent"/>
                         <g fill="none" stroke="#146EB4" stroke-width="2">
                             <rect x="40" y="70" width="140" height="60" rx="8" stroke="#FF9900" fill="#fff"/>
-                            <text x="110" y="105" font-size="14" fill="#232F3E" text-anchor="middle">S3 Origin</text>
+                            <text x="110" y="105" font-size="1.1em" fill="#232F3E" text-anchor="middle">S3 Origin</text>
                             <rect x="380" y="40" width="140" height="60" rx="8" stroke="#4A90E2" fill="#fff"/>
-                            <text x="450" y="75" font-size="14" fill="#232F3E" text-anchor="middle">CloudFront Edge</text>
+                            <text x="450" y="75" font-size="1.1em" fill="#232F3E" text-anchor="middle">CloudFront Edge</text>
                             <rect x="700" y="90" width="140" height="60" rx="8" stroke="#146EB4" fill="#fff"/>
-                            <text x="770" y="125" font-size="14" fill="#232F3E" text-anchor="middle">User</text>
+                            <text x="770" y="125" font-size="1.1em" fill="#232F3E" text-anchor="middle">User</text>
                             <path d="M220 100 L380 70" stroke="#232F3E" stroke-dasharray="6 4"/>
                             <path d="M520 70 L700 120" stroke="#232F3E" stroke-dasharray="6 4"/>
                         </g>

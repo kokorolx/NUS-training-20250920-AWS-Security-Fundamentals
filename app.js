@@ -20,9 +20,9 @@ class AWSSecurityPresentation {
             4: { name: 'Data & CloudFront', slides: [16, 17, 18, 19, 20, 21, 22, 23], duration: '30 phút' },
             5: { name: 'Monitoring', slides: [24, 25, 26], duration: '15 phút' },
             6: { name: 'AI Guard', slides: [28, 29, 30], duration: '15 phút' },
-            7: { name: 'Pricing Protection', slides: [31], duration: '15 phút' },
+            7: { name: 'Best practices', slides: [31], duration: '15 phút' },
             8: { name: 'Scenarios', slides: [32], duration: '15 phút' },
-            9: { name: 'Best Practices', slides: [33], duration: '15 phút' }
+            9: { name: '❤️', slides: [33], duration: '1 phút' }
         };
 
         // CloudFront specific slides for special handling
@@ -404,8 +404,6 @@ class AWSSecurityPresentation {
     }
 
     handleKeydown(event) {
-        // return
-
         switch(event.key) {
             case 'ArrowRight':
             case ' ': // Spacebar
@@ -440,7 +438,7 @@ class AWSSecurityPresentation {
             case '7':
             case '8':
             case '9':
-                    if (event.ctrlKey /*|| event.metaKey*/) {
+                    if (event.ctrlKey || event.metaKey) {
                         event.preventDefault();
                         const sectionId = parseInt(event.key);
                         if (this.sections[sectionId]) {
@@ -451,10 +449,10 @@ class AWSSecurityPresentation {
             // CloudFront quick access
             case 'c':
             case 'C':
-                // if (event.ctrlKey /*|| event.metaKey*/) {
-                //     event.preventDefault();
-                //     this.goToCloudFrontSection();
-                // }
+                if (event.ctrlKey /*|| event.metaKey*/) {
+                    event.preventDefault();
+                    this.goToCloudFrontSection();
+                }
                 break;
         }
     }

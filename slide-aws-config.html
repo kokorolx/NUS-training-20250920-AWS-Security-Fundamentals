@@ -13,12 +13,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>html { font-size: var(--font-size-base); }</style>
+    <!-- moved duplicated layout rules to style.css -->
     <style>
         /* Ensure page can scroll when content is taller than viewport */
         html,body{height:auto;min-height:100%;overflow-y:auto}
-        /* Slightly smaller chart on small screens, keep existing max-height */
-        .chart-container { height: 220px; max-height: 300px; }
-        @media (min-width:768px){ .chart-container{ height:300px; } }
     </style>
     <style>
         .flow-step {
@@ -38,16 +36,7 @@
         .flow-arrow.active {
             color: #2563eb; /* blue-600 */
         }
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 250px;
-            max-height: 300px;
-        }
-        @media (min-width: 768px) { .chart-container { height: 300px; } }
+        /* .chart-container rules moved to style.css */
     </style>
 </head>
 <body class="bg-gray-50">

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Best Practices - The Complete Checklist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* bg-gray-900 */
+        }
+        .pillar-card {
+            background-color: #1f2937; /* bg-gray-800 */
+            border: 1px solid #374151; /* border-gray-700 */
+            border-top-width: 4px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .pillar-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .checklist-item {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 12px;
+        }
+        .checklist-item::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 2px;
+            font-weight: 600;
+            color: #4ade80; /* text-green-400 */
+        }
+    </style>
+</head>
+<body class="text-gray-300 antialiased">
+
+    <div class="container mx-auto p-6 md:p-12">
+
+        <!-- Header -->
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4">AWS Best Practices: The Complete Checklist</h1>
+            <p class="text-lg text-gray-400 max-w-3xl mx-auto">Các nguyên tắc vàng để xây dựng một môi trường AWS an toàn, hiệu quả và tối ưu chi phí.</p>
+        </header>
+
+        <!-- Pillars Grid -->
+        <main class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <!-- Pillar 1: Security & Access Control -->
+            <div class="pillar-card rounded-lg border-t-red-500">
+                <div class="p-8">
+                    <h3 class="text-xl font-bold text-white mb-6">🛡️ Bảo mật & Kiểm soát truy cập</h3>
+                    <ul class="text-sm text-gray-400">
+                        <li class="checklist-item">Sử dụng <strong class="text-white">IAM role</strong> thay vì IAM user cho ứng dụng.</li>
+                        <li class="checklist-item">Áp dụng <strong class="text-white">nguyên tắc least privilege</strong>, chỉ cấp quyền tối thiểu cần thiết.</li>
+                        <li class="checklist-item">Bật <strong class="text-white">MFA (Multi-Factor Authentication)</strong> cho mọi tài khoản, đặc biệt là root.</li>
+                        <li class="checklist-item">Cất giữ <strong class="text-white">Root account</strong>, không dùng cho công việc hàng ngày, xóa access key.</li>
+                        <li class="checklist-item"><strong class="text-white">Rotate credentials</strong> (mật khẩu, access key) định kỳ.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Pillar 2: Network & Infrastructure -->
+            <div class="pillar-card rounded-lg border-t-blue-500">
+                <div class="p-8">
+                    <h3 class="text-xl font-bold text-white mb-6">🔒 Mạng & Hạ tầng</h3>
+                    <ul class="text-sm text-gray-400">
+                        <li class="checklist-item">Thiết kế <strong class="text-white">VPC riêng, chia subnet</strong> rõ ràng (private/public).</li>
+                        <li class="checklist-item">Kiểm tra <strong class="text-white">Security Groups & NACLs</strong> thường xuyên, không mở `0.0.0.0/0` cho các cổng quản trị.</li>
+                        <li class="checklist-item">Sử dụng <strong class="text-white">AWS WAF & Shield</strong> để bảo vệ ứng dụng web khỏi DDoS và các tấn công phổ biến.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Pillar 3: Data Management & Backup -->
+            <div class="pillar-card rounded-lg border-t-green-500">
+                 <div class="p-8">
+                    <h3 class="text-xl font-bold text-white mb-6">🗃️ Quản lý dữ liệu & Backup</h3>
+                    <ul class="text-sm text-gray-400">
+                        <li class="checklist-item">Mã hóa dữ liệu <strong class="text-white">"at rest"</strong> (trên S3/EBS/RDS) và <strong class="text-white">"in transit"</strong> (dùng HTTPS/TLS).</li>
+                        <li class="checklist-item">Sử dụng <strong class="text-white">AWS KMS</strong> để quản lý key mã hóa một cách tập trung và an toàn.</li>
+                        <li class="checklist-item">Thiết lập <strong class="text-white">backup định kỳ</strong> (AWS Backup, snapshot), lưu trữ cross-region/cross-account cho DR.</li>
+                        <li class="checklist-item">Bật <strong class="text-white">S3 Object Lock & Versioning</strong> để bảo vệ dữ liệu khỏi bị xóa hoặc sửa đổi ngoài ý muốn.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Pillar 4: Monitoring & Compliance -->
+            <div class="pillar-card rounded-lg border-t-yellow-500">
+                 <div class="p-8">
+                    <h3 class="text-xl font-bold text-white mb-6">📈 Monitoring & Compliance</h3>
+                    <ul class="text-sm text-gray-400">
+                        <li class="checklist-item">Bật <strong class="text-white">CloudTrail</strong> trên mọi region để theo dõi toàn bộ API activity.</li>
+                        <li class="checklist-item">Sử dụng <strong class="text-white">CloudWatch logging & alarms</strong> để giám sát và cảnh báo các hành vi bất thường.</li>
+                        <li class="checklist-item">Dùng <strong class="text-white">AWS Config & Security Hub</strong> để theo dõi tuân thủ và tổng hợp các phát hiện an ninh.</li>
+                        <li class="checklist-item">Tích hợp với các hệ thống <strong class="text-white">SIEM/ServiceNOW</strong> để quản lý tập trung.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Pillar 5: Cost Optimization -->
+            <div class="pillar-card rounded-lg border-t-purple-500">
+                 <div class="p-8">
+                    <h3 class="text-xl font-bold text-white mb-6">💰 Cost Optimization</h3>
+                    <ul class="text-sm text-gray-400">
+                        <li class="checklist-item">Thiết lập <strong class="text-white">AWS Budgets & Alerts</strong> để cảnh báo khi chi phí vượt ngưỡng.</li>
+                        <li class="checklist-item">Áp dụng <strong class="text-white">lifecycle policy</strong> cho S3/EBS để tự động dọn dẹp, tắt các tài nguyên không sử dụng.</li>
+                        <li class="checklist-item">Thực thi chính sách <strong class="text-white">Tagging</strong> cho tất cả tài nguyên để phân loại và truy vết chi phí.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Pillar 6: Governance & Automation -->
+            <div class="pillar-card rounded-lg border-t-cyan-500">
+                 <div class="p-8">
+                    <h3 class="text-xl font-bold text-white mb-6">🌍 Governance & Automation</h3>
+                    <ul class="text-sm text-gray-400">
+                        <li class="checklist-item">Sử dụng <strong class="text-white">AWS Organizations</strong> để quản lý nhiều tài khoản và áp dụng <strong class="text-white">Service Control Policies (SCP)</strong>.</li>
+                        <li class="checklist-item">Triển khai hạ tầng bằng <strong class="text-white">Infrastructure as Code</strong> (CloudFormation/Terraform).</li>
+                        <li class="checklist-item">Thiết lập <strong class="text-white">Auto-remediation</strong> (EventBridge/Lambda) cho các cảnh báo an ninh.</li>
+                         <li class="checklist-item">Xây dựng <strong class="text-white">runbook</strong> để chuẩn hóa quy trình phản ứng với sự cố (Incident Response).</li>
+                    </ul>
+                </div>
+            </div>
+
+        </main>
+    </div>
+</body>
+</html>
