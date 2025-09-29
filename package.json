@@ -1,0 +1,20 @@
+{
+  "name": "aws-security-slides",
+  "version": "1.0.0",
+  "description": "Static AWS Security slide deck with PDF export script",
+  "main": "app.js",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "export:pdf": "node scripts/export-to-pdf.js http://localhost:8000",
+    "capture-fullpage": "node scripts/capture-fullpage.js",
+    "merge-pdf": "node scripts/merge-screenshots-to-pdf.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "pdf-lib": "^1.17.1",
+    "playwright": "^1.55.1",
+    "puppeteer": "^21.3.8"
+  }
+}
